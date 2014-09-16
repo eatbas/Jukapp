@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
-  resources :videos
+  get "search" => 'videos#search'
+
+  root "videos#search"
 end
