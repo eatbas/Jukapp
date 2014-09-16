@@ -1,0 +1,16 @@
+yourub_defaults: &yourub_defaults
+  developer_key: 'AIzaSyBwCkF3uEg3rJOuSmA4z_9sjYK13eg8G98'
+  youtube_api_service_name: 'youtube'
+  youtube_api_version: 'v3'
+  application_name: "confederation-27"
+  application_version: "0.1"
+  log_level: WARN
+
+development:
+  <<: *yourub_defaults
+
+production:
+  <<: *yourub_defaults
+
+test:
+  <<: *yourub_defaults
