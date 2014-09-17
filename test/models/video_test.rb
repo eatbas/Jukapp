@@ -10,6 +10,13 @@ class VideoTest < ActiveSupport::TestCase
     assert video.queued_at
   end
 
+  test "#queued returns list of queued videos" do
+    video = Video.create(title: "cool video", youtube_id: "fake_id")
+    video.queue
+
+    assert_equal [video], Video.queued
+  end
+
   test "#play sets the status to played" do
     video = Video.create(title: "cool video", youtube_id: "fake_id")
 
