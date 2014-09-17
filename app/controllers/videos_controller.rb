@@ -12,6 +12,10 @@ class VideosController < ApplicationController
     redirect_to search_videos_path
   end
 
+  def play
+    @current = Video.pop
+  end
+
   private
   def video_params
     params.require(:video).permit(:youtube_id, :title)
