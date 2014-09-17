@@ -56,4 +56,12 @@ class VideoTest < ActiveSupport::TestCase
 
     assert_equal video, Video.pop
   end
+
+  test "#pop doesn't raise if the queue is empty" do
+    Video.queued.destroy_all
+
+    assert_nothing_raised do
+      Video.pop
+    end
+  end
 end

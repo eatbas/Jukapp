@@ -17,7 +17,7 @@ class Video < ActiveRecord::Base
 
   def self.pop
     next_video = queued.to_a.reverse.pop
-    next_video.play
+    next_video.try(:play)
     next_video
   end
 end
