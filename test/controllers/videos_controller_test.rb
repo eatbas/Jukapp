@@ -35,4 +35,14 @@ class VideosControllerTest < ActionController::TestCase
     video = Video.last
     assert video.queued?
   end
+
+  test "GET to :play sets the current song to the next video" do
+    next_video = videos(:funny_video)
+    Video.expects(:pop).returns(next_video)
+
+    get :play
+
+    current = assigns(:current)
+    assert_equal next_video, current
+  end
 end

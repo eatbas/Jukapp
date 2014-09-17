@@ -10,11 +10,14 @@ class VideoTest < ActiveSupport::TestCase
     assert video.queued_at
   end
 
-  test "#queued returns list of queued videos" do
+  test "#queued returns list of queued videos in reverse queue order" do
     video = Video.create(title: "cool video", youtube_id: "fake_id")
     video.queue
 
-    assert_equal [video], Video.queued
+    another_video = Video.create(title: "funny video", youtube_id: "another_fake_id")
+    another_video.queue
+
+    assert_equal [video, another_video], Video.queued
   end
 
   test "#play sets the status to played" do
@@ -42,5 +45,15 @@ class VideoTest < ActiveSupport::TestCase
     video.play
 
     assert_equal 1, video.reload.play_count
+  end
+
+  test "#pop returns the next song in queue" do
+    video = Video.create(title: "cool video", youtube_id: "fake_id")
+    video.queue
+
+    another_video = Video.create(title: "funny video", youtube_id: "another_fake_id")
+    another_video.queue
+
+    assert_equal video, Video.pop
   end
 end
