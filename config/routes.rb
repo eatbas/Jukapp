@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  get "search" => 'videos#search', as: :search_songs
+  resources :videos, only: :create do
+    collection do
+      get :search
+    end
+  end
 
   root "videos#search"
 end
