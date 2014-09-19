@@ -36,4 +36,5 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  Jukapp::Config.app_host = "localhost:3000"
 end
