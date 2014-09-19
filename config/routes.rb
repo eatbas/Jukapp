@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     collection do
       get :search
       get :play
+      get :next
     end
   end
 

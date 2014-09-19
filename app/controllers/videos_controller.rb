@@ -16,6 +16,14 @@ class VideosController < ApplicationController
     @current = Video.pop
   end
 
+  def next
+    ws = Faye::WebSocket::Client.new("ws://#{Jukapp::Config.app_host}")
+    ws.send({operation: "next"}.to_json)
+    ws.close
+
+    redirect_to search_videos_path
+  end
+
   private
   def video_params
     params.require(:video).permit(:youtube_id, :title)
