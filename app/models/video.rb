@@ -8,6 +8,7 @@ class Video < ActiveRecord::Base
 
   def queue
     update(status: "queued", queued_at: Time.now)
+    WebsocketService.send_message("new")
   end
 
   def play

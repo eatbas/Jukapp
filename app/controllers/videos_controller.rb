@@ -16,6 +16,12 @@ class VideosController < ApplicationController
     @current = Video.pop
   end
 
+  def next
+    WebsocketService.send_message("next")
+
+    redirect_to search_videos_path
+  end
+
   private
   def video_params
     params.require(:video).permit(:youtube_id, :title)

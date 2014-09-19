@@ -1,32 +1,43 @@
 <script src="http://www.youtube.com/player_api"></script>
 
 <script>
+  // create youtube player
+  var player;
+  var currentVideo = '<%= @current.try(:youtube_id) %>';
 
-    // create youtube player
-    var player;
-    function onYouTubePlayerAPIReady() {
-        player = new YT.Player('player', {
-          height: '390',
-          width: '640',
-          videoId: '<%= @current.try(:youtube_id) %>',
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
-    }
-
-    // autoplay video
-    function onPlayerReady(event) {
-      event.target.playVideo();
-    }
-
-    // when video ends
-    function onPlayerStateChange(event) {
-        if(event.data === 0) {
-          location.reload();
+  function onYouTubePlayerAPIReady() {
+      player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: currentVideo,
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
         }
+      });
+  }
+
+  // autoplay video
+  function onPlayerReady(event) {
+    event.target.playVideo();
+  }
+
+  // when video ends
+  function onPlayerStateChange(event) {
+      if(event.data === 0) {
+        location.reload();
+      }
+  }
+
+  var ws = new WebSocket("ws://<%= Jukapp::Config.app_host %>");
+  ws.onmessage = function(message) {
+    var data = JSON.parse(message.data);
+    if (data.operation === "next") {
+      location.reload();
+    } else if (data.operation === "new" && currentVideo === '') {
+      location.reload();
     }
+  };
 </script>
 
 <div id="player"></div>
