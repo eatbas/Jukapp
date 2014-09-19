@@ -8,7 +8,7 @@ class Video < ActiveRecord::Base
 
   def queue
     update(status: "queued", queued_at: Time.now)
-    send_websocket_message
+    WebsocketService.send_message("new")
   end
 
   def play
@@ -20,12 +20,5 @@ class Video < ActiveRecord::Base
     next_video = queued.to_a.reverse.pop
     next_video.try(:play)
     next_video
-  end
-
-  private
-  def send_websocket_message
-    ws = Faye::WebSocket::Client.new("ws://#{Jukapp::Config.app_host}")
-    ws.send({operation: "new"}.to_json)
-    ws.close
   end
 end

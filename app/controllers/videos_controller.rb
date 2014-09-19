@@ -17,9 +17,7 @@ class VideosController < ApplicationController
   end
 
   def next
-    ws = Faye::WebSocket::Client.new("ws://#{Jukapp::Config.app_host}")
-    ws.send({operation: "next"}.to_json)
-    ws.close
+    WebsocketService.send_message("next")
 
     redirect_to search_videos_path
   end
