@@ -4,7 +4,7 @@ require 'redis'
 require 'json'
 require 'erb'
 
-class ChatBackend
+class QueueBackend
   KEEPALIVE_TIME = 15 # in seconds
   CHANNEL        = "chat-demo"
 
