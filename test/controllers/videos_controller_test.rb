@@ -55,4 +55,11 @@ class VideosControllerTest < ActionController::TestCase
     get :next
     assert_redirected_to search_videos_path
   end
+
+  test "POST to :socket opens a new socket with the channel parameter" do
+    ESHQ.expects(:open).with(channel: "fake_channel").returns('socket')
+    post :socket, channel: "fake_channel"
+
+    assert_equal "socket", JSON.parse(response.body)['socket']
+  end
 end
