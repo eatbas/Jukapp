@@ -9,10 +9,12 @@
 <body>
 
 <p>
-  <%= link_to "Next", next_videos_path %>
+  <%= link_to "Next", next_video_path %>
   <%= link_to "Search", search_videos_path %>
-  <%= link_to "Play", play_videos_path %>
-  <%= link_to "Statistics", videos_path %>
+  <%= link_to "Play", play_video_path %>
+  <% if current_room %>
+    Joined: <%= current_room.name %> (<%= link_to "leave?", leave_rooms_path %>)
+  <% end %>
 </p>
 
 <%= yield %>

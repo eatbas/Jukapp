@@ -7,7 +7,7 @@
   // create youtube player
   var player;
   var currentVideo = '<%= @current.try(:youtube_id) %>'
-  var eshq = new ESHQ("video-queue", {auth_url: '<%= socket_videos_path %>', auth_headers: {'X-CSRF-Token': '<%= session[:_csrf_token] %>'}});
+  var eshq = new ESHQ("queue-<%= current_room.id %>", {auth_url: '<%= queue_socket_path %>', auth_headers: {'X-CSRF-Token': '<%= session[:_csrf_token] %>'}});
 
   eshq.onmessage = function(e) {
     var data = JSON.parse(e.data);

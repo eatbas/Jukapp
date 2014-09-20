@@ -1,0 +1,19 @@
+<%= form_for Room.new do |form| %>
+  <%= form.text_field :name %>
+  <%= form.submit %>
+<% end %>
+
+<% if @rooms.any? %>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+    <% @rooms.each do |room| %>
+      <tr>
+        <td><%= room.name %></td>
+        <td><%= link_to "join", join_room_path(room) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
