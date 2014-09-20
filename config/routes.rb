@@ -17,5 +17,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post "/queue" => "queued_videos#queue", as: :queue_video
+  get "/play"   => "queued_videos#play", as: :play_video
+
   root "rooms#index"
 end

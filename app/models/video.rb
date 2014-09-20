@@ -13,9 +13,22 @@ class Video < ActiveRecord::Base
     ESHQ.send( channel: "video-queue", data: {operation: "new"}.to_json )
   end
 
+  def queue_in(room)
+    queued = queued_videos.new
+    queued.room = room
+    queued.save
+
+    ESHQ.send( channel: "queue-#{room.id}", data: {operation: "new"}.to_json )
+  end
+
+  def play_in(room)
+    raise "Not queued in #{room.name}" unless queued = queued_videos.find_by(room_id: room.id)
+    queued.destroy
+    update(played_at: Time.now, play_count: play_count+1)
+  end
+
   def play
-    raise "Not queued yet" unless queued?
-    update(status: "played", played_at: Time.now, play_count: play_count+1)
+    update(played_at: Time.now, play_count: play_count+1)
   end
 
   def self.pop

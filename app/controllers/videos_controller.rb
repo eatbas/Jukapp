@@ -1,4 +1,6 @@
 class VideosController < ApplicationController
+  before_action :ensure_in_room, except: :search
+
   def index
     @most_played_videos = Video.order('play_count DESC').first(10)
     @last_played_videos = Video.order('played_at DESC').first(10)
@@ -12,7 +14,7 @@ class VideosController < ApplicationController
 
   def create
     @video = Video.create_with(title: video_params["title"]).find_or_create_by(youtube_id: video_params["youtube_id"])
-    @video.queue
+    @video.queue_in(current_room)
 
     redirect_to search_videos_path
   end

@@ -6,11 +6,11 @@
 <% if @videos %>
   <% @videos.each do |video| %>
     <div>
-      <%= form_for Video.new do |f| %>
-        <%= f.hidden_field :youtube_id, value: video["id"] %>
-        <%= f.hidden_field :title, value: video["title"] %>
+      <%= form_for Video.new, url: queue_video_path do |form| %>
+        <%= form.hidden_field :youtube_id, value: video["id"] %>
+        <%= form.hidden_field :title, value: video["title"] %>
         <%= video["title"] %>
-        <%= f.submit "Add" %>
+        <%= form.submit "Add" %>
       <% end %>
 
       <%= image_tag "http://img.youtube.com/vi/#{video['id']}/0.jpg" %>
