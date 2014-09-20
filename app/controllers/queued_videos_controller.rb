@@ -13,6 +13,11 @@ class QueuedVideosController < ApplicationController
     @current = queued_video.video if queued_video.try(:play)
   end
 
+  def next
+    ESHQ.send( channel: "queue-#{current_room.id}", data: {operation: "next"}.to_json )
+    redirect_to search_videos_path
+  end
+
   private
   def video_params
     params.require(:video).permit(:youtube_id, :title)
