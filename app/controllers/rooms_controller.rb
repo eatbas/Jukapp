@@ -1,6 +1,12 @@
 class RoomsController < ApplicationController
+  before_action :set_room, only: [:show, :join]
+
   def index
     @rooms = Room.all
+  end
+
+  def show
+
   end
 
   def create
@@ -10,9 +16,7 @@ class RoomsController < ApplicationController
   end
 
   def join
-    room = Room.find(params[:id])
-    session[:current_room_id] = room.try(:id)
-
+    session[:current_room_id] = @room.try(:id)
     redirect_to rooms_path
   end
 
@@ -29,5 +33,9 @@ class RoomsController < ApplicationController
   private
   def room_params
     params.require(:room).permit(:name)
+  end
+
+  def set_room
+    @room = Room.find(params[:id])
   end
 end
