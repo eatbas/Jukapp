@@ -7,10 +7,12 @@
   <table>
     <tr>
       <th>Name</th>
+      <th></th>
     </tr>
     <% @rooms.each do |room| %>
       <tr>
-        <td><%= link_to room.name, join_room_path(room) %></td>
+        <td><%= room.name %></td>
+        <td><%= link_to "join", join_room_path(room) %></td>
       </tr>
     <% end %>
   </table>
