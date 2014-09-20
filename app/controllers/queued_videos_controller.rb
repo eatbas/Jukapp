@@ -10,7 +10,7 @@ class QueuedVideosController < ApplicationController
 
   def play
     queued_video = QueuedVideo.next_in(current_room)
-    @current = queued_video.try(:play)
+    @current = queued_video.video if queued_video.try(:play)
   end
 
   private

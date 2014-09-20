@@ -10,7 +10,6 @@ class QueuedVideo < ActiveRecord::Base
   end
 
   def play
-    video.play
-    destroy.video
+    destroy.video.play
   end
 end
