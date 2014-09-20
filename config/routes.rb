@@ -8,5 +8,14 @@ Rails.application.routes.draw do
     end
   end
 
-  root "videos#search"
+  resources :rooms, only: [:index, :create, :show] do
+    collection do
+      get :leave
+    end
+    member do
+      get :join
+    end
+  end
+
+  root "rooms#index"
 end
