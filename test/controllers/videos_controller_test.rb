@@ -19,6 +19,7 @@ class VideosControllerTest < ActionController::TestCase
     video = Video.last
     assert_equal "fake_id", video.youtube_id
     assert_equal "funny video", video.title
+    assert_redirected_to search_videos_path
   end
 
   test "POST to :create doesn't create new video if youtube_id exists" do
@@ -27,6 +28,8 @@ class VideosControllerTest < ActionController::TestCase
     assert_no_difference 'Video.count' do
       post :create, video: {youtube_id: "fake_id", title: "funny video"}
     end
+
+    assert_redirected_to search_videos_path
   end
 
   test "POST to :create queues the video" do
@@ -44,5 +47,12 @@ class VideosControllerTest < ActionController::TestCase
 
     current = assigns(:current)
     assert_equal next_video, current
+  end
+
+  test "GET to :next sends next operation to event stream" do
+    ESHQ.expects(:send).with(channel: 'video-queue', :data => {operation: 'next'}.to_json )
+
+    get :next
+    assert_redirected_to search_videos_path
   end
 end

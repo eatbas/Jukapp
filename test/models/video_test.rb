@@ -10,6 +10,13 @@ class VideoTest < ActiveSupport::TestCase
     assert video.queued_at
   end
 
+  test "#queue sends new operation to event stream" do
+    ESHQ.expects(:send).with(channel: 'video-queue', :data => {operation: 'new'}.to_json )
+    video = Video.create(title: "cool video", youtube_id: "fake_id")
+
+    video.queue
+  end
+
   test "#queued returns list of queued videos in reverse queue order" do
     video = Video.create(title: "cool video", youtube_id: "fake_id")
     video.queue
