@@ -4,13 +4,13 @@ Rails.application.routes.draw do
       get :search
       get :play
       get :next
-      post :socket
     end
   end
 
   resources :rooms, only: [:index, :create, :show] do
     collection do
       get :leave
+      post :socket
     end
     member do
       get :join

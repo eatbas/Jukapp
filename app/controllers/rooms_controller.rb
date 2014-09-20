@@ -21,6 +21,11 @@ class RoomsController < ApplicationController
     redirect_to rooms_path
   end
 
+  def socket
+    socket = ESHQ.open(:channel => params[:channel])
+    render json: {socket: socket}
+  end
+
   private
   def room_params
     params.require(:room).permit(:name)

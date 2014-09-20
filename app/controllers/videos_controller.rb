@@ -12,12 +12,6 @@ class VideosController < ApplicationController
     end
   end
 
-  def socket
-    socket = ESHQ.open(:channel => params[:channel])
-
-    render json: {socket: socket}
-  end
-
   private
   def video_params
     params.require(:video).permit(:youtube_id, :title)
