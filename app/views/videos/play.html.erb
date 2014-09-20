@@ -1,32 +1,44 @@
+<div id="player"></div>
+
 <script src="http://www.youtube.com/player_api"></script>
+<script src="<%= ESHQ.client.url %>/es.js"></script>
 
 <script>
+  // create youtube player
+  var player;
+  var currentVideo = '<%= @current.try(:youtube_id) %>'
+  var eshq = new ESHQ("video-queue", {auth_url: '<%= socket_videos_path %>', auth_headers: {'X-CSRF-Token': '<%= session[:_csrf_token] %>'}});
 
-    // create youtube player
-    var player;
-    function onYouTubePlayerAPIReady() {
-        player = new YT.Player('player', {
-          height: '390',
-          width: '640',
-          videoId: '<%= @current.try(:youtube_id) %>',
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
+  eshq.onmessage = function(e) {
+    var data = JSON.parse(e.data);
+    if (data.operation == "next") {
+      location.reload();
+    } else if ( data.operation == "new" && currentVideo == '') {
+      location.reload();
     }
+  };
 
-    // autoplay video
-    function onPlayerReady(event) {
-      event.target.playVideo();
-    }
-
-    // when video ends
-    function onPlayerStateChange(event) {
-        if(event.data === 0) {
-          location.reload();
+  function onYouTubePlayerAPIReady() {
+      player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: currentVideo,
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
         }
-    }
-</script>
+      });
+  }
 
-<div id="player"></div>
+  // autoplay video
+  function onPlayerReady(event) {
+    event.target.playVideo();
+  }
+
+  // when video ends
+  function onPlayerStateChange(event) {
+      if(event.data === 0) {
+        location.reload();
+      }
+  }
+</script>

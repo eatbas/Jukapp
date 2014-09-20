@@ -16,6 +16,18 @@ class VideosController < ApplicationController
     @current = Video.pop
   end
 
+  def next
+    ESHQ.send( channel: "video-queue", data: {operation: "next"}.to_json )
+
+    redirect_to search_videos_path
+  end
+
+  def socket
+    socket = ESHQ.open(:channel => params[:channel])
+
+    render json: {socket: socket}
+  end
+
   private
   def video_params
     params.require(:video).permit(:youtube_id, :title)
