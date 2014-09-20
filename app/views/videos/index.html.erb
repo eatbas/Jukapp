@@ -1,0 +1,9 @@
+<h1>Most Played Videos</h1>
+<% @most_played_videos.each do |video| %>
+  <%= video.title %><br>
+<% end %>
+
+<h1>Last Played Videos</h1>
+<% @last_played_videos.each do |video| %>
+  <%= video.title %><br>
+<% end %>

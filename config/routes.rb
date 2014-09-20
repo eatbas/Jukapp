@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :videos, only: :create do
+  resources :videos, only: [:index, :create] do
     collection do
       get :search
       get :play
