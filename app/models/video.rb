@@ -8,6 +8,7 @@ class Video < ActiveRecord::Base
 
   def queue
     update(status: "queued", queued_at: Time.now)
+    ESHQ.send( channel: "video-queue", data: {operation: "new"}.to_json )
   end
 
   def play

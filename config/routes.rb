@@ -3,8 +3,11 @@ Rails.application.routes.draw do
     collection do
       get :search
       get :play
+      get :next
     end
   end
 
   root "videos#search"
+
+  post "eshq/socket" => "videos#open_socket"
 end

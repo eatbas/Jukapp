@@ -32,3 +32,4 @@ gem 'jquery-rails'
 gem 'spring',        group: :development
 
 gem 'yourub', :git => 'git://github.com/edap/yourub.git', ref: "ba8435e33457a6c2d861dae8144e215df0579fd7"
+gem 'eshq'
