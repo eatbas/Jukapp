@@ -22,7 +22,7 @@ class VideosController < ApplicationController
     redirect_to search_videos_path
   end
 
-  def open_socket
+  def socket
     socket = ESHQ.open(:channel => params[:channel])
 
     render json: {socket: socket}

@@ -6,7 +6,7 @@
     // create youtube player
     var player;
     var currentVideo = '<%= @current.try(:youtube_id) %>'
-    var eshq = new ESHQ("video-queue", {auth_headers: {'X-CSRF-Token': '<%= session[:_csrf_token] %>'}});
+    var eshq = new ESHQ("video-queue", {auth_url: '<%= socket_videos_path %>', auth_headers: {'X-CSRF-Token': '<%= session[:_csrf_token] %>'}});
 
     eshq.onopen = function(e) {
       console.log("opened")

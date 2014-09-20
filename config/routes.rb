@@ -4,10 +4,9 @@ Rails.application.routes.draw do
       get :search
       get :play
       get :next
+      post :socket
     end
   end
 
   root "videos#search"
-
-  post "eshq/socket" => "videos#open_socket"
 end
