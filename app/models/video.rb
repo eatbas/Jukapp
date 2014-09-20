@@ -1,5 +1,7 @@
 class Video < ActiveRecord::Base
 
+  has_many :queued_videos
+  has_many :rooms, through: :queued_videos
   scope :queued, -> { where(status: "queued").order("queued_at ASC") }
 
   def queued?
