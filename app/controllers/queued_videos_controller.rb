@@ -9,13 +9,18 @@ class QueuedVideosController < ApplicationController
   end
 
   def play
-    queued_video = QueuedVideo.next_in(current_room)
-    @current = queued_video.video if queued_video.try(:play)
+    next_in_queue = QueuedVideo.next_in(current_room)
+    @current = next_in_queue.video if next_in_queue.try(:play_and_destroy)
   end
 
   def next
     ESHQ.send( channel: "queue-#{current_room.id}", data: {operation: "next"}.to_json )
     redirect_to search_videos_path
+  end
+
+  def socket
+    socket = ESHQ.open(:channel => params[:channel])
+    render json: {socket: socket}
   end
 
   private

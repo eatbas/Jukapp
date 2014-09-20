@@ -9,7 +9,7 @@ class QueuedVideo < ActiveRecord::Base
     ESHQ.send( channel: "queue-#{room.id}", data: {operation: "new"}.to_json )
   end
 
-  def play
+  def play_and_destroy
     destroy.video.play
   end
 end

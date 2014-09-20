@@ -9,5 +9,7 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
+  def join_room(room)
+    session[:current_room_id] = room.id
+  end
 end
