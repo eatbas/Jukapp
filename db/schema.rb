@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140920191330) do
+ActiveRecord::Schema.define(version: 20140921211951) do
 
   create_table "queued_videos", force: true do |t|
     t.integer  "video_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20140920191330) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "queued_videos", ["room_id"], name: "index_queued_videos_on_room_id"
 
   create_table "rooms", force: true do |t|
     t.string   "name"
