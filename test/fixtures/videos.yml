@@ -1,3 +1,7 @@
 funny_video:
-  youtube_id: uniq_id
+  youtube_id: abc
   title: funny video
+
+music_video:
+  youtube_id: def
+  title: music video

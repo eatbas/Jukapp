@@ -6,7 +6,7 @@ class RoomsController < ApplicationController
   end
 
   def show
-
+    @queued_videos = QueuedVideo.queue_in(@room)
   end
 
   def create

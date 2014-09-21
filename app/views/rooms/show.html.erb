@@ -1,0 +1,5 @@
+<ol>
+  <% @queued_videos.each do |queued_video| %>
+    <li><%= queued_video.video.title %></li>
+  <% end %>
+</ol>
