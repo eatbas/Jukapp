@@ -53,7 +53,7 @@ class QueuedVideosControllerTest < ActionController::TestCase
   end
 
   test "GET to :next sends next operation to event stream" do
-    ESHQ.expects(:send).with(channel: "queue-#{@room.id}", :data => {operation: 'next'}.to_json )
+    EventStreamService.expects(:send_message_to).with(@room, {operation: "next"})
 
     get :next
     assert_redirected_to search_videos_path

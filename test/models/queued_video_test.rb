@@ -7,7 +7,7 @@ class QueuedVideoTest < ActiveSupport::TestCase
   end
 
   test "#queue creates a new queued video in the room" do
-    ESHQ.expects(:send)
+    EventStreamService.expects(:send_message_to)
 
     assert_difference "QueuedVideo.count" do
       QueuedVideo.queue(@video, @room)
@@ -19,7 +19,7 @@ class QueuedVideoTest < ActiveSupport::TestCase
   end
 
   test "#queue sends new operation to event stream" do
-    ESHQ.expects(:send).with(channel: "queue-#{@room.id}", :data => {operation: 'new'}.to_json )
+    EventStreamService.expects(:send_message_to).with(@room, {operation: "new"})
 
     QueuedVideo.queue(@video, @room)
   end

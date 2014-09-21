@@ -14,7 +14,7 @@ class QueuedVideosController < ApplicationController
   end
 
   def next
-    ESHQ.send( channel: "queue-#{current_room.id}", data: {operation: "next"}.to_json )
+    EventStreamService.send_message_to(current_room, {operation: "next"})
     redirect_to search_videos_path
   end
 

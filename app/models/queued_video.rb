@@ -7,7 +7,7 @@ class QueuedVideo < ActiveRecord::Base
 
   def self.queue(video, room)
     create(video_id: video.id, room_id: room.id)
-    ESHQ.send( channel: "queue-#{room.id}", data: {operation: "new"}.to_json )
+    EventStreamService.send_message_to(room, {operation: "new"})
   end
 
   def play_and_destroy
