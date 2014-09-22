@@ -3,8 +3,8 @@
 <script>
   function onYouTubePlayerAPIReady() {
     var player = new YoutubePlayer('<%= @current.try(:youtube_id) %>');
-  }
 
-  var eventStream = new EventStream(<%= event_stream_params %>);
-  eventStream.forPlayer();
+    var eventStream = new EventStream(<%= event_stream_params %>);
+    eventStream.forPlayer(<%= @current.present? %>);
+  }
 </script>
