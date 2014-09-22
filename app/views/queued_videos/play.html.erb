@@ -1,41 +1,10 @@
 <div id="player"></div>
 
 <script>
-  // create youtube player
-  var player;
-  var currentVideo = '<%= @current.try(:youtube_id) %>'
-  var eshq = new ESHQ("queue-<%= current_room.id %>", {auth_url: '<%= queue_socket_path %>', auth_headers: {'X-CSRF-Token': '<%= session[:_csrf_token] %>'}});
-
-  eshq.onmessage = function(e) {
-    var data = JSON.parse(e.data);
-    if (data.operation == "next") {
-      location.reload();
-    } else if ( data.operation == "new" && currentVideo == '') {
-      location.reload();
-    }
-  };
-
   function onYouTubePlayerAPIReady() {
-      player = new YT.Player('player', {
-        height: '390',
-        width: '640',
-        videoId: currentVideo,
-        events: {
-          'onReady': onPlayerReady,
-          'onStateChange': onPlayerStateChange
-        }
-      });
+    var player = new YoutubePlayer('<%= @current.try(:youtube_id) %>');
   }
 
-  // autoplay video
-  function onPlayerReady(event) {
-    event.target.playVideo();
-  }
-
-  // when video ends
-  function onPlayerStateChange(event) {
-      if(event.data === 0) {
-        location.reload();
-      }
-  }
+  var eventStream = new EventStream(<%= event_stream_params %>);
+  eventStream.forPlayer();
 </script>
