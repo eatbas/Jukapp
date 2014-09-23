@@ -2,24 +2,65 @@
 <html>
 <head>
   <title>Jukapp</title>
+  <%= stylesheet_link_tag    'https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css', media: 'all' %>
+  <%= stylesheet_link_tag    "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css", media: 'all' %>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= javascript_include_tag "http://www.youtube.com/player_api" %>
   <%= javascript_include_tag "#{ESHQ.client.url}/es.js" %>
+  <%= javascript_include_tag "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<p>
-  <%= link_to "Next", next_video_path %>
-  <%= link_to "Search", search_videos_path %>
-  <%= link_to "Play", play_video_path %>
-  <% if current_room %>
-    Joined: <%= current_room.name %> (<%= link_to "leave?", leave_rooms_path %>)
-  <% end %>
-</p>
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <%= link_to root_path, class: "navbar-brand" do %>
+          <span class='glyphicon glyphicon-home'></span>
+        <% end %>
+      </div>
 
-<%= yield %>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <%= link_to play_video_path do %>
+              <span class='glyphicon glyphicon-play'></span>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to search_videos_path do %>
+              <span class='glyphicon glyphicon-search'></span>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to next_video_path do %>
+              <span class='glyphicon glyphicon-step-forward'></span>
+            <% end %>
+          </li>
+        </ul>
+        <% if current_room %>
+          <p class="navbar-text navbar-right">In room: <%= current_room.name %> (<%= link_to "leave?", leave_rooms_path %>)</p>
+        <% end %>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container">
+    <%= render 'shared/flash_messages' %>
+    <div class="row">
+      <div class="col-lg-12">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

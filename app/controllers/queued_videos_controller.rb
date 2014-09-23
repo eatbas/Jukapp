@@ -15,7 +15,7 @@ class QueuedVideosController < ApplicationController
 
   def next
     EventStreamService.send_message_to(current_room, {operation: "next"})
-    redirect_to search_videos_path
+    redirect_to search_videos_path, notice: "Skipped to the next video"
   end
 
   def socket
