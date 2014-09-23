@@ -17,7 +17,7 @@ class RoomsController < ApplicationController
 
   def join
     session[:current_room_id] = @room.try(:id)
-    redirect_to rooms_path
+    redirect_to rooms_path, notice: "Joined room: #{@room.name}"
   end
 
   def leave
