@@ -1,19 +1,38 @@
-<%= form_tag search_videos_path, method: :get do %>
-  <%= text_field_tag "query", "", placeholder: "Search on YouTube", :autofocus => "autofocus" %>
-  <%= submit_tag "Search", :class => "btn" %>
-<% end %>
+<p>
+  <%= form_tag search_videos_path, method: :get, class: "form-inline" do %>
+    <div class="form-group">
+      <%= text_field_tag "query", params[:query], class: "form-control", placeholder: "Search on YouTube", :autofocus => "autofocus" %>
+    </div>
+    <%= submit_tag "Search", :class => "btn btn-primary" %>
+  <% end %>
+</p>
+
+<br>
 
 <% if @videos %>
-  <% @videos.each do |video| %>
-    <div>
-      <%= form_for Video.new, url: queue_video_path do |form| %>
-        <%= form.hidden_field :youtube_id, value: video["id"] %>
-        <%= form.hidden_field :title, value: video["title"] %>
-        <%= video["title"] %>
-        <%= form.submit "Add" %>
-      <% end %>
-
-      <%= image_tag "http://img.youtube.com/vi/#{video['id']}/0.jpg" %>
+  <div class="row">
+    <div class="col-md-4">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Results</th>
+            <th></th>
+          </tr>
+        </thead>
+        <% @videos.each do |video| %>
+          <%= form_for Video.new, url: queue_video_path, html: { class: "form-inline" } do |form| %>
+            <%= form.hidden_field :youtube_id, value: video["id"] %>
+            <%= form.hidden_field :title, value: video["title"] %>
+              <tr>
+                <td>
+                  <%= video["title"] %>
+                </td>
+                <td>
+                  <%= form.submit "Add", class: "btn btn-primary" %>
+                </td>
+              </tr>
+          <% end %>
+        <% end %>
+      </table>
     </div>
-  <% end %>
 <% end %>
