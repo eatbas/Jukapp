@@ -1,4 +1,10 @@
-<div id="player"></div>
+<% if @current %>
+  <div id="player"></div>
+<% else %>
+  <div class="col-md-4 page-header">
+    <h1>Queue is empty</h1>
+  </div>
+<% end %>
 
 <script>
   function onYouTubePlayerAPIReady() {
