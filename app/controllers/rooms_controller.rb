@@ -11,12 +11,13 @@ class RoomsController < ApplicationController
 
   def create
     @room = Room.create(room_params)
+    join_room(@room)
 
     redirect_to rooms_path
   end
 
   def join
-    session[:current_room_id] = @room.try(:id)
+    join_room(@room)
     redirect_to rooms_path, notice: "Joined"
   end
 
@@ -32,5 +33,9 @@ class RoomsController < ApplicationController
 
   def set_room
     @room = Room.find(params[:id])
+  end
+
+  def join_room(room)
+    session[:current_room_id] = room.try(:id)
   end
 end

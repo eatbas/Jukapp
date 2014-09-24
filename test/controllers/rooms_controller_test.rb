@@ -14,4 +14,11 @@ class RoomsControllerTest < ActionController::TestCase
     get :leave
     assert_nil session[:current_room_id]
   end
+
+  test "POST to :create creates and joins the room" do
+    assert_difference "Room.count" do
+      post :create, room: { name: "new-room" }
+    end
+    assert_equal Room.last.id, session[:current_room_id]
+  end
 end
