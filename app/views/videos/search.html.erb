@@ -1,4 +1,4 @@
-<p>
+<div class="col-sm-5">
   <%= form_tag search_videos_path, method: :get, class: "form-inline" do %>
     <div class="form-group">
       <%= text_field_tag "query", params[:query], class: "form-control", placeholder: "Search on YouTube", :autofocus => "autofocus" %>
@@ -7,7 +7,7 @@
       <span class='glyphicon glyphicon-search'></span>
     <% end %>
   <% end %>
-</p>
+</div>
 
 <br>
 
