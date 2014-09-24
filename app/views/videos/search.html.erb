@@ -10,29 +10,26 @@
 <br>
 
 <% if @videos %>
-  <div class="row">
-    <div class="col-md-4">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Results</th>
-            <th></th>
-          </tr>
-        </thead>
-        <% @videos.each do |video| %>
-          <%= form_for Video.new, url: queue_video_path, html: { class: "form-inline" } do |form| %>
-            <%= form.hidden_field :youtube_id, value: video["id"] %>
-            <%= form.hidden_field :title, value: video["title"] %>
-              <tr>
-                <td>
-                  <%= video["title"] %>
-                </td>
-                <td>
-                  <%= form.submit "Add", class: "btn btn-primary" %>
-                </td>
-              </tr>
-          <% end %>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Results</th>
+          <th></th>
+        </tr>
+      </thead>
+      <% @videos.each do |video| %>
+        <%= form_for Video.new, url: queue_video_path, html: { class: "form-inline" } do |form| %>
+          <%= form.hidden_field :youtube_id, value: video["id"] %>
+          <%= form.hidden_field :title, value: video["title"] %>
+            <tr>
+              <td>
+                <%= video["title"] %>
+              </td>
+              <td>
+                <%= form.submit "Add", class: "btn btn-primary" %>
+              </td>
+            </tr>
         <% end %>
-      </table>
-    </div>
+      <% end %>
+    </table>
 <% end %>
