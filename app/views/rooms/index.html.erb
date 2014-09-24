@@ -1,7 +1,11 @@
-<%= form_for Room.new do |form| %>
-  <%= form.text_field :name %>
-  <%= form.submit %>
+<%= form_for Room.new, html: { class: "form-inline" } do |form| %>
+  <div class="form-group">
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+  <%= form.submit class: "btn btn-primary" %>
 <% end %>
+
+<br>
 
 <% if @rooms.any? %>
   <table>
