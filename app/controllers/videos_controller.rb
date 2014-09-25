@@ -1,4 +1,6 @@
 class VideosController < ApplicationController
+  before_action :ensure_in_room
+
   def search
     if search_params.present?
       @videos = YoutubeService.get_videos_for(search_params[:query])

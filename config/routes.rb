@@ -15,5 +15,5 @@ Rails.application.routes.draw do
   get "/search" => "videos#search", as: :search_videos
   get "/pings/ping" => "pings#ping"
 
-  root "rooms#index"
+  root "videos#search"
 end

@@ -42,10 +42,12 @@
               <span class='glyphicon glyphicon-step-forward'></span>
             <% end %>
           </li>
+          <li>
+            <%= link_to rooms_path do %>
+              <span class='glyphicon glyphicon-cog'></span>
+            <% end %>
+          </li>
         </ul>
-        <% if current_room %>
-          <p class="navbar-text navbar-right">In room: <%= current_room.name %> (<%= link_to "leave?", leave_rooms_path %>)</p>
-        <% end %>
       </div>
     </div>
   </nav>

@@ -1,23 +1,37 @@
-<%= form_for Room.new, html: { class: "form-inline" } do |form| %>
-  <div class="form-group">
-    <%= form.text_field :name, class: "form-control" %>
+<div class="panel panel-default text-center" style="width: 468px;">
+  <div class="panel-heading">
+    <strong>Rooms</strong>
   </div>
-  <%= form.submit class: "btn btn-primary" %>
-<% end %>
+  <% if current_room %>
+    <div class="panel-body">
+      <strong>Room:</strong> <%= current_room.name %> <%= link_to "Leave", leave_rooms_path, class: "btn btn-danger btn-sm" %>
+    </div>
+  <% else %>
+    <div class="panel-body">
+      <%= form_for Room.new, html: { class: "form-inline" } do |form| %>
+        <div class="form-group">
+          <%= form.text_field :name, class: "form-control" %>
+        </div>
+        <%= form.submit class: "btn btn-primary" %>
+      <% end %>
+    </div>
 
-<br>
-
-<% if @rooms.any? %>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th></th>
-    </tr>
-    <% @rooms.each do |room| %>
-      <tr>
-        <td><%= room.name %></td>
-        <td><%= link_to "join", join_room_path(room) %></td>
-      </tr>
+    <% if @rooms.any? %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="text-center">Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <% @rooms.each do |room| %>
+          <tr>
+            <td><%= room.name %></td>
+            <td><%= link_to "Join", join_room_path(room), class: "btn btn-primary btn-sm" %></td>
+          </tr>
+        <% end %>
+      </table>
     <% end %>
-  </table>
-<% end %>
+  <% end %>
+  </div>
+</div>
