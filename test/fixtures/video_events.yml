@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+music_event:
+  room: confederation
+  video: music_video
+  play_count: 1
+  played_at: 2014-09-25 21:18:01
+
+funny_event:
+  room: confederation
+  video: funny_video
+  play_count: 1
+  played_at: 2014-09-25 21:18:01
+
+cafe_music_event:
+  room: cafe
+  video: music_video
+  play_count: 1
+  played_at: 2014-09-25 21:18:01
