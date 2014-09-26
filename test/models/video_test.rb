@@ -1,9 +1,11 @@
 require 'test_helper'
 
 class VideoTest < ActiveSupport::TestCase
-  test "#play increments the play count" do
+  test "#play_in sends play event with room" do
     video = Video.create(title: "cool video", youtube_id: "fake_id")
-    video.play
-    assert_equal 1, video.reload.play_count
+    room = rooms(:confederation)
+    VideoEvent.expects(:play).with(video, room)
+
+    video.play_in(room)
   end
 end

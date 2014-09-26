@@ -31,7 +31,7 @@ class QueuedVideoTest < ActiveSupport::TestCase
   end
 
   test "#play_and_destroy calls play on the video" do
-    Video.any_instance.expects(:play)
+    Video.any_instance.expects(:play_in).with(@room)
     queued_videos(:queued_funny_video).play_and_destroy
   end
 
