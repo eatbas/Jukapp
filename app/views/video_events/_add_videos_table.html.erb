@@ -6,15 +6,15 @@
       <th></th>
     </tr>
   </thead>
-  <% video_events.each_with_index do |video_event, index| %>
-    <%= form_for video_event.video, url: queue_video_path, html: { method: :post, class: "form-inline" } do |form| %>
+  <% videos.each_with_index do |video, index| %>
+    <%= form_for video, url: queue_video_path, html: { method: :post, class: "form-inline" } do |form| %>
       <%= form.hidden_field :youtube_id %>
         <tr>
           <td>
             <%= index+1 %>
           </td>
           <td>
-            <%= video_event.video.title %>
+            <%= video.title %>
           </td>
           <td>
             <%= form.submit "Add", class: "btn btn-primary" %>
