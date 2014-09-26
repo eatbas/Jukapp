@@ -27,8 +27,8 @@ class VideoEventTest < ActiveSupport::TestCase
 
   test "#play increments the play count and sets played_at" do
     event = VideoEvent.find_by(video: @video, room: @room)
-    assert_difference "event.reload.play_count" do
-      VideoEvent.play(@video, @room)
+    assert_difference "event.reload.play_count", 2 do
+      2.times { VideoEvent.play(@video, @room) }
     end
   end
 end

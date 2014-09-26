@@ -191,7 +191,7 @@ class ImportSongsPlayed < ActiveRecord::Migration
     confederation = Room.find(4)
     DATA_TO_IMPORT.each do |video_params|
       video = Video.create_with(title: video_params["title"]).find_or_create_by(youtube_id: video_params["youtube_id"])
-      video.play_in(confederation)
+      video_params["times_played"].times { video.play_in(confederation) }
     end
   end
 end
