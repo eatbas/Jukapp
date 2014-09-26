@@ -7,7 +7,8 @@
     </tr>
   </thead>
   <% videos.each_with_index do |video, index| %>
-    <%= form_for video, url: queue_video_path, html: { method: :post, class: "form-inline" } do |form| %>
+    <% form_id = "add-#{video.youtube_id}" %>
+    <%= form_for video, url: queue_video_path, html: { id: form_id, method: :post, class: "form-inline" } do |form| %>
       <%= form.hidden_field :youtube_id %>
         <tr>
           <td>
@@ -17,7 +18,7 @@
             <%= video.title %>
           </td>
           <td>
-            <%= form.submit "Add", class: "btn btn-primary" %>
+            <%= link_to "Add", "#", onclick: "VideoOperations.addToQueue($('##{form_id}'), $(this));", class: "btn btn-primary" %>
           </td>
         </tr>
     <% end %>
