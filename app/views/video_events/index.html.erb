@@ -1,57 +1,9 @@
 <div class="rooms-panel panel panel-primary text-center">
   <div class="panel-heading"><h4>Top 10</h4></div>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th class="text-center">#</th>
-        <th class="text-center">Title</th>
-        <th></th>
-      </tr>
-    </thead>
-    <% @top_ten.each_with_index do |video_event, index| %>
-      <%= form_for video_event.video, url: queue_video_path, html: { method: :post, class: "form-inline" } do |form| %>
-        <%= form.hidden_field :youtube_id %>
-          <tr>
-            <td>
-              <%= index+1 %>
-            </td>
-            <td>
-              <%= video_event.video.title %>
-            </td>
-            <td>
-              <%= form.submit "Add", class: "btn btn-primary" %>
-            </td>
-          </tr>
-      <% end %>
-    <% end %>
-  </table>
+  <%= render 'add_videos_table', video_events: @top_ten %>
 </div>
 
 <div class="rooms-panel panel panel-info text-center">
   <div class="panel-heading"><h4>Last 10</h4></div>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th class="text-center">#</th>
-        <th class="text-center">Title</th>
-        <th></th>
-      </tr>
-    </thead>
-    <% @last_ten.each_with_index do |video_event, index| %>
-      <%= form_for video_event.video, url: queue_video_path, html: { method: :post, class: "form-inline" } do |form| %>
-        <%= form.hidden_field :youtube_id %>
-          <tr>
-            <td>
-              <%= index+1 %>
-            </td>
-            <td>
-              <%= video_event.video.title %>
-            </td>
-            <td>
-              <%= form.submit "Add", class: "btn btn-primary" %>
-            </td>
-          </tr>
-      <% end %>
-    <% end %>
-  </table>
+  <%= render 'add_videos_table', video_events: @last_ten %>
 </div>
