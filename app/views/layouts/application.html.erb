@@ -37,6 +37,13 @@
               <span class='glyphicon glyphicon-search'></span>
             <% end %>
           </li>
+          <% if current_room %>
+            <li>
+              <%= link_to video_events_path do %>
+                <span class='glyphicon glyphicon-star'></span>
+              <% end %>
+            </li>
+          <% end %>
           <li>
             <%= link_to next_video_path do %>
               <span class='glyphicon glyphicon-step-forward'></span>
