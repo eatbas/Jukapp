@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  room_id: 
+  video_id: 
+  play_count: 1
+  played_at: 2014-09-25 21:18:01
+
+two:
+  room_id: 
+  video_id: 
+  play_count: 1
+  played_at: 2014-09-25 21:18:01

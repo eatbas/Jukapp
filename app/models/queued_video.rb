@@ -11,6 +11,7 @@ class QueuedVideo < ActiveRecord::Base
   end
 
   def play_and_destroy
+    VideoEvent.play(video, room)
     destroy.video.play
   end
 end
