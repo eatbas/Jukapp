@@ -5,4 +5,5 @@ class Room < ActiveRecord::Base
   validates_uniqueness_of :name
   validates_presence_of :name
   validates_length_of :name, in: 3..30
+  validates_format_of :name, with: /[a-z\d\-_\s]+/i, message: "can only be alphanumeric"
 end

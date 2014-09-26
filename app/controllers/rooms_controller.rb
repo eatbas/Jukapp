@@ -10,10 +10,14 @@ class RoomsController < ApplicationController
   end
 
   def create
-    @room = Room.create(room_params)
-    join_room(@room)
-
-    redirect_to rooms_path
+    @room = Room.new(room_params)
+    success = @room.save
+    if success
+      join_room(@room)
+      redirect_to rooms_path
+    else
+      render :index
+    end
   end
 
   def join

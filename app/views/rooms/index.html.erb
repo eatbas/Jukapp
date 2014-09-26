@@ -8,15 +8,23 @@
     </div>
   <% else %>
     <div class="panel-body">
-      <%= form_for Room.new, html: { class: "form-inline" } do |form| %>
-        <div class="form-group">
+      <%= form_for @room || @room = Room.new, html: { class: "form-inline" } do |form| %>
+        <% if @room.errors.any? %>
+          <div class="alert alert-danger" role="alert">
+          <strong><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</strong><br>
+          <% @room.errors.full_messages.each do |message| %>
+            <%= message %><br>
+          <% end %>
+          </div>
+        <% end %>
+        <div class="form-group <%= "has-error" if @room.errors[:name].present? %>">
           <%= form.text_field :name, class: "form-control" %>
         </div>
         <%= form.submit class: "btn btn-primary" %>
       <% end %>
     </div>
 
-    <% if @rooms.any? %>
+    <% if @rooms.present? %>
       <table class="table">
         <thead>
           <tr>
