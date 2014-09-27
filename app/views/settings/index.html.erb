@@ -1,4 +1,4 @@
-<div class="rooms-panel panel panel-default">
+<div class="settings-panel panel panel-default">
   <div class="panel-heading text-center">
     <h4>User</h4>
   </div>
@@ -9,12 +9,12 @@
         <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger btn-sm" %>
       </div>
     <% else %>
-      <%= render 'sign_in_form' %>
+      <%= render 'devise/sessions/sign_in_form' %>
     <% end %>
   </div>
 </div>
 
-<div class="rooms-panel panel panel-default text-center">
+<div class="settings-panel panel panel-default text-center">
   <div class="panel-heading">
     <h4>Rooms</h4>
   </div>
@@ -27,10 +27,10 @@
       <%= form_for @room || @room = Room.new, html: { class: "form-inline" } do |form| %>
         <% if @room.errors.any? %>
           <div class="alert alert-danger" role="alert">
-          <strong><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</strong><br>
-          <% @room.errors.full_messages.each do |message| %>
-            <%= message %><br>
-          <% end %>
+            <strong><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</strong><br>
+            <% @room.errors.full_messages.each do |message| %>
+              <%= message %><br>
+            <% end %>
           </div>
         <% end %>
         <div class="form-group <%= "has-error" if @room.errors[:name].present? %>">
