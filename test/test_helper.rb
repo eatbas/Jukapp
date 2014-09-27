@@ -12,4 +12,9 @@ class ActiveSupport::TestCase
   def join_room(room)
     session[:current_room_id] = room.id
   end
+
+end
+
+class ActionController::TestCase
+  include Devise::TestHelpers
 end

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   end
 
   resources :video_events, path: 'statistics', only: :index
+  resources :favorites, only: [:index, :create, :destroy]
 
   post "/socket"   => "queued_videos#socket", as: :queue_socket
   post "/queue" => "queued_videos#queue", as: :queue_video
