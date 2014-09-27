@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :rooms, only: [:index, :create, :show] do
+  resources :rooms, only: [:create, :show] do
     collection do
       get :leave
     end
@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get "/next"   => "queued_videos#next", as: :next_video
   get "/search" => "videos#search", as: :search_videos
   get "/pings/ping" => "pings#ping"
+  get "/settings" => "settings#index", as: :settings
 
   root "videos#search"
 end

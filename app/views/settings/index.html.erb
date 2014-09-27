@@ -1,3 +1,19 @@
+<div class="rooms-panel panel panel-default">
+  <div class="panel-heading text-center">
+    <h4>User</h4>
+  </div>
+  <div class="panel-body">
+    <% if user_signed_in? %>
+      <div class="text-center">
+        Logged in as <strong><%= current_user.username %></strong>
+        <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger btn-sm" %>
+      </div>
+    <% else %>
+      <%= render 'sign_in_form' %>
+    <% end %>
+  </div>
+</div>
+
 <div class="rooms-panel panel panel-default text-center">
   <div class="panel-heading">
     <h4>Rooms</h4>
