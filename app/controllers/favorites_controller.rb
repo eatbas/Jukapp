@@ -2,6 +2,7 @@ class FavoritesController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @favorite_videos = Favorite.where(user: current_user).includes(:video).map(&:video)
   end
 
   def create
