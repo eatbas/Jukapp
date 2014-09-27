@@ -4,7 +4,9 @@
       <th class="text-center">#</th>
       <th class="text-center">Title</th>
       <th></th>
-      <th></th>
+      <% if user_signed_in? %>
+        <th></th>
+      <% end %>
     </tr>
   </thead>
   <% videos.each_with_index do |video, index| %>
@@ -22,21 +24,23 @@
           <%= link_to "Add", "#", onclick: "VideoOperations.addToQueue($('##{queue_form_id}'), $(this));", class: "btn btn-primary" %>
         <% end %>
       </td>
-      <td>
-        <% favorite_form_id = "favorite-#{video.youtube_id}" %>
-        <%= form_tag favorites_path, id: favorite_form_id do %>
-          <%= hidden_field_tag :video_id, video.id %>
-          <% if favorite?(video) %>
-            <%= link_to "#", onclick: "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
-              <span class="glyphicon glyphicon-star"></span>
-            <% end %>
-          <% else %>
-            <%= link_to "#", onclick: "VideoOperations.addToFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
-              <span class="glyphicon glyphicon-star-empty"></span>
+      <% if user_signed_in? %>
+        <td>
+          <% favorite_form_id = "favorite-#{video.youtube_id}" %>
+          <%= form_tag favorites_path, id: favorite_form_id do %>
+            <%= hidden_field_tag :video_id, video.id %>
+            <% if favorite?(video) %>
+              <%= link_to "#", onclick: "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
+                <span class="glyphicon glyphicon-star"></span>
+              <% end %>
+            <% else %>
+              <%= link_to "#", onclick: "VideoOperations.addToFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
+                <span class="glyphicon glyphicon-star-empty"></span>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
-      </td>
+        </td>
+      <% end %>
     </tr>
   <% end %>
 </table>
