@@ -21,4 +21,8 @@ module ApplicationHelper
         flash_type.to_s
     end
   end
+
+  def favorite?(video)
+    current_user.favorites.find_by(video: video).present? if video
+  end
 end

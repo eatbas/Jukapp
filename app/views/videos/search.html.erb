@@ -15,22 +15,39 @@
       <tr>
         <th>Results</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <% @videos.each do |video| %>
-      <% form_id = "add-#{video['id']}" %>
-      <%= form_for Video.new, url: queue_video_path, html: { class: "form-inline", id: form_id } do |form| %>
-        <%= form.hidden_field :youtube_id, value: video["id"] %>
-        <%= form.hidden_field :title, value: video["title"] %>
-          <tr>
-            <td>
-              <%= video["title"] %>
-            </td>
-            <td>
-              <%= link_to "Add", "#", onclick: "VideoOperations.addToQueue($('##{form_id}'), $(this));", class: "btn btn-primary" %>
-            </td>
-          </tr>
-      <% end %>
+      <tr>
+        <td>
+          <%= video["title"] %>
+        </td>
+        <td>
+          <% queue_form_id = "queue-#{video['id']}" %>
+          <%= form_for Video.new, url: queue_video_path, html: { class: "form-inline", id: queue_form_id } do |form| %>
+            <%= form.hidden_field :youtube_id, value: video["id"] %>
+            <%= form.hidden_field :title, value: video["title"] %>
+            <%= link_to "Add", "#", onclick: "VideoOperations.addToQueue($('##{queue_form_id}'), $(this));", class: "btn btn-primary" %>
+          <% end %>
+        </td>
+        <td>
+          <% favorite_form_id = "favorite-#{video['id']}" %>
+          <%= form_tag favorites_path, id: favorite_form_id do %>
+            <%= hidden_field_tag :title, video["title"] %>
+            <%= hidden_field_tag :youtube_id, video["id"] %>
+            <% if favorite?(Video.find_by(youtube_id: video['id'])) %>
+              <%= link_to "#", onclick: "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
+                <span class="glyphicon glyphicon-star"></span>
+              <% end %>
+            <% else %>
+              <%= link_to "#", onclick: "VideoOperations.addToFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
+                <span class="glyphicon glyphicon-star-empty"></span>
+              <% end %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
     <% end %>
   </table>
 <% end %>
