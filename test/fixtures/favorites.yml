@@ -1,0 +1,7 @@
+bobs_fav_video:
+  user: bob
+  video: funny_video
+
+bobs_second_fav_video:
+  user: bo
+  video: music_video

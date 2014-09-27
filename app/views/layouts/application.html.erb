@@ -37,9 +37,9 @@
               <span class='glyphicon glyphicon-search'></span>
             <% end %>
           </li>
-          <% if true # logged_in %>
+          <% if user_signed_in? %>
             <li>
-              <%= link_to "#" do %>
+              <%= link_to favorites_path do %>
                 <span class='glyphicon glyphicon-star'></span>
               <% end %>
             </li>
