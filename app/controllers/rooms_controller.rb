@@ -1,10 +1,6 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :join]
 
-  def index
-    @rooms = Room.all
-  end
-
   def show
     @queued_videos = QueuedVideo.queue_in(@room)
   end
@@ -14,20 +10,20 @@ class RoomsController < ApplicationController
     success = @room.save
     if success
       join_room(@room)
-      redirect_to rooms_path
+      redirect_to settings_path
     else
-      render :index
+      render 'settings/index'
     end
   end
 
   def join
     join_room(@room)
-    redirect_to rooms_path, notice: "Joined"
+    redirect_to settings_path, notice: "Joined"
   end
 
   def leave
     session[:current_room_id] = nil
-    redirect_to rooms_path
+    redirect_to settings_path
   end
 
   private

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :ensure_room_exists
 
   def ensure_in_room
-    redirect_to rooms_path, notice: "First you have to join a room." unless current_room
+    redirect_to settings_path, notice: "First you have to join a room." unless current_room
   end
 
   def current_room
@@ -17,7 +17,18 @@ class ApplicationController < ActionController::Base
     current_room
   rescue ActiveRecord::RecordNotFound
     session[:current_room_id] = nil
-    redirect_to :rooms, alert: "The room you were in has been deleted."
+    redirect_to settings_path, alert: "The room you were in has been deleted."
   end
 
+  def after_sign_in_path_for(resource_or_scope)
+    settings_path
+  end
+
+  def after_sign_up_path_for(resource_or_scope)
+    settings_path
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    settings_path
+  end
 end

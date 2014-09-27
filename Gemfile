@@ -39,3 +39,4 @@ gem 'yourub', :git => 'git://github.com/edap/yourub.git', ref: 'ba8435e33457a6c2
 gem 'eshq'
 gem 'newrelic_rpm'
 gem 'autoprefixer-rails'
+gem 'devise'
