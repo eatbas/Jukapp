@@ -18,7 +18,7 @@ class FavoritesControllerTest < ActionController::TestCase
   test "DELETE to :destroy removes video from favorites" do
     favorite = favorites(:bobs_fav_video)
     assert_difference "Favorite.count", -1 do
-      delete :destroy, id: favorite.id
+      delete :destroy, video_id: favorite.video_id
     end
     assert_response :success
   end
