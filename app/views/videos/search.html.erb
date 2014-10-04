@@ -31,7 +31,7 @@
             <%= form_tag favorites_path, id: favorite_form_id do %>
               <%= hidden_field_tag :title, video["title"] %>
               <%= hidden_field_tag :youtube_id, video["id"] %>
-              <% if favorite?(Video.find_by(youtube_id: video['id'])) %>
+              <% if favorite?(video["id"]) %>
                 <%= link_to "#", onclick: "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
                   <span class="glyphicon glyphicon-star"></span>
                 <% end %>

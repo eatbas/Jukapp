@@ -28,8 +28,8 @@
         <td>
           <% favorite_form_id = "favorite-#{video.youtube_id}" %>
           <%= form_tag favorites_path, id: favorite_form_id do %>
-            <%= hidden_field_tag :video_id, video.id %>
-            <% if favorite?(video) %>
+            <%= hidden_field_tag :youtube_id, video.youtube_id %>
+            <% if favorite?(video.youtube_id) %>
               <%= link_to "#", onclick: "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
                 <span class="glyphicon glyphicon-star"></span>
               <% end %>
