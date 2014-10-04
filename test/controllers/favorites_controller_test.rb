@@ -22,5 +22,4 @@ class FavoritesControllerTest < ActionController::TestCase
     end
     assert_response :success
   end
-
 end
