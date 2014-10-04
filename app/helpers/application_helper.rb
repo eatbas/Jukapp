@@ -23,6 +23,6 @@ module ApplicationHelper
   end
 
   def favorite?(video)
-    current_user.favorites.find_by(video: video).present? if video and user_signed_in?
+    current_user.favorites.includes(:video).any? { |f| f.video.id == video.id } if video and user_signed_in?
   end
 end
