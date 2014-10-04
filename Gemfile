@@ -16,6 +16,7 @@ group :development do
   gem 'spring'
   gem 'bullet'
   gem 'lol_dba'
+  gem 'quiet_assets'
 end
 
 group :test do
