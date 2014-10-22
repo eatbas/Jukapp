@@ -32,11 +32,11 @@
               <%= hidden_field_tag :title, video["title"] %>
               <%= hidden_field_tag :youtube_id, video["id"] %>
               <% if favorite?(video["id"]) %>
-                <%= link_to "#", "bind-event-click" => "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
+                <%= link_to "#!", "bind-event-click" => "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
                   <span class="glyphicon glyphicon-star"></span>
                 <% end %>
               <% else %>
-                <%= link_to "#", "bind-event-click" => "VideoOperations.addToFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
+                <%= link_to "#!", "data-href" => favorites_path, "bind-event-click" => "VideoOperations.addToFavorites(this, '#{video['id']}');", class: "btn btn-default" do %>
                   <span class="glyphicon glyphicon-star-empty"></span>
                 <% end %>
               <% end %>
