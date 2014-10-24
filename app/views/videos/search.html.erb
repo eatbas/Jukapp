@@ -22,7 +22,7 @@
           <%= form_for Video.new, url: queue_video_path, html: { class: "form-inline", id: queue_form_id } do |form| %>
             <%= form.hidden_field :youtube_id, value: video["id"] %>
             <%= form.hidden_field :title, value: video["title"] %>
-            <%= link_to "Add", "#", onclick: "VideoOperations.addToQueue($('##{queue_form_id}'), $(this));", class: "btn btn-primary" %>
+            <%= link_to "Add", "#", "bind-event-click" => "VideoOperations.addToQueue($('##{queue_form_id}'), $(this));", class: "btn btn-primary" %>
           <% end %>
         </td>
         <% if user_signed_in? %>
@@ -32,11 +32,11 @@
               <%= hidden_field_tag :title, video["title"] %>
               <%= hidden_field_tag :youtube_id, video["id"] %>
               <% if favorite?(video["id"]) %>
-                <%= link_to "#", onclick: "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
+                <%= link_to "#", "bind-event-click" => "VideoOperations.removeFromFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
                   <span class="glyphicon glyphicon-star"></span>
                 <% end %>
               <% else %>
-                <%= link_to "#", onclick: "VideoOperations.addToFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
+                <%= link_to "#", "bind-event-click" => "VideoOperations.addToFavorites($('##{favorite_form_id}'), $(this));", class: "btn btn-default" do %>
                   <span class="glyphicon glyphicon-star-empty"></span>
                 <% end %>
               <% end %>
