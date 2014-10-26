@@ -1,39 +1,4 @@
 <%= render 'shared/searchbar' %>
 <br>
 
-<% if @videos %>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>Results</th>
-        <th></th>
-        <% if user_signed_in? %>
-          <th></th>
-        <% end %>
-      </tr>
-    </thead>
-    <% @videos.each do |video| %>
-      <tr>
-        <td>
-          <%= video["title"] %>
-        </td>
-        <td>
-          <%= link_to "Add", queue_video_path, "bind-event-click" => "VideoOperations.addToQueue(this, '#{video['id']}', '#{video['title']}');", class: "btn btn-primary" %>
-        </td>
-        <% if user_signed_in? %>
-          <td>
-            <% if favorite?(video["id"]) %>
-              <%= link_to favorites_path, "bind-event-click" => "VideoOperations.removeFromFavorites(this, '#{video['id']}');", class: "btn btn-default" do %>
-                <span class="glyphicon glyphicon-star"></span>
-              <% end %>
-            <% else %>
-              <%= link_to favorites_path, "bind-event-click" => "VideoOperations.addToFavorites(this, '#{video['id']}', '#{video['title']}');", class: "btn btn-default" do %>
-                <span class="glyphicon glyphicon-star-empty"></span>
-              <% end %>
-            <% end %>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </table>
-<% end %>
+<%= render 'shared/videos_table', videos: @videos if @videos %>
