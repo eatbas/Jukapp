@@ -18,12 +18,7 @@
           <%= video["title"] %>
         </td>
         <td>
-          <% queue_form_id = "queue-#{video['id']}" %>
-          <%= form_for Video.new, url: queue_video_path, html: { class: "form-inline", id: queue_form_id } do |form| %>
-            <%= form.hidden_field :youtube_id, value: video["id"] %>
-            <%= form.hidden_field :title, value: video["title"] %>
-            <%= link_to "Add", "#", "bind-event-click" => "VideoOperations.addToQueue($('##{queue_form_id}'), $(this));", class: "btn btn-primary" %>
-          <% end %>
+          <%= link_to "Add", queue_video_path, "bind-event-click" => "VideoOperations.addToQueue(this, '#{video['id']}', '#{video['title']}');", class: "btn btn-primary" %>
         </td>
         <% if user_signed_in? %>
           <td>

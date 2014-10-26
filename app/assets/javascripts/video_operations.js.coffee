@@ -4,10 +4,10 @@ class @VideoOperations
     $button = $(button)
     $.ajax (
       type: "POST"
-      url: $button.attr("data-href")
+      url: $button.attr("href")
       data: { youtube_id: youtube_id, title: title }
       success: () ->
-        @disable($button, "Added")
+        VideoOperations.disable($button)
     )
 
   @addToFavorites: (button, youtube_id, title) ->
