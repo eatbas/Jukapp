@@ -5,6 +5,10 @@ class YoutubeService
     query_with_music_category = { query: query, category: "music", max_results: 15 }
 
     client.search(query_with_music_category)
-    client.videos.map { |video| OpenStruct.new(video) }
+
+    client.videos.map do |video|
+      video[:youtube_id] = video.delete("id")
+      OpenStruct.new(video)
+    end
   end
 end
