@@ -27,7 +27,7 @@
               <span class="glyphicon glyphicon-star"></span>
             <% end %>
           <% else %>
-            <%= link_to favorites_path, "bind-event-click" => "VideoOperations.addToFavorites(this, '#{video.youtube_id}');", class: "btn btn-default" do %>
+            <%= link_to favorites_path, "bind-event-click" => "VideoOperations.addToFavorites(this, '#{video.youtube_id}', '#{video.title}');", class: "btn btn-default" do %>
               <span class="glyphicon glyphicon-star-empty"></span>
             <% end %>
           <% end %>
