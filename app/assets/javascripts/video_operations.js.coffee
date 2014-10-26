@@ -6,7 +6,7 @@ class @VideoOperations
       type: "POST"
       url: $button.attr("href")
       data: { youtube_id: youtube_id, title: title }
-      success: () ->
+      success: ->
         VideoOperations.disable($button)
     )
 
@@ -16,7 +16,7 @@ class @VideoOperations
       type: "POST"
       url: $button.attr("href")
       data: { youtube_id: youtube_id, title: title }
-      success: () ->
+      success: ->
         VideoOperations.disable($button)
     )
 
@@ -26,7 +26,7 @@ class @VideoOperations
       type: "DELETE"
       url: $button.attr("href")
       data: { youtube_id: youtube_id }
-      success: () ->
+      success: ->
         VideoOperations.disable($button)
     )
 
