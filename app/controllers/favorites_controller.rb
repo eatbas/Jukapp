@@ -8,7 +8,7 @@ class FavoritesController < ApplicationController
 
   def create
     Favorite.find_or_create_by(video: @video, user: current_user)
-    head :ok
+    head :created
   end
 
   def destroy

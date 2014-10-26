@@ -4,7 +4,7 @@ class @VideoOperations
     $button = $(button)
     $.ajax (
       type: "POST"
-      url: $button.attr('data-href')
+      url: $button.attr("data-href")
       data: { youtube_id: youtube_id, title: title }
       success: () ->
         @disable($button, "Added")
@@ -14,21 +14,20 @@ class @VideoOperations
     $button = $(button)
     $.ajax (
       type: "POST"
-      url: $button.attr('data-href')
+      url: $button.attr("href")
       data: { youtube_id: youtube_id, title: title }
       success: () ->
         VideoOperations.disable($button)
     )
 
-  @removeFromFavorites: (form, button) ->
+  @removeFromFavorites: (button, youtube_id) ->
     $button = $(button)
     $.ajax (
       type: "DELETE"
-      url: $button.attr('data-href')
-      data: { youtube_id: youtube_id, title: title }
+      url: $button.attr("href")
+      data: { youtube_id: youtube_id }
       success: () ->
-        debugger
-        @disable($button)
+        VideoOperations.disable($button)
     )
 
   @disable: ($button, text) ->
