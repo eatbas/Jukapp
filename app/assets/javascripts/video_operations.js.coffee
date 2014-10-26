@@ -1,32 +1,36 @@
 class @VideoOperations
 
-  @addToQueue: (form, button) ->
+  @addToQueue: (button, youtube_id, title) ->
+    $button = $(button)
     $.ajax (
       type: "POST"
-      url: form.attr('action')
-      data: form.serialize()
+      url: $button.attr("href")
+      data: { youtube_id: youtube_id, title: title }
       success: () ->
-        button.text("Added")
-        button.addClass("disabled")
-        button.attr("disabled", "disabled")
+        VideoOperations.disable($button)
     )
 
-  @addToFavorites: (form, button) ->
+  @addToFavorites: (button, youtube_id, title) ->
+    $button = $(button)
     $.ajax (
       type: "POST"
-      url: form.attr('action')
-      data: form.serialize()
+      url: $button.attr("href")
+      data: { youtube_id: youtube_id, title: title }
       success: () ->
-        button.addClass("disabled")
-        button.attr("disabled", "disabled")
+        VideoOperations.disable($button)
     )
 
-  @removeFromFavorites: (form, button) ->
+  @removeFromFavorites: (button, youtube_id) ->
+    $button = $(button)
     $.ajax (
       type: "DELETE"
-      url: form.attr('action')
-      data: form.serialize()
+      url: $button.attr("href")
+      data: { youtube_id: youtube_id }
       success: () ->
-        button.addClass("disabled")
-        button.attr("disabled", "disabled")
+        VideoOperations.disable($button)
     )
+
+  @disable: ($button, text) ->
+    button.text(text) if text
+    $button.addClass("disabled")
+    $button.attr("disabled", "disabled")

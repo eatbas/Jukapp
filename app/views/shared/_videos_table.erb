@@ -1,0 +1,38 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th class="text-center">#</th>
+      <th class="text-center">Title</th>
+      <th></th>
+      <% if user_signed_in? %>
+        <th></th>
+      <% end %>
+    </tr>
+  </thead>
+  <% videos.each_with_index do |video, index| %>
+    <tr>
+      <td>
+        <%= index+1 %>
+      </td>
+      <td>
+        <%= video.title %>
+      </td>
+      <td>
+        <%= link_to "Add", queue_video_path, "bind-event-click" => "VideoOperations.addToQueue(this, '#{video.youtube_id}');", class: "btn btn-primary" %>
+      </td>
+      <% if user_signed_in? %>
+        <td>
+          <% if favorite?(video.youtube_id) %>
+            <%= link_to favorites_path, "bind-event-click" => "VideoOperations.removeFromFavorites(this, '#{video.youtube_id}');", class: "btn btn-default" do %>
+              <span class="glyphicon glyphicon-star"></span>
+            <% end %>
+          <% else %>
+            <%= link_to favorites_path, "bind-event-click" => "VideoOperations.addToFavorites(this, '#{video.youtube_id}');", class: "btn btn-default" do %>
+              <span class="glyphicon glyphicon-star-empty"></span>
+            <% end %>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
