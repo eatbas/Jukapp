@@ -18,7 +18,7 @@
         <%= video.title %>
       </td>
       <td>
-        <%= link_to "Add", queue_video_path, "bind-event-click" => "VideoOperations.addToQueue(this, '#{video.youtube_id}');", class: "btn btn-primary" %>
+        <%= link_to "Add", queue_video_path, "bind-event-click" => "VideoOperations.addToQueue(this, '#{video.youtube_id}', '#{video.title}');", class: "btn btn-primary" %>
       </td>
       <% if user_signed_in? %>
         <td>
