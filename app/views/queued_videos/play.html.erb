@@ -4,6 +4,9 @@
   <h1>Queue is empty</h1>
 <% end %>
 
+<%= render 'shared/ajax_searchbar' %>
+<div id="search-results"></div>
+
 <script>
   function onYouTubePlayerAPIReady() {
     var player = new YoutubePlayer('<%= @current.try(:youtube_id) %>');

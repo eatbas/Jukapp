@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get "/play"   => "queued_videos#play", as: :play_video
   get "/next"   => "queued_videos#next", as: :next_video
   get "/search" => "videos#search", as: :search_videos
+  get "/ajax_search" => "videos#ajax_search", as: :ajax_search_videos
   get "/pings/ping" => "pings#ping"
   get "/settings" => "settings#index", as: :settings
 
