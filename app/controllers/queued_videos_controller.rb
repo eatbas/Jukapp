@@ -9,7 +9,12 @@ class QueuedVideosController < ApplicationController
 
   def play
     next_in_queue = QueuedVideo.next_in(current_room)
+<<<<<<< HEAD
     @current = next_in_queue.try(:play_and_destroy) || Video.from_reddit(params[:r]).try(:play_in, current_room)
+=======
+    @current = next_in_queue.video if next_in_queue.try(:play_and_destroy)
+    @queued_videos = QueuedVideo.includes(:video).queue_in(current_room).map(&:video)
+>>>>>>> some design changes, fix bug with twine but ajax search doesn't work now
   end
 
   def next

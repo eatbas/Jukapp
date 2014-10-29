@@ -6,24 +6,7 @@
     <div class="panel-heading">
       <h4>Queue</h4>
     </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th class="text-center">#</th>
-          <th class="text-center">Title</th>
-        </tr>
-      </thead>
-      <% @queued_videos.each_with_index do |video, index| %>
-        <tr>
-          <td>
-            <%= index+1 %>
-          </td>
-          <td>
-            <%= video.title %>
-          </td>
-        </tr>
-      <% end %>
-    </table>
+    <%= render 'shared/queued_videos_table', videos: @queued_videos %>
   </div>
 <% end %>
 

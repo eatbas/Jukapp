@@ -1,21 +1,45 @@
-<% if @current %>
-  <div id="player"></div>
-<% else %>
-  <h1>Queue is empty</h1>
+<div class="row">
+  <div class="col-md-7">
+    <% if @current %>
+      <div id="player"></div>
+    <% else %>
+      <h1>Queue is empty</h1>
 
-  <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
-    <div class="form-group">
-      <%= text_field_tag "r", params[:query], class: "form-control", placeholder: "Enter subreddit", :autofocus => "autofocus" %>
-    </div>
-    <%= button_tag :class => "btn btn-default", type: :submit do %>
-      <span class='glyphicon glyphicon-search'></span>
+      <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
+        <div class="form-group">
+          <%= text_field_tag "r", params[:query], class: "form-control", placeholder: "Enter subreddit", :autofocus => "autofocus" %>
+        </div>
+        <%= button_tag :class => "btn btn-default", type: :submit do %>
+          <span class='glyphicon glyphicon-search'></span>
+        <% end %>
+      <% end %>
     <% end %>
-  <% end %>
-<% end %>
+  </div>
 
-<div style="display:none;">
-  <%= render 'shared/ajax_searchbar' %>
-  <div id="search-results"></div>
+  <div class="col-md-5">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active">
+        <a href="#queue" role="tab" data-toggle="tab">Queue</a>
+      </li>
+      <li>
+        <a href="#search" role="tab" data-toggle="tab">Search</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active text-center" id="queue">
+        <% if @queued_videos.present? %>
+          <%= render 'shared/queued_videos_table', videos: @queued_videos %>
+        <% end %>
+      </div>
+      <div class="tab-pane" id="search">
+        <p>
+          <%= render 'shared/ajax_searchbar' %>
+          <div id="search-results"></div>
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
