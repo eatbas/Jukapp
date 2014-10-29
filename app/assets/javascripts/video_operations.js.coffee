@@ -17,7 +17,7 @@ class @VideoOperations
       url: $button.attr("href")
       data: { youtube_id: youtube_id, title: title }
       success: ->
-        VideoOperations.disable($button)
+        VideoOperations.disable($button, "Added")
     )
 
   @addToFavorites: (button, youtube_id, title) ->
@@ -27,7 +27,8 @@ class @VideoOperations
       url: $button.attr("href")
       data: { youtube_id: youtube_id, title: title }
       success: ->
-        VideoOperations.disable($button)
+        VideoOperations.disable($button, "")
+        $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star")
     )
 
   @removeFromFavorites: (button, youtube_id) ->
@@ -37,10 +38,11 @@ class @VideoOperations
       url: $button.attr("href")
       data: { youtube_id: youtube_id }
       success: ->
-        VideoOperations.disable($button)
+        VideoOperations.disable($button, "")
+        $button.find("span:first-child").removeClass("glyphicon-star").addClass("glyphicon-star-empty")
     )
 
   @disable: ($button, text) ->
-    button.text(text) if text
+    $button.text(text) if text
     $button.addClass("disabled")
     $button.attr("disabled", "disabled")
