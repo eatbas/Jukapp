@@ -8,3 +8,6 @@ class @EventStream
       data = JSON.parse(e.data)
       if data.operation == "next" || ( data.operation == "new" && !currentVideo )
         location.reload()
+      else if data.operation == "new"
+        data = VideoOperations.currentQueue()
+        # replace current queue
