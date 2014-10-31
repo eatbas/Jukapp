@@ -8,6 +8,8 @@ class @VideoOperations
       data: $form.serialize()
       success: (data, textStatus, jqXHR) ->
         $('#search-results').html(data)
+      complete: ->
+        Twine.reset({}).bind().refresh()
     )
 
   @addToQueue: (button, youtube_id, title) ->
