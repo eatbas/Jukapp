@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     unless current_room
       if Rails.env == "production"
         session[:current_room_id] = 4 # 27 Confederation
-        flash[:notice] = "Welcome to the haunted house."
+        flash[:notice] = "Welcome to the Haunted House."
       else
         redirect_to settings_path, notice: "First you have to join a room."
       end
