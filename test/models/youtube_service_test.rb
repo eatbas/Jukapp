@@ -21,6 +21,20 @@ class YoutubeServiceTest < ActiveSupport::TestCase
     assert_equal "some_title", video.title
   end
 
+  test "#parse_url returns id from youtube url" do
+    assert_equal "bltr_Dsk5EY", YoutubeService.parse_url("https://www.youtube.com/watch?v=bltr_Dsk5EY")
+  end
+
+  test "#parse_url returns id from minified youtube url" do
+    assert_equal "ofmzX1nI7SE", YoutubeService.parse_url("http://youtu.be/ofmzX1nI7SE")
+  end
+
+  test "#parse_url raises if not youtube url" do
+    assert_raise ArgumentError do
+      YoutubeService.parse_url("www.google.com/v/1234")
+    end
+  end
+
   private
   def stub_search
     Yourub::Client.any_instance.expects(:search)
