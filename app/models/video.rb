@@ -9,6 +9,11 @@ class Video < ActiveRecord::Base
     Video.create_with(title: title).find_or_create_by(youtube_id: youtube_id)
   end
 
+  def self.from_reddit(subreddit)
+    video = RedditService.get_video_from(subreddit)
+    Video.create_with(title: video.title).find_or_create_by(youtube_id: video.youtube_id)
+  end
+
   def play_in(room)
     VideoEvent.play(self, room)
   end
