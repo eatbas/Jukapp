@@ -16,5 +16,6 @@ class Video < ActiveRecord::Base
 
   def play_in(room)
     VideoEvent.play(self, room)
+    self
   end
 end
