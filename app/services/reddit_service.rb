@@ -3,7 +3,7 @@ class RedditService
     youtube_url = RedisService.pop_link(subreddit)
 
     unless youtube_url
-      links = youtube_links_from(subreddit)
+      links = youtube_links_from(subreddit).shuffle
       RedisService.add(subreddit, links[0..-2])
       youtube_url = links.last
     end

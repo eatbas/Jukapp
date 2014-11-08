@@ -1,15 +1,15 @@
 class RedisService
 
-  def self.add(key, youtube_links)
-    client.set(key, youtube_links)
+  def self.add(key, links)
+    client.set(key, links)
   end
 
-  def self.pop_link(key, random:true)
+  def self.pop_link(key)
     if links = fetch_links(key)
       client.set(key, links[0..-2])
     end
 
-    random ? links.try(:sample) : links.try(:last)
+    links.try(:last)
   end
 
   def self.list_links(key)
