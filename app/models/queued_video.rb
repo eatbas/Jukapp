@@ -10,6 +10,10 @@ class QueuedVideo < ActiveRecord::Base
     EventStreamService.send_message_to(room, {operation: "new"})
   end
 
+  def self.videos_in(room)
+    self.includes(:video).queue_in(room).map(&:video)
+  end
+
   def play_and_destroy
     destroy.video.play_in(room)
   end

@@ -11,7 +11,7 @@ class QueuedVideosController < ApplicationController
     next_in_queue = QueuedVideo.next_in(current_room)
 
     @current = next_in_queue.try(:play_and_destroy) || Video.from_reddit(params[:r]).try(:play_in, current_room)
-    @queued_videos = QueuedVideo.includes(:video).queue_in(current_room).map(&:video)
+    @queued_videos = QueuedVideo.videos_in(current_room)
   end
 
   def next
@@ -25,7 +25,6 @@ class QueuedVideosController < ApplicationController
   end
 
   def index
-    queued_videos = QueuedVideo.includes(:video).queue_in(current_room).map(&:video)
-    render partial: "shared/queued_videos_table", locals: { videos: queued_videos }
+    render partial: "shared/queued_videos_table", locals: { videos: QueuedVideo.videos_in(current_room) }
   end
 end
