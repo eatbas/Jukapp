@@ -9,7 +9,9 @@ class QueuedVideosController < ApplicationController
 
   def play
     next_in_queue = QueuedVideo.next_in(current_room)
+
     @current = next_in_queue.try(:play_and_destroy) || Video.from_reddit(params[:r]).try(:play_in, current_room)
+    @queued_videos = QueuedVideo.videos_in(current_room)
   end
 
   def next
@@ -20,5 +22,9 @@ class QueuedVideosController < ApplicationController
   def socket
     socket = ESHQ.open(:channel => params[:channel])
     render json: {socket: socket}
+  end
+
+  def index
+    render partial: "shared/queued_videos_table", locals: { videos: QueuedVideo.videos_in(current_room) }
   end
 end

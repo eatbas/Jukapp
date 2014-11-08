@@ -6,5 +6,11 @@ class @EventStream
   forPlayer: (currentVideo) ->
     @eshq.onmessage = (e) ->
       data = JSON.parse(e.data)
-      if data.operation == "next" || ( data.operation == "new" && !currentVideo )
-        location.reload()
+      switch data.operation
+        when "next"
+          location.reload()
+        when "new"
+          if currentVideo
+            VideoOperations.currentQueue()
+          else
+            location.reload()

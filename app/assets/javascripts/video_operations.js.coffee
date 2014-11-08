@@ -8,6 +8,8 @@ class @VideoOperations
       data: $form.serialize()
       success: (data, textStatus, jqXHR) ->
         $('#search-results').html(data)
+      complete: ->
+        Twine.reset({}).bind().refresh()
     )
 
   @addToQueue: (button, youtube_id, title) ->
@@ -18,6 +20,15 @@ class @VideoOperations
       data: { youtube_id: youtube_id, title: title }
       success: ->
         VideoOperations.disable($button, "Added")
+    )
+
+  @currentQueue: (button, youtube_id, title) ->
+    queue_partial = null
+    $.ajax (
+      type: "GET"
+      url: "/queued_videos"
+      success: (data, textStatus, jqXHR) ->
+        $('#queue').html(data)
     )
 
   @addToFavorites: (button, youtube_id, title) ->
