@@ -10,6 +10,8 @@ class Video < ActiveRecord::Base
   end
 
   def self.from_reddit(subreddit)
+    return unless subreddit
+
     video = RedditService.get_video_from(subreddit)
     Video.create_with(title: video.title).find_or_create_by(youtube_id: video.youtube_id)
   end

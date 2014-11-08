@@ -1,10 +1,10 @@
 class RedditService
   def self.get_video_from(subreddit)
-    youtube_url = RedisService.pop_link
+    youtube_url = RedisService.pop_link(subreddit)
 
     unless youtube_url
       links = youtube_links_from(subreddit)
-      RedisService.add(links[0..-2])
+      RedisService.add(subreddit, links[0..-2])
       youtube_url = links.last
     end
 
