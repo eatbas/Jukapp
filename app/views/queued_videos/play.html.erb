@@ -2,6 +2,15 @@
   <div id="player"></div>
 <% else %>
   <h1>Queue is empty</h1>
+
+  <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
+    <div class="form-group">
+      <%= text_field_tag "r", params[:query], class: "form-control", placeholder: "Enter subreddit", :autofocus => "autofocus" %>
+    </div>
+    <%= button_tag :class => "btn btn-default", type: :submit do %>
+      <span class='glyphicon glyphicon-search'></span>
+    <% end %>
+  <% end %>
 <% end %>
 
 <div style="display:none;">
