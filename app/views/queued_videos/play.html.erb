@@ -4,7 +4,10 @@
       <h2><%= @current.title %></h2>
       <div id="player"></div>
     <% else %>
-      <%= image_tag("jukebox.png") %>
+      <div class="text-center">
+        <h1>Empty Queue</h1>
+        <%= image_tag("jukebox.png") %>
+      </div>
     <% end %>
   </div>
 
@@ -37,7 +40,7 @@
         <p>
           <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
             <div class="form-group">
-              <%= text_field_tag "r", params[:query], class: "form-control", placeholder: "Enter subreddit", :autofocus => "autofocus" %>
+              <%= text_field_tag "r", params[:r], class: "form-control", placeholder: "Enter subreddit", :autofocus => "autofocus" %>
             </div>
             <%= button_tag :class => "btn btn-default", type: :submit do %>
               <span class='glyphicon glyphicon-search'></span>
