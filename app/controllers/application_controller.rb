@@ -7,12 +7,7 @@ class ApplicationController < ActionController::Base
 
   def ensure_in_room
     unless current_room
-      if Rails.env == "production"
-        session[:current_room_id] = 4 # 27 Confederation
-        flash[:notice] = "Welcome to the Haunted House."
-      else
-        redirect_to settings_path, notice: "First you have to join a room."
-      end
+      redirect_to settings_path, notice: "First you have to join a room."
     end
   end
 
