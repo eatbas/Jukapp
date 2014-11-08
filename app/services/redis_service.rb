@@ -4,18 +4,22 @@ class RedisService
     client.set("youtube_links", youtube_links)
   end
 
-  def self.next_link
+  def self.pop_link(random:true)
     if links = fetch_links
       client.set("youtube_links", links[0..-2])
     end
 
-    links.try(:last)
+    if random ? links.try(:sample) : links.try(:last)
   end
 
   def self.list_links
     if links = fetch_links
       links.each { |link| puts link }
     end
+  end
+
+  def self.destroy_links!
+    client.del("youtube_links")
   end
 
   private

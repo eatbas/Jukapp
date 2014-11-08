@@ -1,6 +1,6 @@
 class RedditService
   def self.get_video_from(subreddit)
-    youtube_url = RedisService.next_link
+    youtube_url = RedisService.pop_link
 
     unless youtube_url
       links = youtube_links_from(subreddit)
@@ -13,7 +13,7 @@ class RedditService
 
   private
   def self.youtube_links_from(subreddit)
-    client.links(subreddit).map(&:url).select { |link| link =~ /youtu.?be/ }
+    client.links(subreddit, limit: 100).map(&:url).select { |link| link =~ /youtu.?be/ }
   end
 
   def self.client
