@@ -22,7 +22,13 @@ class YoutubeService
 
   def self.parse_url(youtube_url)
     raise ArgumentError, "not a youtube url" unless youtube_url =~ /youtu.?be/
-    youtube_url.last(11)
+    youtube_uri = URI(youtube_url)
+    if query = youtube_uri.query
+      youtube_cgi = CGI::parse(query)
+      youtube_cgi["v"].try(:first) || youtube_cgi["V"].try(:first)
+    else
+      youtube_url.last(11)
+    end
   end
 
   def self.structurize(video)
