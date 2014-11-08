@@ -9,7 +9,7 @@ class RedisService
       client.set("youtube_links", links[0..-2])
     end
 
-    if random ? links.try(:sample) : links.try(:last)
+    random ? links.try(:sample) : links.try(:last)
   end
 
   def self.list_links
