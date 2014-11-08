@@ -22,6 +22,15 @@ class @VideoOperations
         VideoOperations.disable($button, "Added")
     )
 
+  @currentQueue: (button, youtube_id, title) ->
+    queue_partial = null
+    $.ajax (
+      type: "GET"
+      url: "/queued_videos"
+      success: (data, textStatus, jqXHR) ->
+        $('#queue').html(data)
+    )
+
   @addToFavorites: (button, youtube_id, title) ->
     $button = $(button)
     $.ajax (

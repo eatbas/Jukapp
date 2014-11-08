@@ -23,4 +23,9 @@ class QueuedVideosController < ApplicationController
     socket = ESHQ.open(:channel => params[:channel])
     render json: {socket: socket}
   end
+
+  def index
+    queued_videos = QueuedVideo.includes(:video).queue_in(current_room).map(&:video)
+    render partial: "shared/queued_videos_table", locals: { videos: queued_videos }
+  end
 end

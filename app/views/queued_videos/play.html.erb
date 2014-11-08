@@ -1,18 +1,10 @@
 <div class="row">
   <div class="col-md-7">
     <% if @current %>
+      <h2><%= @current.title %></h2>
       <div id="player"></div>
     <% else %>
-      <h1>Queue is empty</h1>
-
-      <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
-        <div class="form-group">
-          <%= text_field_tag "r", params[:query], class: "form-control", placeholder: "Enter subreddit", :autofocus => "autofocus" %>
-        </div>
-        <%= button_tag :class => "btn btn-default", type: :submit do %>
-          <span class='glyphicon glyphicon-search'></span>
-        <% end %>
-      <% end %>
+      <%= image_tag("jukebox.png") %>
     <% end %>
   </div>
 
@@ -23,6 +15,9 @@
       </li>
       <li>
         <a href="#search" role="tab" data-toggle="tab">Search</a>
+      </li>
+      <li>
+        <a href="#subreddit" role="tab" data-toggle="tab">Subreddit</a>
       </li>
     </ul>
 
@@ -36,6 +31,18 @@
         <p>
           <%= render 'shared/ajax_searchbar' %>
           <div id="search-results"></div>
+        </p>
+      </div>
+      <div class="tab-pane" id="subreddit">
+        <p>
+          <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
+            <div class="form-group">
+              <%= text_field_tag "r", params[:query], class: "form-control", placeholder: "Enter subreddit", :autofocus => "autofocus" %>
+            </div>
+            <%= button_tag :class => "btn btn-default", type: :submit do %>
+              <span class='glyphicon glyphicon-search'></span>
+            <% end %>
+          <% end %>
         </p>
       </div>
     </div>

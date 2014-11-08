@@ -2,7 +2,7 @@ class QueuedVideo < ActiveRecord::Base
   belongs_to :video
   belongs_to :room
 
-  scope :queue_in, -> (room) { where(room_id: room.id) }
+  scope :queue_in, -> (room) { where(room_id: room.id).order(:created_at) }
   scope :next_in,  -> (room) { queue_in(room).first }
 
   def self.queue(video, room)
