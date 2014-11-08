@@ -9,7 +9,7 @@ class QueuedVideosController < ApplicationController
 
   def play
     next_in_queue = QueuedVideo.next_in(current_room)
-    @current = next_in_queue.try(:play_and_destroy) || Video.from_reddit("WTFMusicVideos").play_in(current_room)
+    @current = next_in_queue.try(:play_and_destroy) || Video.from_reddit("indie_rock").play_in(current_room)
   end
 
   def next
