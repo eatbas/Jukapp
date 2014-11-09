@@ -30,6 +30,15 @@ class @VideoOperations
         $('#queue').html(data)
     )
 
+  @playNext: (button, youtube_id, title) ->
+    $.ajax (
+      type: "GET"
+      url: "/play_next"
+      success: (data, textStatus, jqXHR) ->
+        # $('#player-view').html(data)
+        player = YoutubePlayer('0XDhz5kanYk');
+    )
+
   @addToFavorites: (button, youtube_id, title) ->
     $button = $(button)
     $.ajax (

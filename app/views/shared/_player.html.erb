@@ -7,12 +7,3 @@
     <%= image_tag("jukebox.png") %>
   </div>
 <% end %>
-
-<script>
-  function onYouTubePlayerAPIReady() {
-    var player = new YoutubePlayer('<%= video.try(:youtube_id) %>');
-
-    var eventStream = new EventStream(<%= event_stream_params %>);
-    eventStream.forPlayer(<%= video.present? %>);
-  }
-</script>

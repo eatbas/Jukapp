@@ -17,6 +17,10 @@ class QueuedVideosController < ApplicationController
     redirect_to :back, notice: "Skipped to the next video"
   end
 
+  def play_next
+    render partial: "shared/player", locals: { video: fetch_next_video }
+  end
+
   def socket
     socket = ESHQ.open(:channel => params[:channel])
     render json: {socket: socket}
