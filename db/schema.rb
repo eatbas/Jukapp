@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141004174757) do
+ActiveRecord::Schema.define(version: 20141109005444) do
 
   create_table "favorites", force: true do |t|
     t.integer  "user_id"
@@ -81,10 +81,6 @@ ActiveRecord::Schema.define(version: 20141004174757) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "youtube_id"
-    t.datetime "played_at"
-    t.datetime "queued_at"
-    t.integer  "play_count", default: 0
-    t.string   "status"
   end
 
   add_index "videos", ["youtube_id"], name: "index_videos_on_youtube_id"

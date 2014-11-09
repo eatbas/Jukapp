@@ -18,3 +18,5 @@
 /config/initializers/00-keys.rb
 
 dump.rdb
+
+coverage
