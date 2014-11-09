@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   post "/queue" => "queued_videos#queue", as: :queue_video
   get "/play"   => "queued_videos#play", as: :play_video
   get "/next"   => "queued_videos#next", as: :next_video
+  get "/play_next"   => "queued_videos#play_next", as: :play_next_video
   get "/search" => "videos#search", as: :search_videos
   get "/ajax_search" => "videos#ajax_search", as: :ajax_search_videos
   get "/pings/ping" => "pings#ping"
