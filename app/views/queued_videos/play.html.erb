@@ -22,17 +22,20 @@
       <li>
         <a href="#subreddit" role="tab" data-toggle="tab">Subreddit</a>
       </li>
+      <li>
+        <a href="#youtube_playlist" role="tab" data-toggle="tab">Youtube Playlist</a>
+      </li>
     </ul>
 
     <div class="tab-content">
       <div class="tab-pane active text-center" id="queue">
         <% if @queued_videos.present? %>
-          <%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
+          <%= render "shared/queued_videos_table", queued_videos: @queued_videos %>
         <% end %>
       </div>
       <div class="tab-pane" id="search">
         <p>
-          <%= render 'shared/ajax_searchbar' %>
+          <%= render "shared/ajax_searchbar" %>
           <div id="search-results"></div>
         </p>
       </div>
@@ -40,10 +43,22 @@
         <p>
           <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
             <div class="form-group">
-              <%= text_field_tag "r", params[:r], class: "form-control", placeholder: "Enter subreddit", :autofocus => "autofocus" %>
+              <%= text_field_tag "r", params[:r], class: "form-control", placeholder: "Enter subreddit" %>
             </div>
             <%= button_tag :class => "btn btn-default", type: :submit do %>
-              <span class='glyphicon glyphicon-search'></span>
+              <span class="glyphicon glyphicon-music"></span>
+            <% end %>
+          <% end %>
+        </p>
+      </div>
+      <div class="tab-pane" id="youtube_playlist">
+        <p>
+          <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
+            <div class="form-group">
+              <%= text_field_tag "list", params[:list], class: "form-control", placeholder: "Enter list id" %>
+            </div>
+            <%= button_tag :class => "btn btn-default", type: :submit do %>
+              <span class="glyphicon glyphicon-plus"></span>
             <% end %>
           <% end %>
         </p>
@@ -54,7 +69,7 @@
 
 <script>
   function onYouTubePlayerAPIReady() {
-    var player = new YoutubePlayer('<%= @current.try(:youtube_id) %>');
+    var player = new YoutubePlayer("<%= @current.try(:youtube_id) %>");
 
     var eventStream = new EventStream(<%= event_stream_params %>);
     eventStream.forPlayer(<%= @current.present? %>);

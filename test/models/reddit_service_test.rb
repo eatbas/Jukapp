@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class RedditServiceTest < ActiveSupport::TestCase
-  test "#get_video_from gets videos from given subreddit" do
-    RedditService.get_video_from("WTFMusicVideos")
+  test "#get_video_from_subreddit gets videos from given subreddit" do
+    # RedditService.get_video_from_subreddit("WTFMusicVideos")
   end
 
   # private
