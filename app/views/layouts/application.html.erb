@@ -2,8 +2,8 @@
 <html>
 <head>
   <title>Jukapp</title>
-  <%= stylesheet_link_tag    'application', media: 'all' %>
-  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "http://www.youtube.com/player_api" %>
   <%= javascript_include_tag "#{ESHQ.client.url}/es.js" %>
   <%= csrf_meta_tags %>
@@ -21,7 +21,7 @@
           <span class="icon-bar"></span>
         </button>
         <%= link_to current_room ? video_events_path : root_path, class: "navbar-brand" do %>
-          <span class='glyphicon glyphicon-home'></span><span class="visible-md-inline visible-lg-inline"> Jukapp</span>
+          <span class="glyphicon glyphicon-home"></span><span class="visible-md-inline visible-lg-inline"> Jukapp</span>
         <% end %>
       </div>
 
@@ -30,30 +30,30 @@
           <% if user_signed_in? %>
             <li>
               <%= link_to play_video_path do %>
-                <span class='glyphicon glyphicon-play'></span>
+                <span class="glyphicon glyphicon-play"></span>
               <% end %>
             </li>
           <% end %>
           <li>
             <%= link_to search_videos_path do %>
-              <span class='glyphicon glyphicon-search'></span>
+              <span class="glyphicon glyphicon-search"></span>
             <% end %>
           </li>
           <% if user_signed_in? %>
             <li>
               <%= link_to favorites_path do %>
-                <span class='glyphicon glyphicon-star'></span>
+                <span class="glyphicon glyphicon-star"></span>
               <% end %>
             </li>
             <li>
               <%= link_to next_video_path do %>
-                <span class='glyphicon glyphicon-step-forward'></span>
+                <span class="glyphicon glyphicon-step-forward"></span>
               <% end %>
             </li>
           <% end %>
           <li>
             <%= link_to settings_path do %>
-              <span class='glyphicon glyphicon-cog'></span>
+              <span class="glyphicon glyphicon-cog"></span>
             <% end %>
           </li>
         </ul>
@@ -63,7 +63,7 @@
 
 
   <div class="container">
-    <%= render 'shared/flash_messages' %>
+    <%= render "shared/flash_messages" %>
     <div class="row">
       <div class="col-lg-12">
         <%= yield %>
