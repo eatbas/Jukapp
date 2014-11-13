@@ -2,7 +2,7 @@ class QueuedVideo < ActiveRecord::Base
   belongs_to :video
   belongs_to :room
 
-  scope :queue_in, -> (room) { where(room_id: room.id).order(:created_at) }
+  scope :queue_in, -> (room) { includes(:video).where(room_id: room).order(:created_at) }
   scope :next_in,  -> (room) { queue_in(room).first }
 
   def self.queue(video, room)
@@ -11,7 +11,7 @@ class QueuedVideo < ActiveRecord::Base
   end
 
   def self.videos_in(room)
-    self.includes(:video).queue_in(room).map(&:video)
+    self.queue_in(room).map(&:video)
   end
 
   def play_and_destroy

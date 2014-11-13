@@ -25,4 +25,9 @@ module ApplicationHelper
   def favorite?(youtube_id)
     current_user.favorites.includes(:video).any? { |f| f.video.youtube_id == youtube_id } if youtube_id and user_signed_in?
   end
+
+  def god_mode?
+    # enable god mode for berk, bondtaz and ertavf
+    [1, 3, 4].include?(current_user.id)
+  end
 end
