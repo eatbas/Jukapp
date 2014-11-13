@@ -8,9 +8,12 @@ class QueuedVideosController < ApplicationController
   end
 
   def play
-    next_in_queue = QueuedVideo.next_in(current_room)
+    @current  = if queued_video = QueuedVideo.next_in(current_room).presence
+                  queued_video.play_and_destroy
+                elsif video = Video.from_reddit(params[:r]) # || Video.from_youtube_list(params[:list])
+                  video.play_in(current_room)
+                end
 
-    @current = next_in_queue.try(:play_and_destroy) || Video.from_reddit(params[:r]).try(:play_in, current_room)
     @queued_videos = QueuedVideo.queue_in(current_room)
   end
 

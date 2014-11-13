@@ -7,17 +7,29 @@ class YoutubeService
     client.videos.map { |video| structurize(video) }
   end
 
-  def self.get_video_from_url(youtube_url)
-    get_video_by_id(parse_url(youtube_url))
+  def self.get_youtube_id_from_url(youtube_url)
+    parse_url(youtube_url)
+  end
+
+  def self.get_video_by_id(youtube_id)
+    structurize(client.search(id: youtube_id).first)
+  end
+
+  def self.get_video_from_list(youtube_list)
+    playlist_response = client.client.execute!(
+      :api_method => client.youtube.playlist_items.list,
+      :parameters => {
+        :playlistId => youtube_list,
+        :part => "snippet"
+      }
+    )
+
+    youtube_ids = Yourub::Reader.parse_videos(playlist_response).map {|v| v["id"]}
   end
 
   private
   def self.client
     @client ||= Yourub::Client.new
-  end
-
-  def self.get_video_by_id(youtube_id)
-    structurize(client.search(id: youtube_id).first)
   end
 
   def self.parse_url(youtube_url)

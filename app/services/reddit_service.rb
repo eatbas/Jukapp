@@ -1,14 +1,18 @@
 class RedditService
-  def self.get_video_from(subreddit)
-    youtube_url = RedisService.pop_link(subreddit)
+  def self.get_video_from_subreddit(subreddit)
+    redis_key = "subreddit:#{subreddit}"
 
-    unless youtube_url
+    youtube_id = RedisService.pop_id(redis_key)
+
+    unless youtube_id
       links = youtube_links_from(subreddit).shuffle
-      RedisService.add(subreddit, links[0..-2])
-      youtube_url = links.last
+      youtube_ids = links.map { |link| YoutubeService.get_youtube_id_from_url(link) }.compact
+
+      RedisService.add(redis_key, youtube_ids[0..-2])
+      youtube_id = youtube_ids.last
     end
 
-    YoutubeService.get_video_from_url(youtube_url)
+    YoutubeService.get_video_by_id(youtube_id)
   end
 
   private

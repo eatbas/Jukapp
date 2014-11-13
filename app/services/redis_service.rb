@@ -1,24 +1,24 @@
 class RedisService
 
-  def self.add(key, links)
-    client.set(key, links)
+  def self.add(key, ids)
+    client.set(key, ids)
   end
 
-  def self.pop_link(key)
-    if links = fetch_links(key)
-      client.set(key, links[0..-2])
+  def self.pop_id(key)
+    if ids = fetch_ids(key)
+      client.set(key, ids[0..-2])
     end
 
-    links.try(:last)
+    ids.try(:last)
   end
 
-  def self.list_links(key)
-    if links = fetch_links(key)
-      links.each { |link| puts link }
+  def self.list_ids(key)
+    if ids = fetch_ids(key)
+      ids.each { |id| puts id }
     end
   end
 
-  def self.destroy_links!(key)
+  def self.destroy_ids!(key)
     client.del(key)
   end
 
@@ -27,9 +27,9 @@ class RedisService
     @client ||= Redis.new(:url => ENV["REDISCLOUD_URL"])
   end
 
-  def self.fetch_links(key)
-    if unparsed_links = client.get(key)
-      links = JSON.parse(unparsed_links)
+  def self.fetch_ids(key)
+    if unparsed_ids = client.get(key)
+      ids = JSON.parse(unparsed_ids)
     end
   end
 end
