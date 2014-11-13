@@ -16,15 +16,18 @@ class YoutubeService
   end
 
   def self.get_video_from_list(youtube_list)
-    playlist_response = client.client.execute!(
-      :api_method => client.youtube.playlist_items.list,
-      :parameters => {
-        :playlistId => youtube_list,
-        :part => "snippet"
-      }
-    )
+    redis_key = "youtube_list:#{youtube_list}"
 
-    youtube_ids = Yourub::Reader.parse_videos(playlist_response).map {|v| v["id"]}
+    youtube_id = RedisService.pop_id(redis_key)
+
+    unless youtube_id
+      youtube_ids = fetch_youtube_ids(youtube_list)
+
+      RedisService.add(redis_key, youtube_ids[0..-2])
+      youtube_id = youtube_ids.last
+    end
+
+    get_video_by_id(youtube_id)
   end
 
   private
@@ -46,5 +49,17 @@ class YoutubeService
   def self.structurize(video)
     video[:youtube_id] = video.delete("id")
     OpenStruct.new(video)
+  end
+
+  def self.fetch_youtube_ids(youtube_list)
+    playlist_response = client.client.execute!(
+      :api_method => client.youtube.playlist_items.list,
+      :parameters => {
+        :playlistId => youtube_list,
+        :part => "snippet"
+      }
+    )
+
+    Yourub::Reader.parse_videos(playlist_response).map {|v| v["snippet"]["resourceId"]["videoId"]}
   end
 end
