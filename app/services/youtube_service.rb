@@ -18,7 +18,7 @@ class YoutubeService
   def self.get_video_from_list(youtube_list)
     redis_key = "youtube_list:#{youtube_list}"
 
-    youtube_id = RedisService.pop_id(redis_key)
+    youtube_id = nil # RedisService.pop_id(redis_key)
 
     unless youtube_id
       youtube_ids = fetch_youtube_ids(youtube_list)
@@ -53,13 +53,16 @@ class YoutubeService
 
   def self.fetch_youtube_ids(youtube_list)
     playlist_response = client.client.execute!(
-      :api_method => client.youtube.playlist_items.list,
-      :parameters => {
-        :playlistId => youtube_list,
-        :part => "snippet"
+      api_method: client.youtube.playlist_items.list,
+      parameters: {
+        playlistId: youtube_list,
+        part: "contentDetails",
+        maxResults: 50
       }
     )
 
-    Yourub::Reader.parse_videos(playlist_response).map {|v| v["snippet"]["resourceId"]["videoId"]}
+    # next_page_token = JSON.parse(playlist_response.data.to_json)["nextPageToken"]
+
+    Yourub::Reader.parse_videos(playlist_response).map {|v| v["contentDetails"]["videoId"]}.reverse
   end
 end
