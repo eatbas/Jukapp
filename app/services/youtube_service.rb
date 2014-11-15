@@ -30,6 +30,23 @@ class YoutubeService
     get_video_by_id(youtube_id)
   end
 
+  def self.fetch_youtube_ids(youtube_list)
+    options = {
+      playlistId: youtube_list,
+      part: "contentDetails",
+      maxResults: 50
+    }
+
+    # options.merge!(pageToken: "CGQQAA")
+
+    playlist_response = client.client.execute!(
+      api_method: client.youtube.playlist_items.list,
+      parameters: options
+    )
+
+    Yourub::Reader.parse_videos(playlist_response).map {|v| v["contentDetails"]["videoId"]}
+  end
+
   private
   def self.client
     @client ||= Yourub::Client.new
@@ -49,17 +66,5 @@ class YoutubeService
   def self.structurize(video)
     video[:youtube_id] = video.delete("id")
     OpenStruct.new(video)
-  end
-
-  def self.fetch_youtube_ids(youtube_list)
-    playlist_response = client.client.execute!(
-      :api_method => client.youtube.playlist_items.list,
-      :parameters => {
-        :playlistId => youtube_list,
-        :part => "snippet"
-      }
-    )
-
-    Yourub::Reader.parse_videos(playlist_response).map {|v| v["snippet"]["resourceId"]["videoId"]}
   end
 end
