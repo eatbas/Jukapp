@@ -5,3 +5,5 @@
   <div class="panel-heading"><h4>Pinned Videos</h4></div>
   <%= render 'shared/videos_table', videos: @recommended_videos, hide_favorites: true %>
 </div>
+
+<%= will_paginate @recommendedations, renderer: BootstrapPagination::Rails %>

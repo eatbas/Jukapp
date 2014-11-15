@@ -4,6 +4,8 @@ class RecommendedVideo < ActiveRecord::Base
 
   validates_presence_of :video, :room
 
+  self.per_page = 50
+
   def self.add_videos_from_youtube_ids(youtube_ids, room_id)
     video_ids = youtube_ids.each do |youtube_id|
 

@@ -2,6 +2,7 @@ class RecommendedVideosController < ApplicationController
   before_action :ensure_in_room
 
   def index
-    @recommended_videos = current_room.recommended_videos.includes(:video).map(&:video)
+    @recommendedations  = RecommendedVideo.where(room: current_room).page(params[:page]).includes(:video)
+    @recommended_videos = @recommendedations.map(&:video)
   end
 end

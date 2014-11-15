@@ -12,7 +12,7 @@
   <% videos.each_with_index do |video, index| %>
     <tr>
       <td>
-        <%= index+1 %>
+        <%= index + 1 + ((params[:page].to_i-1)*50) %>
       </td>
       <td>
         <%= video.title %>
