@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   end
 
   resources :queued_videos, only: [:index, :destroy]
+  resources :recommended_videos, only: :index
 
   post "/socket"   => "queued_videos#socket", as: :queue_socket
   post "/queue" => "queued_videos#queue", as: :queue_video
