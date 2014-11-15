@@ -8,6 +8,7 @@ class @YoutubePlayer
       events:
         onReady: onPlayerReady
         onStateChange: onPlayerStateChange
+        onError: onPlayerError
     )
 
   onPlayerReady = (event) ->
@@ -16,3 +17,6 @@ class @YoutubePlayer
   onPlayerStateChange = (event) ->
     if event.data == 0
       location.reload()
+
+  onPlayerError = (event) ->
+    location.reload()
