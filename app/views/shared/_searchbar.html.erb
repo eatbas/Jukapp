@@ -2,7 +2,8 @@
   <div class="form-group">
     <%= text_field_tag "query", params[:query], class: "form-control", placeholder: "Search on YouTube", :autofocus => "autofocus" %>
   </div>
-  <%= button_tag :class => "btn btn-default", type: :submit do %>
-    <span class='glyphicon glyphicon-search'></span>
+  <%= button_tag :class => "btn btn-default", "bind-event-click" => "loading = true", type: :submit do %>
+    <span class="glyphicon glyphicon-search" bind-class="{hidden: loading}"></span>
+    <%= image_tag("load.gif", "bind-class" => "{hidden: !loading}") %>
   <% end %>
 <% end %>
