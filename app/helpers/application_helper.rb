@@ -26,6 +26,11 @@ module ApplicationHelper
     current_user.favorites.includes(:video).any? { |f| f.video.youtube_id == youtube_id } if youtube_id and user_signed_in?
   end
 
+  def index_with_page(index, page_number)
+    page_offset = page_number ? (page_number.to_i - 1) * 50 : 0
+    index + 1 + page_offset
+  end
+
   def god_mode?
     # enable god mode for berk, bondtaz and ertavf
     [1, 3, 4].include?(current_user.id)

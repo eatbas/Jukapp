@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :rooms, only: [:create, :show] do
+  resources :rooms, only: [:create, :show, :destroy] do
     collection do
       get :leave
     end

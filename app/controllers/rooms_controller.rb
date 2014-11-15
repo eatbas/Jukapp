@@ -26,6 +26,11 @@ class RoomsController < ApplicationController
     redirect_to settings_path
   end
 
+  def destroy
+    Room.find(params[:id]).try(:destroy)
+    redirect_to :back
+  end
+
   private
   def room_params
     params.require(:room).permit(:name)
