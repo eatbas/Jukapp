@@ -14,3 +14,13 @@ class @EventStream
             VideoOperations.currentQueue()
           else
             location.reload()
+
+  forQueue: ->
+    @eshq.onmessage = (e) ->
+      $("#queueHeader").removeClass("hidden")
+      data = JSON.parse(e.data)
+      switch data.operation
+        when "next"
+          VideoOperations.currentQueue()
+        when "new"
+          VideoOperations.currentQueue()

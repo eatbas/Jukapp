@@ -23,7 +23,6 @@ class @VideoOperations
     )
 
   @currentQueue: (button, youtube_id, title) ->
-    queue_partial = null
     $.ajax (
       type: "GET"
       url: "/queued_videos"

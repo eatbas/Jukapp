@@ -1,28 +1,32 @@
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th class="text-center">#</th>
-      <th class="text-center">Title</th>
-      <% if god_mode? %>
-        <th></th>
-      <% end %>
-    </tr>
-  </thead>
-  <% queued_videos.each_with_index do |queued_video, index| %>
-    <tr>
-      <td>
-        <%= index+1 %>
-      </td>
-      <td>
-        <%= queued_video.video.title %>
-      </td>
-      <% if god_mode? %>
-        <td>
-          <%= link_to queued_video, method: :delete, data: { confirm: "Are you sure?" } do %>
-            <span class="glyphicon glyphicon-trash"></span>
+<div id="queue">
+  <% if queued_videos.present? %>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="text-center">#</th>
+          <th class="text-center">Title</th>
+          <% if god_mode? %>
+            <th></th>
           <% end %>
-        </td>
+        </tr>
+      </thead>
+      <% queued_videos.each_with_index do |queued_video, index| %>
+        <tr>
+          <td>
+            <%= index+1 %>
+          </td>
+          <td>
+            <%= queued_video.video.title %>
+          </td>
+          <% if god_mode? %>
+            <td>
+              <%= link_to queued_video, method: :delete, data: { confirm: "Are you sure?" } do %>
+                <span class="glyphicon glyphicon-trash"></span>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
       <% end %>
-    </tr>
+    </table>
   <% end %>
-</table>
+</div>
