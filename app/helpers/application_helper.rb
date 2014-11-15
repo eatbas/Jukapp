@@ -33,6 +33,6 @@ module ApplicationHelper
 
   def god_mode?
     # enable god mode for berk, bondtaz and ertavf
-    [1, 3, 4].include?(current_user.id)
+    [1, 3, 4].include?(current_user.try(:id))
   end
 end
