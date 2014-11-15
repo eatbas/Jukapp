@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     unless current_room
       if Rails.env == "production"
         session[:current_room_id] = 12 # ozan
-        redirect_to :back, notice: "Happy birthday Ozan!"
+        redirect_to root_path, notice: "Happy birthday Ozan!"
       else
         redirect_to settings_path, notice: "First you have to join a room."
       end
