@@ -15,7 +15,7 @@
         <%= index_with_page(index, params[:page]) %>
       </td>
       <td>
-        <%= truncate(video.title, length: 56) %>
+        <%= truncate(video.title, length: 54) %>
       </td>
       <td>
         <%= link_to "Add", queue_video_path, "bind-event-click" => "VideoOperations.addToQueue(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-primary" %>
