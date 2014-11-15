@@ -1,14 +1,12 @@
 <%= render 'shared/searchbar' %>
 <br>
 
-<% if @queued_videos.present? %>
-  <div class="panel-md panel panel-primary text-center">
-    <div class="panel-heading">
-      <h4>Queue</h4>
-    </div>
-    <%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
+<div class="panel-md panel panel-primary text-center" bind-class="{hidden: <%= @queued_videos.empty? %> }" id="queueHeader">
+  <div class="panel-heading">
+    <h4>Queue</h4>
   </div>
-<% end %>
+  <%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
+</div>
 
 <div class="panel-md panel panel-primary text-center">
   <div class="panel-heading"><h4>Top 10</h4></div>
@@ -19,3 +17,10 @@
   <div class="panel-heading"><h4>Last 10</h4></div>
   <%= render 'shared/videos_table', videos: @last_ten_videos %>
 </div>
+
+<script>
+  $(function() {
+    var eventStream = new EventStream(<%= event_stream_params %>);
+    eventStream.forQueue();
+  });
+</script>
