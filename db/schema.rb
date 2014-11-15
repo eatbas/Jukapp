@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141109005444) do
+ActiveRecord::Schema.define(version: 20141115010055) do
 
   create_table "favorites", force: true do |t|
     t.integer  "user_id"
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 20141109005444) do
   add_index "queued_videos", ["room_id", "video_id"], name: "index_queued_videos_on_room_id_and_video_id"
   add_index "queued_videos", ["room_id"], name: "index_queued_videos_on_room_id"
   add_index "queued_videos", ["video_id"], name: "index_queued_videos_on_video_id"
+
+  create_table "recommended_videos", force: true do |t|
+    t.integer  "video_id"
+    t.integer  "room_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "recommended_videos", ["room_id"], name: "index_recommended_videos_on_room_id"
+  add_index "recommended_videos", ["video_id"], name: "index_recommended_videos_on_video_id"
 
   create_table "rooms", force: true do |t|
     t.string   "name"
