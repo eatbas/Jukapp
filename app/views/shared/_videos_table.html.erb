@@ -4,7 +4,7 @@
       <th class="text-center">#</th>
       <th class="text-center">Title</th>
       <th></th>
-      <% if user_signed_in? %>
+      <% if user_signed_in? && (local_variables.include?(:hide_favorites) && !hide_favorites) %>
         <th></th>
       <% end %>
     </tr>
@@ -12,7 +12,7 @@
   <% videos.each_with_index do |video, index| %>
     <tr>
       <td>
-        <%= index+1 %>
+        <%= index + 1 + ((params[:page].to_i-1)*50) %>
       </td>
       <td>
         <%= video.title %>
@@ -20,7 +20,7 @@
       <td>
         <%= link_to "Add", queue_video_path, "bind-event-click" => "VideoOperations.addToQueue(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-primary" %>
       </td>
-      <% if user_signed_in? %>
+      <% if user_signed_in? && (local_variables.include?(:hide_favorites) && !hide_favorites) %>
         <td>
           <% if favorite?(video.youtube_id) %>
             <%= link_to favorites_path, "bind-event-click" => "VideoOperations.removeFromFavorites(this, '#{video.youtube_id}');", class: "btn btn-default" do %>

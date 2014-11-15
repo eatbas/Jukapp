@@ -27,19 +27,24 @@
 
       <div class="collapse navbar-collapse" id="main-navbar">
         <ul class="nav navbar-nav">
+          <li>
+            <%= link_to search_videos_path do %>
+              <span class="glyphicon glyphicon-search"></span>
+            <% end %>
+          </li>
+          <% if current_room.try(:has_recommendations?) %>
+            <li>
+              <%= link_to recommended_videos_path do %>
+                <span class="glyphicon glyphicon-pushpin"></span>
+              <% end %>
+            </li>
+          <% end %>
           <% if user_signed_in? %>
             <li>
               <%= link_to play_video_path do %>
                 <span class="glyphicon glyphicon-play"></span>
               <% end %>
             </li>
-          <% end %>
-          <li>
-            <%= link_to search_videos_path do %>
-              <span class="glyphicon glyphicon-search"></span>
-            <% end %>
-          </li>
-          <% if user_signed_in? %>
             <li>
               <%= link_to favorites_path do %>
                 <span class="glyphicon glyphicon-star"></span>

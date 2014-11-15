@@ -47,6 +47,10 @@ class YoutubeService
     Yourub::Reader.parse_videos(playlist_response).map {|v| v["contentDetails"]["videoId"]}
   end
 
+  def self.get_title_from_youtube_id(youtube_id)
+    client.search(id: youtube_id).first["title"]
+  end
+
   private
   def self.client
     @client ||= Yourub::Client.new
