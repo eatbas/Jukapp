@@ -2,9 +2,7 @@ class YoutubeService
   def self.get_videos_for(query)
     query_with_music_category = { query: query, category: "music", max_results: 15 }
 
-    client.search(query_with_music_category)
-
-    client.videos.map { |video| structurize(video) }
+    retrieve_videos(query_with_music_category)
   end
 
   def self.get_youtube_id_from_url(youtube_url)
@@ -12,7 +10,9 @@ class YoutubeService
   end
 
   def self.get_video_by_id(youtube_id)
-    structurize(client.search(id: youtube_id).first)
+    client = Yourub::Client.new
+    client.search(id: youtube_id)
+    structurize(client.videos.first)
   end
 
   def self.get_video_from_list(youtube_list)
@@ -39,6 +39,7 @@ class YoutubeService
 
     # options.merge!(pageToken: "CGQQAA")
 
+    client = Yourub::Client.new
     playlist_response = client.client.execute!(
       api_method: client.youtube.playlist_items.list,
       parameters: options
@@ -47,13 +48,11 @@ class YoutubeService
     Yourub::Reader.parse_videos(playlist_response).map {|v| v["contentDetails"]["videoId"]}
   end
 
-  def self.get_title_from_youtube_id(youtube_id)
-    client.search(id: youtube_id).first["title"]
-  end
-
   private
-  def self.client
-    @client ||= Yourub::Client.new
+  def self.retrieve_videos(query)
+    client = Yourub::Client.new
+    client.search(query)
+    client.videos.map { |video| structurize(video) }
   end
 
   def self.parse_url(youtube_url)
