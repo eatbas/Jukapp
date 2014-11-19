@@ -29,5 +29,5 @@ Rails.application.routes.draw do
   get "/pings/ping" => "pings#ping"
   get "/settings" => "settings#index", as: :settings
 
-  root "recommended_videos#index"
+  root "video_events#index"
 end
