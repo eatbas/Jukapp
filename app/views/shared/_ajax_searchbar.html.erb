@@ -11,9 +11,10 @@
 
 <script>
   $(function() {
-    $("#search").on("ajax:success", function(e, data, status, xhr) {
+    $("#search").bind("ajax:success", function(e, data, status, xhr) {
+      debugger
       $("#search-results").html(data)
-    }).on("ajax:error", function(e, xhr, status, error) {
+    }).bind("ajax:error", function(e, xhr, status, error) {
       $("#search").append("<p>ERROR</p>");
     });
   });

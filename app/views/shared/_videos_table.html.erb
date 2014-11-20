@@ -27,6 +27,9 @@
               <span class="glyphicon glyphicon-star"></span>
             <% end %>
           <% else %>
+            <%= link_to favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-default", id: "favorite-button" do %>
+              <span class="glyphicon glyphicon-star-empty"></span>
+            <% end %>
             <%= link_to favorites_path, onclick: "VideoOperations.addToFavorites(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-default" do %>
               <span class="glyphicon glyphicon-star-empty"></span>
             <% end %>
@@ -36,3 +39,11 @@
     </tr>
   <% end %>
 </table>
+
+<script>
+  $(function() {
+    $("#favorite-button").bind("ajax:success", function(e, data, status, xhr) {
+      alert("The article was deleted.");
+    });
+  });
+</script>
