@@ -1,0 +1,9 @@
+<% if video.present? %>
+  <h2><%= video.title %></h2>
+  <div id="player"></div>
+<% else %>
+  <div class="text-center">
+    <h1>Empty Queue</h1>
+    <%= image_tag("jukebox.png") %>
+  </div>
+<% end %>

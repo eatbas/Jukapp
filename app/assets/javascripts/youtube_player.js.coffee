@@ -1,7 +1,7 @@
 class @YoutubePlayer
 
   constructor: (video) ->
-    player = new YT.Player("player",
+    @player = new YT.Player("player",
       height: "390"
       width: "640"
       videoId: video
@@ -16,7 +16,7 @@ class @YoutubePlayer
 
   onPlayerStateChange = (event) ->
     if event.data == 0
-      location.reload()
+      VideoOperations.playNext(event.target)
 
   onPlayerError = (event) ->
-    location.reload()
+    VideoOperations.playNext(event.target)
