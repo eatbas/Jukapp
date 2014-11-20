@@ -22,9 +22,5 @@ class @EventStream
       $("#queueHeader").removeClass("hidden")
       data = JSON.parse(e.data)
       switch data.operation
-        when "next"
-          VideoOperations.currentQueue()
-        when "new"
-          VideoOperations.currentQueue()
-        when "play"
+        when "next", "new", "play"
           VideoOperations.currentQueue()
