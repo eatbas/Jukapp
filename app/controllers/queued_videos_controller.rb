@@ -9,16 +9,18 @@ class QueuedVideosController < ApplicationController
 
   def play
     @current = fetch_next_video
-    @queued_videos = QueuedVideo.queue_in(current_room)
+
+    respond_to do |format|
+      format.json { render json: {video: @current} }
+      format.html do
+        @queued_videos = QueuedVideo.queue_in(current_room)
+      end
+    end
   end
 
   def next
     EventStreamService.send_message_to(current_room, {operation: "next"})
     redirect_to :back, notice: "Skipped to the next video"
-  end
-
-  def play_next
-    render json: {video: fetch_next_video}
   end
 
   def socket

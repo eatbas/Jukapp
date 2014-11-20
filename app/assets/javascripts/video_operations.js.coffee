@@ -33,11 +33,12 @@ class @VideoOperations
   @playNext: (youtube_player) ->
     $.ajax (
       type: "GET"
-      url: "/play_next"
+      url: "/play"
+      contentType: "application/json",
       success: (data, textStatus, jqXHR) ->
         if data.video
           youtube_service = new YoutubeService(youtube_player)
-          youtube_service.play(data.video.youtube_id)
+          youtube_service.play(data.video)
         else
           location.reload()
     )

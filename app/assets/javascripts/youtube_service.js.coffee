@@ -2,5 +2,6 @@ class @YoutubeService
 
   constructor: (@player) ->
 
-  play: (youtube_id) ->
-    @player.loadVideoById(youtube_id)
+  play: (video) ->
+    @player.loadVideoById(video.youtube_id)
+    $("#video_title").text(video.title)
