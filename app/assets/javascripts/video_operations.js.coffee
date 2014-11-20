@@ -35,8 +35,11 @@ class @VideoOperations
       type: "GET"
       url: "/play_next"
       success: (data, textStatus, jqXHR) ->
-        youtube_service = new YoutubeService(youtube_player)
-        youtube_service.play(data.video.youtube_id)
+        if data.video
+          youtube_service = new YoutubeService(youtube_player)
+          youtube_service.play(data.video.youtube_id)
+        else
+          location.reload()
     )
 
   @addToFavorites: (button, youtube_id, title) ->
