@@ -39,12 +39,12 @@
               <% end %>
             </li>
           <% end %>
+          <li>
+            <%= link_to play_video_path do %>
+              <span class="glyphicon glyphicon-play"></span>
+            <% end %>
+          </li>
           <% if user_signed_in? %>
-            <li>
-              <%= link_to play_video_path do %>
-                <span class="glyphicon glyphicon-play"></span>
-              <% end %>
-            </li>
             <li>
               <%= link_to favorites_path do %>
                 <span class="glyphicon glyphicon-star"></span>
