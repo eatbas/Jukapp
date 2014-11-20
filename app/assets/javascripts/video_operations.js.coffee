@@ -1,17 +1,5 @@
 class @VideoOperations
 
-  @search: (form) ->
-    $form = $(form)
-    $.ajax (
-      type: "GET"
-      url: $form.attr('action')
-      data: $form.serialize()
-      success: (data, textStatus, jqXHR) ->
-        $('#search-results').html(data)
-      complete: ->
-        Twine.reset({}).bind().refresh()
-    )
-
   @addToQueue: (button, youtube_id, title) ->
     $button = $(button)
     $.ajax (

@@ -18,16 +18,16 @@
         <%= truncate(video.title, length: 54) %>
       </td>
       <td>
-        <%= link_to "Add", queue_video_path, "bind-event-click" => "VideoOperations.addToQueue(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-primary" %>
+        <%= link_to "Add", queue_video_path, onclick: "VideoOperations.addToQueue(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-primary" %>
       </td>
       <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
         <td>
           <% if favorite?(video.youtube_id) %>
-            <%= link_to favorites_path, "bind-event-click" => "VideoOperations.removeFromFavorites(this, '#{video.youtube_id}');", class: "btn btn-default" do %>
+            <%= link_to favorites_path, onclick: "VideoOperations.removeFromFavorites(this, '#{video.youtube_id}');", class: "btn btn-default" do %>
               <span class="glyphicon glyphicon-star"></span>
             <% end %>
           <% else %>
-            <%= link_to favorites_path, "bind-event-click" => "VideoOperations.addToFavorites(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-default" do %>
+            <%= link_to favorites_path, onclick: "VideoOperations.addToFavorites(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-default" do %>
               <span class="glyphicon glyphicon-star-empty"></span>
             <% end %>
           <% end %>
