@@ -16,7 +16,7 @@ class @YoutubePlayer
 
   onPlayerStateChange = (event) ->
     if event.data == 0
-      VideoOperations.playNext()
+      VideoOperations.playNext(event.target)
 
   onPlayerError = (event) ->
-    VideoOperations.playNext()
+    VideoOperations.playNext(event.target)

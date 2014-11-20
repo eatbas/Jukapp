@@ -18,7 +18,7 @@ class QueuedVideosController < ApplicationController
   end
 
   def play_next
-    render partial: "shared/player", locals: { video: fetch_next_video }
+    render json: {video: fetch_next_video}
   end
 
   def socket
