@@ -14,6 +14,8 @@ class @EventStream
             VideoOperations.currentQueue()
           else
             location.reload()
+        when "play"
+          VideoOperations.currentQueue()
 
   forQueue: ->
     @eshq.onmessage = (e) ->
@@ -23,4 +25,6 @@ class @EventStream
         when "next"
           VideoOperations.currentQueue()
         when "new"
+          VideoOperations.currentQueue()
+        when "play"
           VideoOperations.currentQueue()
