@@ -4,7 +4,7 @@
   </div>
   <%= button_tag :class => "btn btn-default", type: :submit do %>
     <span class="glyphicon glyphicon-search"></span>
-    <%= image_tag("load.gif") %>
+    <%= image_tag("load.gif", class: "hidden loading-indicator") %>
   <% end %>
 <% end %>
 
@@ -12,8 +12,14 @@
 
 <script>
   $(function() {
-    $("#search-form").bind("ajax:success", function(e, data, status, xhr) {
-      $("#search-results").html(data)
+    $("#search-form").bind("ajax:send", function(e, data, status, xhr) {
+      $form = $(e.target);
+      VideoOperations.addLoading($form)
+    }).bind("ajax:success", function(e, data, status, xhr) {
+      $form = $(e.target);
+      VideoOperations.removeLoading($form);
+
+      $("#search-results").html(data);
     });
   });
 </script>
