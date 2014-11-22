@@ -53,6 +53,10 @@
   <% end %>
 </div>
 
+<% if owner? %>
+  <%= render "room_settings" %>
+<% end %>
+
 <div class="panel-md panel panel-default">
   <div class="panel-heading text-center">
     <h4>User</h4>
@@ -64,7 +68,7 @@
       <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger btn-sm" %>
     </div>
     <% else %>
-    <%= render 'devise/sessions/sign_in_form' %>
+    <%= render "devise/sessions/sign_in_form" %>
     <% end %>
   </div>
 </div>
