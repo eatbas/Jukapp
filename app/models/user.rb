@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
          :rememberable, :trackable, :validatable
 
   has_many :favorites
+  has_one  :room
 
   def email_required?
     false
