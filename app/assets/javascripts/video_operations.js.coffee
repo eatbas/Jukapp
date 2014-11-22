@@ -21,6 +21,20 @@ class @VideoOperations
           location.reload()
     )
 
+  @addLoading: ($form) ->
+    $search_icon = $form.find(".glyphicon-search")
+    $search_load_icon = $form.find(".loading-indicator")
+
+    $search_icon.addClass("hidden")
+    $search_load_icon.removeClass("hidden")
+
+  @removeLoading: ($form) ->
+    $search_icon = $form.find(".glyphicon-search")
+    $search_load_icon = $form.find(".loading-indicator")
+
+    $search_icon.removeClass("hidden")
+    $search_load_icon.addClass("hidden")
+
   @disable: ($button, text) ->
     $button.text(text) if text
     $button.addClass("disabled")
