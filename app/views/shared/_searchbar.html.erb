@@ -2,7 +2,8 @@
   <div class="form-group">
     <%= text_field_tag "query", params[:query], class: "form-control", placeholder: "Search on YouTube", :autofocus => "autofocus" %>
   </div>
-  <%= button_tag :class => "btn btn-default", type: :submit do %>
+  <%= button_tag :class => "btn btn-default", type: :submit, onclick: "VideoOperations.addLoading($(this))" do %>
     <span class="glyphicon glyphicon-search"></span>
+    <%= image_tag("load.gif", class: "hidden loading-indicator") %>
   <% end %>
 <% end %>
