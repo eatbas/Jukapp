@@ -1,8 +1,20 @@
-<%= form_tag ajax_search_videos_path, method: :get, class: "form-inline", "bind-event-submit" => "VideoOperations.search(this)" do %>
+<%= form_tag ajax_search_videos_path, method: :get, class: "form-inline", remote: true, id: "search-form" do %>
   <div class="form-group">
     <%= text_field_tag "query", params[:query], class: "form-control", placeholder: "Search on YouTube", :autofocus => "autofocus" %>
   </div>
   <%= button_tag :class => "btn btn-default", type: :submit do %>
-    <span class='glyphicon glyphicon-search'></span>
+    <span class="glyphicon glyphicon-search"></span>
   <% end %>
 <% end %>
+
+<div id="search-results"></div>
+
+<script>
+  $(function() {
+    $("#search-form").bind("ajax:success", function(e, data, status, xhr) {
+      $("#search-results").html(data)
+    }).bind("ajax:error", function(e, xhr, status, error) {
+
+    });
+  });
+</script>

@@ -182,8 +182,6 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    twine-rails (0.0.7)
-      coffee-rails
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.5.3)
@@ -223,7 +221,6 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   spring
   sqlite3
-  twine-rails
   uglifier (>= 1.3.0)
   will_paginate-bootstrap
   yourub!
