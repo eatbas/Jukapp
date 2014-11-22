@@ -14,7 +14,7 @@
   $(function() {
     $("#search-form").bind("ajax:send", function(e, data, status, xhr) {
       $form = $(e.target);
-      VideoOperations.addLoading($form)
+      VideoOperations.addLoading($form);
     }).bind("ajax:success", function(e, data, status, xhr) {
       $form = $(e.target);
       VideoOperations.removeLoading($form);
