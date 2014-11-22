@@ -1,5 +1,6 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :join]
+  before_action :authenticate_user!, only: :create
 
   def show
     @queued_videos = QueuedVideo.queue_in(@room)
