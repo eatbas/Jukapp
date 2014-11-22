@@ -6,29 +6,29 @@
   <div class="col-md-5">
     <ul class="nav nav-tabs" role="tablist">
       <li class="active">
-        <a href="#queue" role="tab" data-toggle="tab">Queue</a>
+        <a href="#queue-pane" role="tab" data-toggle="tab">Queue</a>
       </li>
       <li>
-        <a href="#search" role="tab" data-toggle="tab">Search</a>
+        <a href="#search-pane" role="tab" data-toggle="tab">Search</a>
       </li>
       <li>
-        <a href="#subreddit" role="tab" data-toggle="tab">Subreddit</a>
+        <a href="#subreddit-pane" role="tab" data-toggle="tab">Subreddit</a>
       </li>
       <li>
-        <a href="#youtube_playlist" role="tab" data-toggle="tab">Youtube Playlist</a>
+        <a href="#youtube-playlist-pane" role="tab" data-toggle="tab">Youtube Playlist</a>
       </li>
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane active text-center" id="queue">
+      <div class="tab-pane active text-center" id="queue-pane">
         <%= render "shared/queued_videos_table", queued_videos: @queued_videos %>
       </div>
-      <div class="tab-pane" id="search">
+      <div class="tab-pane" id="search-pane">
         <p>
           <%= render "shared/ajax_searchbar" %>
         </p>
       </div>
-      <div class="tab-pane" id="subreddit">
+      <div class="tab-pane" id="subreddit-pane">
         <p>
           <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
             <div class="form-group">
@@ -40,7 +40,7 @@
           <% end %>
         </p>
       </div>
-      <div class="tab-pane" id="youtube_playlist">
+      <div class="tab-pane" id="youtube-playlist-pane">
         <p>
           <%= form_tag play_video_path, method: :get, class: "form-inline" do %>
             <div class="form-group">

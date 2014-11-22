@@ -18,19 +18,16 @@
         <%= truncate(video.title, length: 54) %>
       </td>
       <td>
-        <%= link_to "Add", queue_video_path, onclick: "VideoOperations.addToQueue(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-primary" %>
+        <%= link_to "Add", queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-primary add-queue" %>
       </td>
       <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
         <td>
           <% if favorite?(video.youtube_id) %>
-            <%= link_to favorites_path, onclick: "VideoOperations.removeFromFavorites(this, '#{video.youtube_id}');", class: "btn btn-default" do %>
+            <%= link_to favorites_path(youtube_id: video.youtube_id), method: :delete, remote: true, class: "btn btn-default remove-favorite-button" do %>
               <span class="glyphicon glyphicon-star"></span>
             <% end %>
           <% else %>
-            <%= link_to favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-default", id: "favorite-button" do %>
-              <span class="glyphicon glyphicon-star-empty"></span>
-            <% end %>
-            <%= link_to favorites_path, onclick: "VideoOperations.addToFavorites(this, '#{video.youtube_id}', '#{escape_javascript(video.title)}');", class: "btn btn-default" do %>
+            <%= link_to favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-default add-favorite-button" do %>
               <span class="glyphicon glyphicon-star-empty"></span>
             <% end %>
           <% end %>
@@ -42,8 +39,21 @@
 
 <script>
   $(function() {
-    $("#favorite-button").bind("ajax:success", function(e, data, status, xhr) {
-      alert("The article was deleted.");
+    $(".add-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
+      $button = $(e.target)
+      VideoOperations.disable($button, "");
+      $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+    });
+
+    $(".remove-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
+      $button = $(e.target)
+      VideoOperations.disable($button, "");
+      $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+    });
+
+    $(".add-queue").bind("ajax:success", function(e, data, status, xhr) {
+      $button = $(e.target)
+      VideoOperations.disable($button, "Added")
     });
   });
 </script>
