@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141122210006) do
+ActiveRecord::Schema.define(version: 20141122212239) do
 
   create_table "favorites", force: true do |t|
     t.integer  "user_id",    null: false
@@ -46,11 +46,11 @@ ActiveRecord::Schema.define(version: 20141122210006) do
   add_index "recommended_videos", ["video_id"], name: "index_recommended_videos_on_video_id"
 
   create_table "rooms", force: true do |t|
-    t.string   "name",                   null: false
+    t.string   "name",       null: false
     t.string   "password"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "owner_id",   default: 1, null: false
+    t.integer  "owner_id",   null: false
   end
 
   add_index "rooms", ["name"], name: "index_rooms_on_name", unique: true
