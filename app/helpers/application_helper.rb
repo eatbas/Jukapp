@@ -35,4 +35,8 @@ module ApplicationHelper
     # enable god mode for berk, bondtaz and ertavf
     [1, 3, 4].include?(current_user.try(:id))
   end
+
+  def owner?
+    current_room.owner.id == current_user.id
+  end
 end
