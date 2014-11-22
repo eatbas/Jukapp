@@ -34,7 +34,9 @@ class QueuedVideosController < ApplicationController
 
   def destroy
     QueuedVideo.find(params[:id]).try(:destroy)
-    redirect_to :back
+    EventStreamService.send_message_to(current_room, {operation: "delete"})
+
+    render json: {}
   end
 
   private

@@ -14,7 +14,7 @@ class @EventStream
             VideoOperations.currentQueue()
           else
             location.reload()
-        when "play"
+        when "play", "delete"
           VideoOperations.currentQueue()
 
   forQueue: ->
@@ -22,5 +22,5 @@ class @EventStream
       $("#queueHeader").removeClass("hidden")
       data = JSON.parse(e.data)
       switch data.operation
-        when "next", "new", "play"
+        when "next", "new", "play", "delete"
           VideoOperations.currentQueue()

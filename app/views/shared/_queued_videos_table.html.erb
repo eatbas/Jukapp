@@ -20,7 +20,7 @@
           </td>
           <% if god_mode? %>
             <td>
-              <%= link_to queued_video, method: :delete, data: { confirm: "Are you sure?" } do %>
+              <%= link_to queued_video, method: :delete, remote: true, data: { confirm: "Are you sure?" } do %>
                 <span class="glyphicon glyphicon-trash"></span>
               <% end %>
             </td>
