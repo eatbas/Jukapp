@@ -30,7 +30,7 @@
           <tr>
             <th class="text-center">Name</th>
             <th></th>
-            <% if owner? %>
+            <% if god_mode? %>
               <th></th>
             <% end %>
           </tr>
@@ -39,7 +39,7 @@
           <tr>
             <td><%= room.name %></td>
             <td><%= link_to "Join", join_room_path(room), class: "btn btn-primary btn-sm" %></td>
-            <% if owner? %>
+            <% if god_mode? %>
               <td>
                 <%= link_to room, method: :delete, data: { confirm: "Are you sure?" } do %>
                   <span class="glyphicon glyphicon-trash"></span>

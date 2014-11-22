@@ -37,6 +37,6 @@ module ApplicationHelper
   end
 
   def owner?
-    current_room.try(:owner).try(:id) == current_user.try(:id)
+    current_room && current_room.owner.try(:id) == current_user.try(:id)
   end
 end
