@@ -13,8 +13,6 @@
   $(function() {
     $("#search-form").bind("ajax:success", function(e, data, status, xhr) {
       $("#search-results").html(data)
-    }).bind("ajax:error", function(e, xhr, status, error) {
-
     });
   });
 </script>
