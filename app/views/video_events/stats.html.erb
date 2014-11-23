@@ -1,0 +1,72 @@
+<%= render 'shared/searchbar' %>
+<br>
+
+<div class="panel-md panel panel-primary text-center">
+  <div class="panel-heading"><h4>Stats</h4></div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="text-center">#</th>
+        <th class="text-center">Title</th>
+        <th class="text-center">Played</th>
+        <th></th>
+        <% if user_signed_in? %>
+        <th></th>
+        <% end %>
+      </tr>
+    </thead>
+    <% @stats.each_with_index do |stat, index| %>
+    <% video = stat.video %>
+    <tr>
+      <td>
+        <%= index_with_page(index, params[:page]) %>
+      </td>
+      <td>
+        <%= truncate(video.title, length: 54) %>
+      </td>
+      <td>
+        <%= pluralize(stat.play_count, "time") %>
+      </td>
+      <td>
+        <%= link_to "Add", queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-primary add-queue" %>
+      </td>
+      <% if user_signed_in? %>
+      <td>
+        <% if favorite?(video.youtube_id) %>
+        <%= link_to favorites_path(youtube_id: video.youtube_id), method: :delete, remote: true, class: "btn btn-default remove-favorite-button" do %>
+        <span class="glyphicon glyphicon-star"></span>
+        <% end %>
+        <% else %>
+        <%= link_to favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-default add-favorite-button" do %>
+        <span class="glyphicon glyphicon-star-empty"></span>
+        <% end %>
+        <% end %>
+      </td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<%= will_paginate @stats, renderer: BootstrapPagination::Rails %>
+
+<script>
+$(function() {
+  $(".add-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
+    $button = $(e.target)
+    VideoOperations.disable($button, "");
+    $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+  });
+
+  $(".remove-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
+    $button = $(e.target)
+    VideoOperations.disable($button, "");
+    $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+  });
+
+  $(".add-queue").bind("ajax:success", function(e, data, status, xhr) {
+    $button = $(e.target)
+    VideoOperations.disable($button, "Added")
+  });
+});
+</script>

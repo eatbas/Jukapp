@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   end
 
   resources :video_events, path: 'statistics', only: :index
+  get "/stats" => "video_events#stats"
+
   resources :favorites, only: [:index, :create] do
     collection do
       delete :destroy
