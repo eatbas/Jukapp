@@ -2,7 +2,10 @@ class VideosController < ApplicationController
   before_action :ensure_in_room
 
   def search
-    @videos = search_videos
+    respond_to do |format|
+      format.json { render json: {videos: search_videos.map(&:marshal_dump)} }
+      format.html { @videos = search_videos }
+    end
   end
 
   def ajax_search
