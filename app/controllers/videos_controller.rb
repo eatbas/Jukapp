@@ -3,7 +3,7 @@ class VideosController < ApplicationController
 
   def search
     respond_to do |format|
-      format.json { render json: {videos: search_videos.map(&:marshal_dump)} }
+      format.json { render json: search_params[:query] ? { videos: search_videos.map(&:marshal_dump) } : {} }
       format.html { @videos = search_videos }
     end
   end
