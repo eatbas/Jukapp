@@ -18,7 +18,7 @@ module ApplicationHelper
       when "notice"
         "alert-info"
       else
-        flash_type.to_s
+        "alert-#{flash_type.to_s}"
     end
   end
 
