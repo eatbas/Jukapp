@@ -8,7 +8,22 @@
       <tr>
         <th class="text-center">#</th>
         <th class="text-center">Title</th>
-        <th class="text-center">Played</th>
+        <th class="text-center">
+          Played
+          <% if params[:sort] == "played_at" %>
+            <%= link_to stats_path, class: "btn btn-default btn-xs" do %>
+              <span class="glyphicon glyphicon-chevron-down"></span>
+            <% end %>
+          <% end %>
+        </th>
+        <th class="text-center">
+          Last played
+          <% unless params[:sort] == "played_at" %>
+            <%= link_to stats_path(sort: "played_at"), class: "btn btn-default btn-xs" do %>
+              <span class="glyphicon glyphicon-chevron-down"></span>
+            <% end %>
+          <% end %>
+        </th>
         <th></th>
         <% if user_signed_in? %>
         <th></th>
@@ -27,6 +42,10 @@
       <td>
         <%= pluralize(stat.play_count, "time") %>
       </td>
+      <td>
+        <%= "#{time_ago_in_words(stat.played_at)} ago" %>
+      </td>
+
       <td>
         <%= link_to "Add", queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-primary add-queue" %>
       </td>

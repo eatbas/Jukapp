@@ -8,7 +8,8 @@ class VideoEventsController < ApplicationController
   end
 
   def stats
+    order_column = params[:sort] == "played_at" ? "played_at" : "play_count"
     @queued_videos   = QueuedVideo.queue_in(current_room)
-    @stats = VideoEvent.includes(:video).order("play_count DESC").paginate(:page => params[:page])
+    @stats = VideoEvent.includes(:video).order("#{order_column} DESC").paginate(:page => params[:page])
   end
 end
