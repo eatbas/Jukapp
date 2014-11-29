@@ -14,41 +14,36 @@
 <body>
 
   <style>
-  :host {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-  }
-  #core_scaffold {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-  }
-  #core_header_panel {
-    background-color: rgb(255, 255, 255);
-  }
-  #core_toolbar {
-    color: rgb(255, 255, 255);
-    background-color: rgb(79, 125, 201);
-  }
-  #core_menu {
-    font-size: 16px;
-  }
+    #core_toolbar {
+      color: rgb(255, 255, 255);
+      background-color: rgb(74, 107, 138);
+    }
+    #core_header_panel {
+      color: rgb(255, 255, 255);
+      background-color: rgb(114, 141, 165);
+    }
   </style>
+
   <core-scaffold id="core_scaffold">
-    <core-header-panel mode="seamed" id="core_header_panel" navigation flex>
-      <core-toolbar id="core_toolbar"></core-toolbar>
-      <core-menu valueattr="label" id="core_menu" theme="core-light-theme">
-        <core-item id="core_item" icon="settings" label="Item1" horizontal center layout></core-item>
-        <core-item id="core_item1" icon="settings" label="Item2" horizontal center layout></core-item>
+    <core-header-panel navigation flex id="core_header_panel">
+      <core-toolbar id="core_toolbar">
+        <core-item icon="home" label="Jukapp" horizontal center layout></core-item>
+      </core-toolbar>
+      <core-menu selected="<%= yield(:title) %>" valueattr="label">
+        <core-item icon="search" label="Search" horizontal center layout active>
+          <%= link_to "", search_videos_path %>
+        </core-item>
+        <core-item icon="av:play-arrow" label="Play" horizontal center layout>
+          <%= link_to "", play_video_path %>
+        </core-item>
+        <core-item icon="star" label="Favorites" horizontal center layout></core-item>
+        <core-item icon="av:skip-next" label="Next" horizontal center layout></core-item>
+        <core-item icon="history" label="History" horizontal center layout></core-item>
+        <core-item icon="settings" label="Settings" horizontal center layout></core-item>
       </core-menu>
     </core-header-panel>
-    <div id="div" tool>Title</div>
+    <div tool></div>
+    <%= yield %>
   </core-scaffold>
 
   <%= render "shared/google_analytics" %>
