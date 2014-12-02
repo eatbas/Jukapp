@@ -1,3 +1,5 @@
 == Jukapp
 
 http://www.jukapp.io/
+
+Staging: http://jukapp-staging.herokuapp.com/
