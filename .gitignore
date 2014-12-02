@@ -20,3 +20,10 @@
 dump.rdb
 
 coverage
+
+/vendor/assets/components/*/*.md
+/vendor/assets/components/*/*.json
+/vendor/assets/components/*/demo.html
+/vendor/assets/components/*/test/
+/vendor/assets/components/*/demos/
+/vendor/assets/components/*/images/
