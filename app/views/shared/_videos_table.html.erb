@@ -1,3 +1,28 @@
+<% if true %>
+<% videos.each_with_index do |video, index| %>
+  <div class="table-row">
+    <paper-shadow>
+      <core-toolbar class="table-row-toolbar">
+        <span flex><%= truncate(video.title, length: 54) %></span>
+        <%= form_tag queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
+          <paper-icon-button icon="add" class="add-queue"></paper-icon-button>
+        <% end %>
+        <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
+          <% if favorite?(video.youtube_id) %>
+            <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :delete, remote: true do %>
+              <paper-icon-button icon="star" class="remove-favorite-button"></paper-icon-button>
+            <% end %>
+          <% else %>
+            <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
+              <paper-icon-button icon="star-outline" class="add-favorite-button"></paper-icon-button>
+            <% end %>
+          <% end %>
+        <% end %>
+      </core-toolbar>
+    </paper-shadow>
+  </div>
+<% end %>
+<% else %>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -15,7 +40,6 @@
         <%= index_with_page(index, params[:page]) %>
       </td>
       <td>
-        <%= truncate(video.title, length: 54) %>
       </td>
       <td>
         <%= link_to "Add", queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-primary add-queue" %>
@@ -36,24 +60,26 @@
     </tr>
   <% end %>
 </table>
+<% end %>
 
 <script>
   $(function() {
-    $(".add-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
-      $button = $(e.target)
-      VideoOperations.disable($button, "");
-      $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+    $(".add-favorite-button").click(function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+      $(this).attr("icon", "star");
     });
 
-    $(".remove-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
-      $button = $(e.target)
-      VideoOperations.disable($button, "");
-      $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+    $(".remove-favorite-button").click(function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+      $(this).attr("icon", "star-outline");
     });
 
-    $(".add-queue").bind("ajax:success", function(e, data, status, xhr) {
-      $button = $(e.target)
-      VideoOperations.disable($button, "Added")
+    $(".add-queue").click(function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
     });
+
   });
 </script>

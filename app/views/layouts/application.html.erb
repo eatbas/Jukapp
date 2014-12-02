@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Jukapp</title>
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
   <%= stylesheet_link_tag    "application", media: "all" %>
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "http://www.youtube.com/player_api" %>
@@ -13,37 +14,45 @@
 </head>
 <body>
 
-  <style>
-    #core_toolbar {
-      color: rgb(255, 255, 255);
-      background-color: rgb(74, 107, 138);
-    }
-    #core_header_panel {
-      color: rgb(255, 255, 255);
-      background-color: rgb(114, 141, 165);
-    }
-  </style>
-
   <core-scaffold id="core_scaffold">
-    <core-header-panel navigation flex id="core_header_panel">
+    <core-header-panel navigation flex id="core_header_panel" mode="seamed">
       <core-toolbar id="core_toolbar">
-        <core-item icon="home" label="Jukapp" horizontal center layout></core-item>
+        <core-item icon="home" label="Jukapp" horizontal center layout>
+          <%= link_to "", root_path %>
+        </core-item>
       </core-toolbar>
       <core-menu selected="<%= yield(:title) %>" valueattr="label">
-        <core-item icon="search" label="Search" horizontal center layout active>
-          <%= link_to "", search_videos_path %>
+          <%= form_tag search_videos_path, method: :get do %>
+            <paper-input-decorator label="Search" floatingLabel>
+              <%= text_field_tag "query", params[:query], placeholder: "Search on YouTube", :autofocus => "autofocus", is: "core-input" %>
+            </paper-input-decorator>
+          <% end %>
+        <core-item icon="home" label="Home" horizontal center layout active>
+          <%= link_to "", root_path %>
         </core-item>
         <core-item icon="av:play-arrow" label="Play" horizontal center layout>
           <%= link_to "", play_video_path %>
         </core-item>
-        <core-item icon="star" label="Favorites" horizontal center layout></core-item>
-        <core-item icon="av:skip-next" label="Next" horizontal center layout></core-item>
-        <core-item icon="history" label="History" horizontal center layout></core-item>
-        <core-item icon="settings" label="Settings" horizontal center layout></core-item>
+        <core-item icon="star" label="Favorites" horizontal center layout>
+          <%= link_to "", favorites_path %>
+        </core-item>
+        <core-item icon="av:skip-next" label="Next" horizontal center layout>
+          <%= link_to "", next_video_path %>
+        </core-item>
+        <core-item icon="history" label="History" horizontal center layout>
+          <%= link_to "", stats_path %>
+        </core-item>
+        <core-item icon="settings" label="Settings" horizontal center layout>
+          <%= link_to "", settings_path %>
+        </core-item>
       </core-menu>
     </core-header-panel>
-    <div tool></div>
-    <%= yield %>
+      <span tool>
+        <h3 class="page-title"><%= yield(:title) %></h3>
+      </span>
+    <div class="content">
+      <%= yield %>
+    </div>
   </core-scaffold>
 
   <%= render "shared/google_analytics" %>

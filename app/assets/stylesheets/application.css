@@ -1,0 +1,77 @@
+body {
+  font-family:'Roboto';
+}
+.table-row {
+  padding: 5px 5px 5px 5px;
+}
+/* table row color */
+.table-row-toolbar {
+  background: white;
+  color: #002C3E;
+}
+/* title bar of left panel */
+#core_header_panel {
+  color: black;
+  background-color: #C7D0D5;
+}
+/* menu left panel */
+#core_toolbar {
+  color: black;
+  background-color: #93B1C6;
+}
+/* title bar of right panel */
+core-scaffold::shadow core-toolbar {
+  background: #DB9515;
+  color: #002C3E;
+}
+/* content of right panel */
+core-scaffold::shadow core-header-panel {
+  background: #EDEFF0;
+  color: #212121;
+}
+.content {
+  padding: 35px 35px 35px 35px;
+}
+.page-title {
+  width: 100%;
+  text-align: center;
+}
+
+
+/* Paper input decorator */
+paper-input-decorator /deep/ .label-text,
+paper-input-decorator /deep/ .input-body,
+paper-input-decorator /deep/ .error {
+  /* inline label,  floating label, error message and error icon color when the input is unfocused */
+  color: black;
+}
+paper-input-decorator /deep/ ::-webkit-input-placeholder {
+  /* platform specific rules for placeholder text */
+  color: black;
+}
+paper-input-decorator /deep/ ::-moz-placeholder {
+  color: black;
+}
+paper-input-decorator /deep/ :-ms-input-placeholder {
+  color: black;
+}
+
+paper-input-decorator /deep/ .unfocused-underline {
+  /* line color when the input is unfocused */
+  background-color: black;
+}
+
+paper-input-decorator[focused] /deep/ .floated-label .label-text {
+  /* floating label color when the input is focused */
+  color: black;
+}
+
+paper-input-decorator /deep/ .focused-underline {
+  /* line color when the input is focused */
+  background-color: black;
+}
+
+paper-input-decorator /deep/ .cursor {
+  /* cursor color during the focus transition */
+  background-color: rgb(74, 107, 138);
+}
