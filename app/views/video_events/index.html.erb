@@ -1,24 +1,13 @@
 <% content_for :title, "Home" %>
 
-<%= render 'shared/searchbar' %>
-<br>
+<h4>Queue</h4>
+<%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
 
-<div class="panel-md panel panel-primary text-center <%= "hidden" if @queued_videos.empty? %>" id="queueHeader">
-  <div class="panel-heading">
-    <h4>Queue</h4>
-  </div>
-  <%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
-</div>
+<h4>Top 10</h4><
+<%= render 'shared/videos_table', videos: @top_ten_videos %>
 
-<div class="panel-md panel panel-primary text-center">
-  <div class="panel-heading"><h4>Top 10</h4></div>
-  <%= render 'shared/videos_table', videos: @top_ten_videos %>
-</div>
-
-<div class="panel-md panel panel-info text-center">
-  <div class="panel-heading"><h4>Last 10</h4></div>
-  <%= render 'shared/videos_table', videos: @last_ten_videos %>
-</div>
+<h4>Last 10</h4>
+<%= render 'shared/videos_table', videos: @last_ten_videos %>
 
 <script>
   $(function() {

@@ -1,4 +1,3 @@
-<% if true %>
 <% videos.each_with_index do |video, index| %>
   <div class="table-row">
     <paper-shadow>
@@ -22,61 +21,22 @@
     </paper-shadow>
   </div>
 <% end %>
-<% else %>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th class="text-center">#</th>
-      <th class="text-center">Title</th>
-      <th></th>
-      <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
-        <th></th>
-      <% end %>
-    </tr>
-  </thead>
-  <% videos.each_with_index do |video, index| %>
-    <tr>
-      <td>
-        <%= index_with_page(index, params[:page]) %>
-      </td>
-      <td>
-      </td>
-      <td>
-        <%= link_to "Add", queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-primary add-queue" %>
-      </td>
-      <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
-        <td>
-          <% if favorite?(video.youtube_id) %>
-            <%= link_to favorites_path(youtube_id: video.youtube_id), method: :delete, remote: true, class: "btn btn-default remove-favorite-button" do %>
-              <span class="glyphicon glyphicon-star"></span>
-            <% end %>
-          <% else %>
-            <%= link_to favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-default add-favorite-button" do %>
-              <span class="glyphicon glyphicon-star-empty"></span>
-            <% end %>
-          <% end %>
-        </td>
-      <% end %>
-    </tr>
-  <% end %>
-</table>
-<% end %>
 
 <script>
   $(function() {
-    $(".add-favorite-button").click(function() {
+    $(".add-favorite-button").unbind("click.addFavorite").bind("click.addFavorite", function() {
       $(this).closest("form").submit();
       $(this).attr("disabled", "disabled");
       $(this).attr("icon", "star");
     });
 
-    $(".remove-favorite-button").click(function() {
+    $(".remove-favorite-button").unbind("click.removeFavorite").bind("click.removeFavorite", function() {
       $(this).closest("form").submit();
       $(this).attr("disabled", "disabled");
       $(this).attr("icon", "star-outline");
     });
 
-    $(".add-queue").click(function() {
+    $(".add-queue").unbind("click.addQueue").bind("click.addQueue", function() {
       $(this).closest("form").submit();
       $(this).attr("disabled", "disabled");
     });
