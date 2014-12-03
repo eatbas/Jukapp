@@ -4,7 +4,8 @@ class QueuedVideosController < ApplicationController
   def queue
     QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), current_room)
 
-    redirect_to search_videos_path, notice: "Added"
+    flash[:notice] = "Added new video"
+    render nothing: true
   end
 
   def play
@@ -36,6 +37,7 @@ class QueuedVideosController < ApplicationController
     QueuedVideo.find(params[:id]).try(:destroy)
     EventStreamService.send_message_to(current_room, {operation: "delete"})
 
+    flash[:notice] = "Deleted a video"
     render json: {}
   end
 
