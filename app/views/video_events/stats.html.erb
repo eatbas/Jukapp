@@ -51,22 +51,22 @@
 <%= will_paginate @stats, renderer: BootstrapPagination::Rails %>
 
 <script>
-$(function() {
-  $(".add-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
-    $button = $(e.target)
-    VideoOperations.disable($button, "");
-    $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
-  });
+  $(function() {
+    $(".add-favorite-button").unbind("click.addFavorite").bind("click.addFavorite", function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+      $(this).attr("icon", "star");
+    });
 
-  $(".remove-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
-    $button = $(e.target)
-    VideoOperations.disable($button, "");
-    $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
-  });
+    $(".remove-favorite-button").unbind("click.removeFavorite").bind("click.removeFavorite", function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+      $(this).attr("icon", "star-outline");
+    });
 
-  $(".add-queue").bind("ajax:success", function(e, data, status, xhr) {
-    $button = $(e.target)
-    VideoOperations.disable($button, "Added")
+    $(".add-queue").unbind("click.addQueue").bind("click.addQueue", function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+    });
   });
-});
 </script>

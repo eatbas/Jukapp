@@ -4,7 +4,7 @@ class QueuedVideosController < ApplicationController
   def queue
     QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), current_room)
 
-    redirect_to search_videos_path
+    redirect_to search_videos_path, notice: "Added"
   end
 
   def play
