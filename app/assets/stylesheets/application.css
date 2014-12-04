@@ -35,6 +35,13 @@ core-scaffold::shadow core-header-panel {
 .page-title {
   width: 100%;
   text-align: center;
+  margin-left: 40px;
+}
+.toolbar-title {
+  background: #5AA367;
+}
+.toolbar-title:not(.first-element) {
+  margin-top: 60px;
 }
 
 
