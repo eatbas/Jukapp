@@ -1,72 +1,87 @@
 <% content_for :title, "Settings" %>
 
-<div class="panel-md panel panel-default text-center">
-  <div class="panel-heading">
-    <h4>Rooms</h4>
-  </div>
-  <% if current_room %>
-    <div class="panel-body">
-      <strong>Room:</strong> <%= current_room.name %> <%= link_to "Leave", leave_rooms_path, class: "btn btn-danger btn-sm" %>
+<paper-shadow>
+  <core-toolbar class="toolbar-title first-element">
+    <div class="indent">
+      <h3>Rooms</h3>
     </div>
-  <% else %>
-    <div class="panel-body">
-      <%= form_for @room || @room = Room.new, html: { class: "form-inline" } do |form| %>
-        <% if @room.errors.any? %>
-          <div class="alert alert-danger" role="alert">
-            <strong><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</strong><br>
-            <% @room.errors.full_messages.each do |message| %>
-              <%= message %><br>
-            <% end %>
-          </div>
-        <% end %>
-        <div class="form-group <%= "has-error" if @room.errors[:name].present? %>">
-          <%= form.text_field :name, class: "form-control" %>
-        </div>
-        <%= form.submit class: "btn btn-primary" %>
-      <% end %>
-    </div>
+  </core-toolbar>
+</paper-shadow>
 
-    <% if @rooms.present? %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th class="text-center">Name</th>
-            <th></th>
-            <% if god_mode? %>
-              <th></th>
-            <% end %>
-          </tr>
-        </thead>
-        <% @rooms.each do |room| %>
-          <tr>
-            <td><%= room.name %></td>
-            <td><%= link_to "Join", join_room_path(room), class: "btn btn-primary btn-sm" %></td>
-            <% if god_mode? %>
-              <td>
-                <%= link_to room, method: :delete, data: { confirm: "Are you sure?" } do %>
-                  <span class="glyphicon glyphicon-trash"></span>
-                <% end %>
-              </td>
-            <% end %>
-          </tr>
+<% if current_room %>
+  <paper-shadow>
+    <core-toolbar class="table-row-toolbar">
+        <span flex>
+          <strong>Room:</strong> <%= current_room.name %>
+        </span>
+        <%= link_to leave_rooms_path do %>
+          <paper-icon-button icon="exit-to-app"></paper-icon-button>
         <% end %>
-      </table>
+    </core-toolbar>
+  </paper-shadow>
+<% else %>
+  <%= form_for @room || @room = Room.new, html: { class: "form-inline" } do |form| %>
+    <% if @room.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <strong><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</strong><br>
+        <% @room.errors.full_messages.each do |message| %>
+          <%= message %><br>
+        <% end %>
+      </div>
     <% end %>
+    <div class="form-group <%= "has-error" if @room.errors[:name].present? %>">
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+    <%= form.submit class: "btn btn-primary" %>
   <% end %>
-</div>
 
-<div class="panel-md panel panel-default">
-  <div class="panel-heading text-center">
-    <h4>User</h4>
-  </div>
-  <div class="panel-body">
-    <% if user_signed_in? %>
-    <div class="text-center">
-      Logged in as <strong><%= current_user.username %></strong>
-      <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger btn-sm" %>
+  <% if @rooms.present? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="text-center">Name</th>
+          <th></th>
+          <% if god_mode? %>
+            <th></th>
+          <% end %>
+        </tr>
+      </thead>
+      <% @rooms.each do |room| %>
+        <tr>
+          <td><%= room.name %></td>
+          <td><%= link_to "Join", join_room_path(room), class: "btn btn-primary btn-sm" %></td>
+          <% if god_mode? %>
+            <td>
+              <%= link_to room, method: :delete, data: { confirm: "Are you sure?" } do %>
+                <span class="glyphicon glyphicon-trash"></span>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+<% end %>
+
+<paper-shadow>
+  <core-toolbar class="toolbar-title">
+    <div class="indent">
+      <h3>User</h3>
     </div>
-    <% else %>
-    <%= render 'devise/sessions/sign_in_form' %>
-    <% end %>
-  </div>
-</div>
+  </core-toolbar>
+</paper-shadow>
+
+<% if user_signed_in? %>
+  <paper-shadow>
+    <core-toolbar class="table-row-toolbar">
+      <span flex>
+        Logged in as <strong><%= current_user.username %></strong>
+      </span>
+      <%= link_to destroy_user_session_path, method: :delete do %>
+      <paper-icon-button icon="exit-to-app"></paper-icon-button>
+      <% end %>
+    </core-toolbar>
+  </paper-shadow>
+<% else %>
+  <%= render 'devise/sessions/sign_in_form' %>
+<% end %>

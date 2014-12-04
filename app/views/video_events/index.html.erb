@@ -1,17 +1,29 @@
 <% content_for :title, "Home" %>
 
 <paper-shadow>
-  <core-toolbar class="toolbar-title first-element"><div class="indent"><h3>Queue</h3></div></core-toolbar>
+  <core-toolbar class="toolbar-title first-element">
+    <div class="indent">
+      <h3>Queue</h3>
+    </div>
+  </core-toolbar>
 </paper-shadow>
 <%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
 
 <paper-shadow>
-  <core-toolbar class="toolbar-title"><div class="indent"><h3>Top 10</h3></div></core-toolbar>
+  <core-toolbar class="toolbar-title">
+    <div class="indent">
+      <h3>Top 10</h3>
+    </div>
+  </core-toolbar>
 </paper-shadow>
 <%= render 'shared/videos_table', videos: @top_ten_videos %>
 
 <paper-shadow>
-  <core-toolbar class="toolbar-title"><div class="indent"><h3>Last 10</h3></div></core-toolbar>
+  <core-toolbar class="toolbar-title">
+    <div class="indent">
+      <h3>Last 10</h3>
+    </div>
+  </core-toolbar>
 </paper-shadow>
 <%= render 'shared/videos_table', videos: @last_ten_videos %>
 
