@@ -12,3 +12,7 @@ $(document).ajaxComplete (event, request) ->
   type = request.getResponseHeader("X-Toast-Type")
   if msg != null
     ajaxMessage(msg, type)
+
+$ ->
+  $(".form-submit").click ->
+    $(this).closest("form").submit()

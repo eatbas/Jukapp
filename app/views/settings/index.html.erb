@@ -14,52 +14,50 @@
         <span flex>
           <strong>Room:</strong> <%= current_room.name %>
         </span>
-        <%= link_to leave_rooms_path do %>
+        <%= link_to leave_rooms_path, class: "icon-button-link" do %>
           <paper-icon-button icon="exit-to-app"></paper-icon-button>
         <% end %>
     </core-toolbar>
   </paper-shadow>
 <% else %>
-  <%= form_for @room || @room = Room.new, html: { class: "form-inline" } do |form| %>
-    <% if @room.errors.any? %>
-      <div class="alert alert-danger" role="alert">
-        <strong><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</strong><br>
-        <% @room.errors.full_messages.each do |message| %>
-          <%= message %><br>
+  <paper-shadow>
+    <core-toolbar class="medium-tall form-toolbar">
+      <%= form_for @room || @room = Room.new do |form| %>
+        <% if @room.errors.any? %>
+          <div class="alert alert-danger" role="alert">
+            <strong><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</strong><br>
+            <% @room.errors.full_messages.each do |message| %>
+              <%= message %><br>
+            <% end %>
+          </div>
         <% end %>
-      </div>
-    <% end %>
-    <div class="form-group <%= "has-error" if @room.errors[:name].present? %>">
-      <%= form.text_field :name, class: "form-control" %>
-    </div>
-    <%= form.submit class: "btn btn-primary" %>
-  <% end %>
+        <paper-input-decorator label="Room name" class="form-field">
+          <%= form.text_field :name, is: "core-input" %>
+        </paper-input-decorator>
+        <paper-button raised class="form-submit success">Create</paper-button>
+      <% end %>
+    </core-toolbar>
+  </paper-shadow>
 
   <% if @rooms.present? %>
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="text-center">Name</th>
-          <th></th>
-          <% if god_mode? %>
-            <th></th>
-          <% end %>
-        </tr>
-      </thead>
-      <% @rooms.each do |room| %>
-        <tr>
-          <td><%= room.name %></td>
-          <td><%= link_to "Join", join_room_path(room), class: "btn btn-primary btn-sm" %></td>
-          <% if god_mode? %>
-            <td>
-              <%= link_to room, method: :delete, data: { confirm: "Are you sure?" } do %>
-                <span class="glyphicon glyphicon-trash"></span>
+    <% @rooms.each do |room| %>
+        <div class="table-row">
+          <paper-shadow>
+            <core-toolbar class="table-row-toolbar">
+              <span flex><%= room.name %></span>
+              <%= link_to join_room_path(room), class: "icon-button-link" do %>
+                <paper-icon-button icon="launch"></paper-icon-button>
               <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </table>
+
+              <% if god_mode? %>
+                <%= link_to room, method: :delete, data: { confirm: "Are you sure?" }, class: "icon-button-link" do %>
+                  <paper-icon-button icon="delete"></paper-icon-button>
+                <% end %>
+              <% end %>
+            </core-toolbar>
+          </paper-shadow>
+        </div>
+    <% end %>
   <% end %>
 <% end %>
 
@@ -77,7 +75,7 @@
       <span flex>
         Logged in as <strong><%= current_user.username %></strong>
       </span>
-      <%= link_to destroy_user_session_path, method: :delete do %>
+      <%= link_to destroy_user_session_path, method: :delete, class: "icon-button-link" do %>
       <paper-icon-button icon="exit-to-app"></paper-icon-button>
       <% end %>
     </core-toolbar>
