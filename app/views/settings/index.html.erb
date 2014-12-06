@@ -61,15 +61,15 @@
   <% end %>
 <% end %>
 
-<paper-shadow>
-  <core-toolbar class="toolbar-title">
-    <div class="indent">
-      <h3>User</h3>
-    </div>
-  </core-toolbar>
-</paper-shadow>
-
 <% if user_signed_in? %>
+  <paper-shadow>
+    <core-toolbar class="toolbar-title">
+      <div class="indent">
+        <h3>User</h3>
+      </div>
+    </core-toolbar>
+  </paper-shadow>
+
   <paper-shadow>
     <core-toolbar class="table-row-toolbar">
       <span flex>
@@ -81,5 +81,7 @@
     </core-toolbar>
   </paper-shadow>
 <% else %>
-  <%= render 'devise/sessions/sign_in_form' %>
+  <div class="card-section">
+    <%= render 'devise/sessions/sign_in_form' %>
+  </div>
 <% end %>

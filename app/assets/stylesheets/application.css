@@ -63,6 +63,9 @@ core-scaffold::shadow core-header-panel {
 .toolbar-title:not(.first-element) {
   margin-top: 60px;
 }
+.card-section:not(.first-element) {
+  margin-top: 60px;
+}
 .icon-button-link {
   color: black;
 }
