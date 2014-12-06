@@ -1,5 +1,5 @@
 body {
-  font-family:'Roboto';
+  font-family: 'Roboto';
 }
 .table-row {
   padding: 5px 5px 5px 5px;
@@ -21,13 +21,13 @@ body {
 }
 /* title bar of right panel */
 core-scaffold::shadow core-toolbar {
-  background: #DB9515;
-  color: #002C3E;
+  background: #E3624D;
+  color: black;
 }
 /* content of right panel */
 core-scaffold::shadow core-header-panel {
   background: #EDEFF0;
-  color: #212121;
+  color: black;
 }
 /* form color */
 .form-toolbar {
@@ -68,6 +68,11 @@ core-scaffold::shadow core-header-panel {
 }
 .icon-button-link {
   color: black;
+}
+.youtube-player {
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 25px;
 }
 
 /* Paper input decorator */

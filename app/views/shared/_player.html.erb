@@ -1,9 +1,44 @@
 <% if video.present? %>
-  <h2 id="video_title"><%= video.title %></h2>
-  <div id="player"></div>
+
+  <paper-shadow>
+    <core-toolbar class="toolbar-title first-element">
+      <div class="indent">
+        <div id="video_title"><%= video.title %></div>
+      </div>
+    </core-toolbar>
+
+    <div class="youtube-player" layout vertical center center-justified>
+      <google-youtube
+        id="youtube_player"
+        videoid="<%= video.youtube_id %>"
+        height="390px"
+        width="640px"
+        rel="0"
+        autoplay="1">
+      </google-youtube>
+    </div>
+  </paper-shadow>
+
 <% else %>
-  <div class="text-center">
+  <div class="text-center" layout vertical center center-justified>
     <h1>Empty Queue</h1>
     <%= image_tag("jukebox.png") %>
   </div>
 <% end %>
+
+<script>
+  $(function() {
+    var eventStream = new EventStream(<%= event_stream_params %>);
+    eventStream.forPlayer(<%= @current.present? %>);
+
+    document.querySelector("google-youtube").addEventListener("google-youtube-state-change", function(e) {
+      if (e.detail.data == 0) {
+        VideoOperations.playNext();
+      }
+    });
+
+    document.querySelector("google-youtube").addEventListener("google-youtube-error", function(e) {
+      VideoOperations.playNext();
+    });
+  });
+</script>

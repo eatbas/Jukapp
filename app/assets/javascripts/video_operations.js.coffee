@@ -8,15 +8,16 @@ class @VideoOperations
         $('#queue').html(data)
     )
 
-  @playNext: (youtube_player) ->
+  @playNext: () ->
     $.ajax (
       type: "GET"
       url: "/play"
       contentType: "application/json",
       success: (data, textStatus, jqXHR) ->
         if data.video
-          youtube_service = new YoutubeService(youtube_player)
-          youtube_service.play(data.video)
+          video = data.video
+          $("#youtube_player").attr("videoid", video.youtube_id)
+          $("#video_title").text(video.title)
         else
           location.reload()
     )
