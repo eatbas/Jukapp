@@ -1,6 +1,13 @@
-<% flash.each do |type, message| %>
-  <div class="alert <%= bootstrap_class_for(type) %> fade in" role="alert">
-    <button class="close" data-dismiss="alert">×</button>
-    <%= message %>
-  </div>
-<% end %>
+<div id="flash-message">
+  <% flash.each do |type, message| %>
+    <paper-toast text="<%= message %>" onclick="this.dismiss();" class="capsule toast-message"></paper-toast>
+  <% end %>
+</div>
+
+<script>
+  $(function() {
+    $(".toast-message").each(function(index, value) {
+      value.show();
+    });
+  });
+</script>

@@ -1,0 +1,106 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-shadow/paper-shadow.html">
+<link rel="import" href="../core-toolbar/core-toolbar.html">
+
+<polymer-element name="jukapp-signup-form" attributes="action token">
+  <template>
+    <paper-shadow>
+      <core-toolbar class="toolbar-title">
+        <div class="indent">
+          <h3>Register</h3>
+        </div>
+      </core-toolbar>
+
+      <div class="card">
+        <form method="POST" layout vertical>
+          <input name="authenticity_token" type="hidden" value={{token}} />
+          <paper-input-decorator label="Username">
+            <input name="user[username]" type="text" />
+          </paper-input-decorator>
+          <paper-input-decorator label="Password">
+            <input name="user[password]" type="password" />
+          </paper-input-decorator>
+          <paper-input-decorator label="Password confirmation">
+            <input name="user[password_confirmation]" type="password" />
+          </paper-input-decorator>
+          <paper-button raised on-click={{postForm}} class="success">Sign up</paper-button>
+          <input type="submit" on-click={{postForm}} style="display:none"/>
+        </form>
+      </div>
+    </paper-shadow>
+
+    <style>
+    .card {
+      background-color: white;
+      padding: 25px;
+    }
+    .toolbar-title {
+      background: #7596AD;
+    }
+    paper-button {
+      margin: 5px;
+    }
+    paper-button.success {
+      background-color: #5AA367;
+    }
+    form {
+      max-width: 300px;
+    }
+    paper-checkbox {
+      padding-top: 15px;
+      padding-bottom: 25px;
+    }
+
+    /* Paper input decorator */
+    paper-input-decorator /deep/ .label-text,
+    paper-input-decorator /deep/ .input-body,
+    paper-input-decorator /deep/ .error {
+      /* inline label,  floating label, error message and error icon color when the input is unfocused */
+      color: black;
+    }
+    paper-input-decorator /deep/ ::-moz-placeholder {
+      color: black;
+    }
+    paper-input-decorator /deep/ :-ms-input-placeholder {
+      color: black;
+    }
+
+    paper-input-decorator /deep/ .unfocused-underline {
+      /* line color when the input is unfocused */
+      background-color: black;
+    }
+
+    paper-input-decorator[focused] /deep/ .floated-label .label-text {
+      /* floating label color when the input is focused */
+      color: black;
+    }
+
+    paper-input-decorator /deep/ .focused-underline {
+      /* line color when the input is focused */
+      background-color: black;
+    }
+
+    paper-input-decorator /deep/ .cursor {
+      /* cursor color during the focus transition */
+      background-color: rgb(74, 107, 138);
+    }
+  </style>
+
+</template>
+<script>
+  Polymer("jukapp-signup-form", {
+
+    publish: {
+      action: "",
+      token: "",
+    },
+
+    postForm: function(e) {
+      $form = $(e.target).closest("form");
+      $form.attr("action", this.action);
+      $form.submit();
+    }
+
+  });
+</script>
+</polymer-element>

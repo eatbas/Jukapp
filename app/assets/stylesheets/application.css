@@ -1,0 +1,136 @@
+body {
+  font-family: 'Roboto';
+}
+.table-row {
+  padding: 5px 5px 5px 5px;
+}
+/* table row color */
+.table-row-toolbar {
+  background: white;
+  color: #002C3E;
+}
+/* title bar of left panel */
+#core_header_panel {
+  color: black;
+  background-color: #C7D0D5;
+}
+/* menu left panel */
+#core_toolbar {
+  color: black;
+  background-color: #93B1C6;
+}
+/* title bar of right panel */
+core-scaffold::shadow core-toolbar {
+  background: #E3624D;
+  color: black;
+}
+/* content of right panel */
+core-scaffold::shadow core-header-panel {
+  background: #EDEFF0;
+  color: black;
+}
+/* form color */
+.form-toolbar {
+  background: white;
+  color: #002C3E;
+  font-size: 16px;
+}
+.form-toolbar form {
+  margin-left: 30px;
+}
+.form-field {
+  margin-top: 30px;
+}
+.form-submit {
+  width: 100%;
+  right: 10px;
+  margin-left: 10px;
+}
+.form-submit.success {
+  background-color: #5AA367;
+}
+.content {
+  padding: 35px 35px 35px 35px;
+}
+.page-title {
+  width: 100%;
+  text-align: center;
+  margin-left: 40px;
+}
+.toolbar-title {
+  background: #7596AD;
+}
+.toolbar-title:not(.first-element) {
+  margin-top: 60px;
+}
+.card-section:not(.first-element) {
+  margin-top: 60px;
+}
+.icon-button-link {
+  color: black;
+}
+.youtube-player {
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 25px;
+}
+
+/* Paper input decorator */
+paper-input-decorator /deep/ .label-text,
+paper-input-decorator /deep/ .input-body,
+paper-input-decorator /deep/ .error {
+  /* inline label,  floating label, error message and error icon color when the input is unfocused */
+  color: black;
+}
+paper-input-decorator /deep/ ::-webkit-input-placeholder {
+  /* platform specific rules for placeholder text */
+  color: black;
+}
+paper-input-decorator /deep/ ::-moz-placeholder {
+  color: black;
+}
+paper-input-decorator /deep/ :-ms-input-placeholder {
+  color: black;
+}
+
+paper-input-decorator /deep/ .unfocused-underline {
+  /* line color when the input is unfocused */
+  background-color: black;
+}
+
+paper-input-decorator[focused] /deep/ .floated-label .label-text {
+  /* floating label color when the input is focused */
+  color: black;
+}
+
+paper-input-decorator /deep/ .focused-underline {
+  /* line color when the input is focused */
+  background-color: black;
+}
+
+paper-input-decorator /deep/ .cursor {
+  /* cursor color during the focus transition */
+  background-color: rgb(74, 107, 138);
+}
+
+/* workaround until #78 closes */
+core-icon-button {
+  -moz-user-select: none;
+  border-radius: 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  margin: 2px;
+  padding: 7px;
+  vertical-align: middle;
+}
+html core-icon {
+  background-repeat: no-repeat;
+  display: inline-block;
+  fill: currentcolor;
+  height: 24px;
+  position: relative;
+  vertical-align: middle;
+  width: 24px;
+}

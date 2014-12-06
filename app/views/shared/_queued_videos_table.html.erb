@@ -1,32 +1,28 @@
 <div id="queue">
   <% if queued_videos.present? %>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th class="text-center">#</th>
-          <th class="text-center">Title</th>
-          <% if owner? %>
-            <th></th>
-          <% end %>
-        </tr>
-      </thead>
-      <% queued_videos.each_with_index do |queued_video, index| %>
-        <tr>
-          <td>
-            <%= index+1 %>
-          </td>
-          <td>
-            <%= queued_video.video.title %>
-          </td>
-          <% if owner? %>
-            <td>
-              <%= link_to queued_video, method: :delete, remote: true, data: { confirm: "Are you sure?" } do %>
-                <span class="glyphicon glyphicon-trash"></span>
+    <% queued_videos.each_with_index do |queued_video, index| %>
+      <div class="table-row">
+        <paper-shadow>
+          <core-toolbar class="table-row-toolbar">
+            <span flex>
+              <%= truncate(queued_video.video.title, length: 54) %>
+            </span>
+            <% if owner? %>
+              <%= form_tag queued_video, method: :delete, remote: true do %>
+                <paper-icon-button icon="delete" class="delete-queue"></paper-icon-button>
               <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </table>
+            <% end %>
+          </core-toolbar>
+        </paper-shadow>
+      </div>
+    <% end %>
   <% end %>
 </div>
+
+<script>
+  $(function() {
+    $(".delete-queue").unbind("click.deleteQueue").bind("click.deleteQueue", function() {
+      $(this).closest("form").submit();
+    });
+  });
+</script>

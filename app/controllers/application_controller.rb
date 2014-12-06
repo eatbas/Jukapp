@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   before_action :ensure_room_exists
 
+  after_action :flash_to_headers
+
   def ensure_in_room
     unless current_room
       redirect_to settings_path, notice: "First you have to join a room."
@@ -32,5 +34,26 @@ class ApplicationController < ActionController::Base
 
   def after_sign_out_path_for(resource_or_scope)
     settings_path
+  end
+
+  private
+
+  def flash_to_headers
+    return unless request.xhr?
+
+    flash_message, flash_type = flash_message_and_type
+
+    if flash_message.present?
+      response.headers['X-Toast'] = flash_message
+      response.headers["X-Toast-Type"] = flash_type
+
+      flash.discard # don't want the flash to appear when you reload page
+    end
+  end
+
+  def flash_message_and_type
+    [:error, :warning, :notice].map do |type|
+      [ flash[type], type.to_s ] unless flash[type].blank?
+    end.compact.first
   end
 end

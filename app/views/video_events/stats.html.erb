@@ -1,91 +1,72 @@
-<%= render 'shared/searchbar' %>
-<br>
+<% content_for :title, "History" %>
 
-<div class="panel-md panel panel-primary text-center">
-  <div class="panel-heading"><h4>Stats</h4></div>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th class="text-center">#</th>
-        <th class="text-center">Title</th>
-        <th class="text-center">
-          Played
-          <% if params[:sort] == "played_at" %>
-            <%= link_to stats_path, class: "btn btn-default btn-xs" do %>
-              <span class="glyphicon glyphicon-chevron-down"></span>
-            <% end %>
-          <% end %>
-        </th>
-        <th class="text-center">
-          Last played
-          <% unless params[:sort] == "played_at" %>
-            <%= link_to stats_path(sort: "played_at"), class: "btn btn-default btn-xs" do %>
-              <span class="glyphicon glyphicon-chevron-down"></span>
-            <% end %>
-          <% end %>
-        </th>
-        <th></th>
-        <% if user_signed_in? %>
-        <th></th>
-        <% end %>
-      </tr>
-    </thead>
-    <% @stats.each_with_index do |stat, index| %>
-    <% video = stat.video %>
-    <tr>
-      <td>
-        <%= index_with_page(index, params[:page]) %>
-      </td>
-      <td>
-        <%= truncate(video.title, length: 54) %>
-      </td>
-      <td>
-        <%= pluralize(stat.play_count, "time") %>
-      </td>
-      <td>
-        <%= "#{time_ago_in_words(stat.played_at)} ago" %>
-      </td>
-
-      <td>
-        <%= link_to "Add", queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-primary add-queue" %>
-      </td>
-      <% if user_signed_in? %>
-      <td>
-        <% if favorite?(video.youtube_id) %>
-        <%= link_to favorites_path(youtube_id: video.youtube_id), method: :delete, remote: true, class: "btn btn-default remove-favorite-button" do %>
-        <span class="glyphicon glyphicon-star"></span>
-        <% end %>
-        <% else %>
-        <%= link_to favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true, class: "btn btn-default add-favorite-button" do %>
-        <span class="glyphicon glyphicon-star-empty"></span>
-        <% end %>
-        <% end %>
-      </td>
-      <% end %>
-    </tr>
+<th class="text-center">
+  Played
+  <% if params[:sort] == "played_at" %>
+    <%= link_to stats_path, class: "btn btn-default btn-xs" do %>
+      <span class="glyphicon glyphicon-chevron-down"></span>
     <% end %>
-  </table>
-</div>
+  <% end %>
+</th>
+<th class="text-center">
+  Last played
+  <% unless params[:sort] == "played_at" %>
+    <%= link_to stats_path(sort: "played_at"), class: "btn btn-default btn-xs" do %>
+      <span class="glyphicon glyphicon-chevron-down"></span>
+    <% end %>
+  <% end %>
+</th>
+
+<% @stats.each_with_index do |stat, index| %>
+  <% video = stat.video %>
+  <div class="table-row">
+    <paper-shadow>
+      <core-toolbar class="medium-tall table-row-toolbar">
+        <span flex>
+          <%= truncate(video.title, length: 54) %>
+        </span>
+        <div class="middle">
+          Played: <%= pluralize(stat.play_count, "time") %>
+          Last played: <%= "#{time_ago_in_words(stat.played_at)} ago" %>
+        </div>
+        <%= form_tag queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
+          <paper-icon-button icon="add" class="add-queue"></paper-icon-button>
+        <% end %>
+        <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
+          <% if favorite?(video.youtube_id) %>
+            <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :delete, remote: true do %>
+              <paper-icon-button icon="star" class="remove-favorite-button"></paper-icon-button>
+            <% end %>
+          <% else %>
+            <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
+              <paper-icon-button icon="star-outline" class="add-favorite-button"></paper-icon-button>
+            <% end %>
+          <% end %>
+        <% end %>
+      </core-toolbar>
+    </paper-shadow>
+  </div>
+<% end %>
 
 <%= will_paginate @stats, renderer: BootstrapPagination::Rails %>
 
 <script>
-$(function() {
-  $(".add-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
-    $button = $(e.target)
-    VideoOperations.disable($button, "");
-    $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
-  });
+  $(function() {
+    $(".add-favorite-button").unbind("click.addFavorite").bind("click.addFavorite", function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+      $(this).attr("icon", "star");
+    });
 
-  $(".remove-favorite-button").bind("ajax:success", function(e, data, status, xhr) {
-    $button = $(e.target)
-    VideoOperations.disable($button, "");
-    $button.find("span:first-child").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
-  });
+    $(".remove-favorite-button").unbind("click.removeFavorite").bind("click.removeFavorite", function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+      $(this).attr("icon", "star-outline");
+    });
 
-  $(".add-queue").bind("ajax:success", function(e, data, status, xhr) {
-    $button = $(e.target)
-    VideoOperations.disable($button, "Added")
+    $(".add-queue").unbind("click.addQueue").bind("click.addQueue", function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+    });
   });
-});
 </script>
