@@ -29,6 +29,26 @@ core-scaffold::shadow core-header-panel {
   background: #EDEFF0;
   color: #212121;
 }
+/* form color */
+.form-toolbar {
+  background: white;
+  color: #002C3E;
+  font-size: 16px;
+}
+.form-toolbar form {
+  margin-left: 30px;
+}
+.form-field {
+  margin-top: 30px;
+}
+.form-submit {
+  width: 100%;
+  right: 10px;
+  margin-left: 10px;
+}
+.form-submit.success {
+  background-color: #5AA367;
+}
 .content {
   padding: 35px 35px 35px 35px;
 }
@@ -38,12 +58,17 @@ core-scaffold::shadow core-header-panel {
   margin-left: 40px;
 }
 .toolbar-title {
-  background: #5AA367;
+  background: #7596AD;
 }
 .toolbar-title:not(.first-element) {
   margin-top: 60px;
 }
-
+.card-section:not(.first-element) {
+  margin-top: 60px;
+}
+.icon-button-link {
+  color: black;
+}
 
 /* Paper input decorator */
 paper-input-decorator /deep/ .label-text,
