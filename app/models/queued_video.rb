@@ -19,6 +19,5 @@ class QueuedVideo < ActiveRecord::Base
 
   def play_and_destroy
     destroy.video.play_in(room)
-    # video.play_in(room)
   end
 end
