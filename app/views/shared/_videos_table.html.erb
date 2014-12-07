@@ -1,25 +1,21 @@
 <% videos.each_with_index do |video, index| %>
-  <div class="table-row">
-    <paper-shadow>
-      <core-toolbar class="table-row-toolbar">
-        <span flex><%= truncate(video.title, length: 54) %></span>
-        <%= form_tag queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
-          <paper-icon-button icon="add" class="add-queue"></paper-icon-button>
+  <jukapp-row-bar>
+    <span flex><%= truncate(video.title, length: 54) %></span>
+    <%= form_tag queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
+      <paper-icon-button icon="add" class="add-queue"></paper-icon-button>
+    <% end %>
+    <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
+      <% if favorite?(video.youtube_id) %>
+        <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :delete, remote: true do %>
+          <paper-icon-button icon="star" class="remove-favorite-button"></paper-icon-button>
         <% end %>
-        <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
-          <% if favorite?(video.youtube_id) %>
-            <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :delete, remote: true do %>
-              <paper-icon-button icon="star" class="remove-favorite-button"></paper-icon-button>
-            <% end %>
-          <% else %>
-            <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
-              <paper-icon-button icon="star-outline" class="add-favorite-button"></paper-icon-button>
-            <% end %>
-          <% end %>
+      <% else %>
+        <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
+          <paper-icon-button icon="star-outline" class="add-favorite-button"></paper-icon-button>
         <% end %>
-      </core-toolbar>
-    </paper-shadow>
-  </div>
+      <% end %>
+    <% end %>
+  </jukapp-row-bar>
 <% end %>
 
 <script>

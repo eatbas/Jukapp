@@ -1,9 +1,6 @@
 body {
   font-family: 'Roboto';
 }
-.table-row {
-  padding: 5px 5px 5px 5px;
-}
 /* table row color */
 .table-row-toolbar {
   background: white;

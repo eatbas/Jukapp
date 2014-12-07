@@ -1,18 +1,18 @@
 <% content_for :title, "Home" %>
 
-<jukapp-bar header class="first-element">
+<jukapp-header-bar class="first-element">
   Queue
-</jukapp-bar>
+</jukapp-header-bar>
 <%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
 
-<jukapp-bar header>
+<jukapp-header-bar>
   Top 10
-</jukapp-bar>
+</jukapp-header-bar>
 <%= render 'shared/videos_table', videos: @top_ten_videos %>
 
-<jukapp-bar header>
+<jukapp-header-bar>
   Last 10
-</jukapp-bar>
+</jukapp-header-bar>
 <%= render 'shared/videos_table', videos: @last_ten_videos %>
 
 <script>
