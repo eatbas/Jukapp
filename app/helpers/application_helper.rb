@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def event_stream_params
-    "'#{current_room.id}', '#{queue_socket_path}', '#{session[:_csrf_token]}'".html_safe
+    "'#{current_room.id}', '#{ENV["PUSHER_KEY"]}'".html_safe
   end
 
   def bootstrap_class_for(flash_type)

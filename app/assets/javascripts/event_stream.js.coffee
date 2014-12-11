@@ -1,26 +1,32 @@
 class @EventStream
 
-  constructor: (room_id, socket_path, csrf_token) ->
-    @eshq = new ESHQ("queue-#{room_id}", { auth_url: socket_path, auth_headers: {'X-CSRF-Token': csrf_token} })
+  constructor: (room_id, pusher_key) ->
+    pusher  = new Pusher(pusher_key)
+    @channel = pusher.subscribe("queue-#{room_id}")
 
   forPlayer: (currentVideo) ->
-    @eshq.onmessage = (e) ->
-      data = JSON.parse(e.data)
-      switch data.operation
-        when "next"
-          VideoOperations.playNext()
-        when "new"
-          if currentVideo
-            VideoOperations.currentQueue()
-          else
-            location.reload()
-        when "play", "delete"
-          VideoOperations.currentQueue()
+    @channel.bind "next", () ->
+      VideoOperations.playNext()
+    @channel.bind "new", () ->
+      if currentVideo
+        VideoOperations.currentQueue()
+      else
+        location.reload()
+    @channel.bind "play", () ->
+      VideoOperations.currentQueue()
+    @channel.bind "delete", () ->
+      VideoOperations.currentQueue()
 
   forQueue: ->
-    @eshq.onmessage = (e) ->
+    @channel.bind "next", () ->
       $("#queueHeader").removeClass("hidden")
-      data = JSON.parse(e.data)
-      switch data.operation
-        when "next", "new", "play", "delete"
-          VideoOperations.currentQueue()
+      VideoOperations.currentQueue()
+    @channel.bind "new", () ->
+      $("#queueHeader").removeClass("hidden")
+      VideoOperations.currentQueue()
+    @channel.bind "play", () ->
+      $("#queueHeader").removeClass("hidden")
+      VideoOperations.currentQueue()
+    @channel.bind "delete", () ->
+      $("#queueHeader").removeClass("hidden")
+      VideoOperations.currentQueue()

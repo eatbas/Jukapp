@@ -6,7 +6,7 @@ class QueuedVideo < ActiveRecord::Base
 
   def self.queue(video, room)
     create(video_id: video.id, room_id: room.id)
-    EventStreamService.send_message_to(room, {operation: "new"})
+    EventStreamService.send_message_to(room, "new")
   end
 
   def self.videos_in(room)
