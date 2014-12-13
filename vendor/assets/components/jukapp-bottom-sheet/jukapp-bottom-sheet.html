@@ -57,7 +57,7 @@
 </style>
 
   <div id="drawer" class="bottom-sheet {{ dragging ? '' : 'transition' }}" vertical layout _style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ fullyExpanded ? '384px' : '64px' }}">
-    <paper-button flex on-tap="{{togglePanel}}">
+    <paper-button flex noink on-tap="{{togglePanel}}">
       <div class="bottom-sheet-content">
         <div class="bottom-sheet-row" horizontal relative layout flex center>
           <core-icon icon="{{ expanded ? 'expand-more' : 'expand-less' }}" class="element secondary"></core-icon>
@@ -100,23 +100,25 @@
       this.fullyExpanded = null;
       this.expanded = !this.expanded;
       this.fullyExpanded = this.expanded;
+      if (!this.expanded) {
+        this.$.drawer.style.height = "64px";
+      }
     },
 
     translateYForDeltaY: function(deltaY) {
       var baseHeight = 64;
-      console.log(parseInt(this.$.drawer.style.height));
       var newHeight = Math.max(64, this.drawerHeight - deltaY);
       this.expanded = newHeight != 64
       return newHeight;
     },
 
     trackStart: function(e) {
+      this.drawerHeight = this.$.drawer.offsetHeight;
       this.dragging = true;
       e.preventTap();
     },
 
     tracky : function(e) {
-      this.drawerHeight = this.$.drawer.offsetHeight;
       if (this.dragging) {
         this.moveDrawer(this.translateYForDeltaY(e.dy));
       }
@@ -124,6 +126,9 @@
 
     trackEnd: function() {
       this.dragging = false;
+      if (this.$.drawer.offsetHeight != 64) {
+        this.fullyExpanded = true;
+      }
     },
 
     moveDrawer: function(translateY) {
