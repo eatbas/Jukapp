@@ -3,7 +3,7 @@
 <link rel="import" href="../core-header-panel/core-header-panel.html">
 <link rel="import" href="../core-icon-button/core-icon-button.html">
 
-<polymer-element name="jukapp-bottom-sheet" attributes="drawerWidth narrow">
+<polymer-element name="jukapp-bottom-sheet" attributes="drawerWidth narrow queue">
   <template>
 
   <style>
@@ -13,8 +13,7 @@
     background: white;
     bottom: 0;
     right: 0;
-
-    max-height: 384px;
+    max-height: {{ drawerHeight }};
   }
   .transition {
     transition: left ease-in-out 0.3s, height ease-in-out 0.3s;
@@ -56,22 +55,22 @@
 
 </style>
 
-  <div id="drawer" class="bottom-sheet {{ dragging ? '' : 'transition' }}" vertical layout _style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ fullyExpanded ? '384px' : '64px' }}">
+  <div id="drawer" class="bottom-sheet {{ { 'transition': !dragging } | tokenList }}" vertical layout _style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ isHidden ? '0px' : fullyExpanded ? drawerHeight : rowHeight }}">
     <paper-button flex noink on-tap="{{togglePanel}}">
       <div class="bottom-sheet-content">
-        <div class="bottom-sheet-row" horizontal relative layout flex center>
-          <core-icon icon="{{ expanded ? 'expand-more' : 'expand-less' }}" class="element secondary"></core-icon>
-          <span class="element secondary">1</span>
-          <span flex>Hey Rosetta</span>
-          <span class="last-element secondary">3:14</span>
-        </div>
-
-        <div class="bottom-sheet-row" horizontal relative layout flex center>
-          <span class="element"></span>
-          <span class="element secondary">2</span>
-          <span flex>Hey Rosetta</span>
-          <span class="last-element secondary">3:14</span>
-        </div>
+        <template repeat="{{ video, index in queue }}">
+          <div class="bottom-sheet-row" horizontal relative layout flex center>
+            <template if="{{ index == 0 }}">
+              <core-icon icon="{{ fullyExpanded ? 'expand-more' : 'expand-less' }}" class="element secondary"></core-icon>
+            </template>
+            <template if="{{ index != 0 }}">
+              <span class="element"></span>
+            </template>
+            <span class="element secondary">{{ index+1 }}</span>
+            <span flex>{{ video.title }}</span>
+            <span class="last-element secondary">3:14</span>
+          </div>
+        </template>
       </div>
     </paper-button>
   </div>
@@ -82,52 +81,51 @@
   Polymer('jukapp-bottom-sheet', {
 
     publish: {
-      expanded: false,
       dragging: false,
-      fullyExpanded: false
+      fullyExpanded: false,
+      drawerHeight: "384px",
+      rowHeight: "64px",
+      queue: [],
+      isHidden: true
     },
 
     eventDelegates: {
       trackstart: 'trackStart',
       tracky: 'tracky',
       trackend: 'trackEnd',
-      down: 'downHandler',
-      up: 'upHandler',
-      tap: 'tapHandler'
+    },
+
+    queueChanged: function() {
+      this.isHidden = this.queue.length == 0;
     },
 
     togglePanel: function() {
-      this.fullyExpanded = null;
-      this.expanded = !this.expanded;
-      this.fullyExpanded = this.expanded;
-      if (!this.expanded) {
-        this.$.drawer.style.height = "64px";
-      }
+      this.fullyExpanded = !this.fullyExpanded;
     },
 
     translateYForDeltaY: function(deltaY) {
       var baseHeight = 64;
-      var newHeight = Math.max(64, this.drawerHeight - deltaY);
-      this.expanded = newHeight != 64
-      return newHeight;
+      return Math.max(baseHeight, this.drawerStartHeight - deltaY);;
     },
 
     trackStart: function(e) {
-      this.drawerHeight = this.$.drawer.offsetHeight;
+      this.drawerStartHeight = this.$.drawer.offsetHeight;
       this.dragging = true;
       e.preventTap();
     },
 
     tracky : function(e) {
-      if (this.dragging) {
-        this.moveDrawer(this.translateYForDeltaY(e.dy));
-      }
+      this.moveDrawer(this.translateYForDeltaY(e.dy));
     },
 
-    trackEnd: function() {
+    trackEnd: function(e) {
       this.dragging = false;
-      if (this.$.drawer.offsetHeight != 64) {
+      if (e.yDirection < 0) {
         this.fullyExpanded = true;
+        this.$.drawer.style.height = this.drawerHeight;
+      } else {
+        this.fullyExpanded = false;
+        this.$.drawer.style.height = this.rowHeight;
       }
     },
 

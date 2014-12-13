@@ -58,5 +58,12 @@
   </jukapp-scaffold>
 
   <%= render "shared/google_analytics" %>
+  <script>
+    $(function() {
+      <% if current_room %>
+        VideoOperations.currentQueue();
+      <% end %>
+    });
+  </script>
 </body>
 </html>

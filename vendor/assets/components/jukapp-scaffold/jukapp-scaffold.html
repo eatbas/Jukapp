@@ -4,7 +4,7 @@
 <link rel="import" href="../core-icon-button/core-icon-button.html">
 <link rel="import" href="../jukapp-bottom-sheet/jukapp-bottom-sheet.html">
 
-<polymer-element name="jukapp-scaffold">
+<polymer-element name="jukapp-scaffold" attributes="queue">
   <template>
 
   <style>
@@ -86,8 +86,7 @@
 
       <content select="*"></content>
 
-      <jukapp-bottom-sheet drawerWidth="{{drawerWidth}}" narrow={{narrow}}></jukapp-bottom-sheet>
-
+      <jukapp-bottom-sheet drawerWidth="{{drawerWidth}}" narrow={{narrow}} queue={{queue}}></jukapp-bottom-sheet>
     </core-header-panel>
 
   </core-drawer-panel>
@@ -102,9 +101,9 @@
     * the scrollable element which you can use to access scroll info such as
     * `scrollTop`.
     *
-    *     <core-scaffold on-scroll="{{scrollHandler}}">
+    *     <jukapp-scaffold on-scroll="{{scrollHandler}}">
     *       ...
-    *     </core-scaffold>
+    *     </jukapp-scaffold>
     *
     *
     *     scrollHandler: function(event) {
@@ -163,7 +162,8 @@
       * @type string
       * @default 'seamed'
       */
-      mode: {value: 'seamed', reflect: true}
+      mode: {value: 'seamed', reflect: true},
+      queue: []
     },
 
     ready: function() {

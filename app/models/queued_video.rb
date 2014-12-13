@@ -20,4 +20,10 @@ class QueuedVideo < ActiveRecord::Base
   def play_and_destroy
     destroy.video.play_in(room)
   end
+
+  def as_json(options)
+    result = super(options)
+    result["video"] = video.as_json(only: [:title])
+    result
+  end
 end

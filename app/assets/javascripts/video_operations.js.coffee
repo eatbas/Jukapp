@@ -5,7 +5,9 @@ class @VideoOperations
       type: "GET"
       url: "/queued_videos"
       success: (data, textStatus, jqXHR) ->
-        $('#queue').html(data)
+        queue = $.map data, (queuedVideo) ->
+          title: queuedVideo.video.title
+        document.querySelector("jukapp-scaffold").queue = queue
     )
 
   @playNext: () ->
