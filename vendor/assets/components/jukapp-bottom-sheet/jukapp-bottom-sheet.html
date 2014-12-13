@@ -68,7 +68,7 @@
             </template>
             <span class="element secondary">{{ index+1 }}</span>
             <span flex>{{ video.title }}</span>
-            <span class="last-element secondary">3:14</span>
+            <span class="last-element secondary">{{ durationFromSeconds(video.length) }}</span>
           </div>
         </template>
       </div>
@@ -131,6 +131,13 @@
 
     moveDrawer: function(translateY) {
       this.$.drawer.style.height = translateY + 'px';
+    },
+
+    durationFromSeconds: function(sec)
+    {
+      var date = new Date(0,0,0);
+      date.setSeconds(+sec);
+      return date.getMinutes()+':'+(date.getSeconds() < 10 ? '0' : '')+date.getSeconds();
     }
 
   });

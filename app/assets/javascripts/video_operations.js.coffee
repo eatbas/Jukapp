@@ -7,6 +7,7 @@ class @VideoOperations
       success: (data, textStatus, jqXHR) ->
         queue = $.map data, (queuedVideo) ->
           title: queuedVideo.video.title
+          length: queuedVideo.video.length
         document.querySelector("jukapp-scaffold").queue = queue
     )
 

@@ -23,7 +23,7 @@ class QueuedVideo < ActiveRecord::Base
 
   def as_json(options)
     result = super(options)
-    result["video"] = video.as_json(only: [:title])
+    result["video"] = video.as_json(only: [:title, :length])
     result
   end
 end
