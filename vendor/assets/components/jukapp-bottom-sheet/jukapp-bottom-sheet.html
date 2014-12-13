@@ -1,0 +1,136 @@
+<link rel="import" href="../core-toolbar/core-toolbar.html">
+<link rel="import" href="../core-drawer-panel/core-drawer-panel.html">
+<link rel="import" href="../core-header-panel/core-header-panel.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+
+<polymer-element name="jukapp-bottom-sheet" attributes="drawerWidth narrow">
+  <template>
+
+  <style>
+
+  .bottom-sheet {
+    position: fixed;
+    background: white;
+    bottom: 0;
+    right: 0;
+
+    max-height: 384px;
+  }
+  .transition {
+    transition: left ease-in-out 0.3s, height ease-in-out 0.3s;
+  }
+  .bottom-sheet-content {
+    height: 100%;
+    width: 100%;
+  }
+  .bottom-sheet-row {
+    height: 48px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .bottom-sheet-content .element {
+    opacity: 0.87;
+    padding-left: 16px;
+    padding-right: 16px;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+  }
+  .bottom-sheet-content .last-element {
+    opacity: 0.87;
+    padding-right: 16px;
+    display: inline-block;
+  }
+  .bottom-sheet-content span.secondary {
+    opacity: 0.54;
+  }
+  paper-button {
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    text-transform: none;
+  }
+  paper-button /deep/ .button-content {
+    padding: 0px;
+  }
+
+</style>
+
+  <div id="drawer" class="bottom-sheet {{ dragging ? '' : 'transition' }}" vertical layout _style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ fullyExpanded ? '384px' : '64px' }}">
+    <paper-button flex on-tap="{{togglePanel}}">
+      <div class="bottom-sheet-content">
+        <div class="bottom-sheet-row" horizontal relative layout flex center>
+          <core-icon icon="{{ expanded ? 'expand-more' : 'expand-less' }}" class="element secondary"></core-icon>
+          <span class="element secondary">1</span>
+          <span flex>Hey Rosetta</span>
+          <span class="last-element secondary">3:14</span>
+        </div>
+
+        <div class="bottom-sheet-row" horizontal relative layout flex center>
+          <span class="element"></span>
+          <span class="element secondary">2</span>
+          <span flex>Hey Rosetta</span>
+          <span class="last-element secondary">3:14</span>
+        </div>
+      </div>
+    </paper-button>
+  </div>
+
+</template>
+<script>
+
+  Polymer('jukapp-bottom-sheet', {
+
+    publish: {
+      expanded: false,
+      dragging: false,
+      fullyExpanded: false
+    },
+
+    eventDelegates: {
+      trackstart: 'trackStart',
+      tracky: 'tracky',
+      trackend: 'trackEnd',
+      down: 'downHandler',
+      up: 'upHandler',
+      tap: 'tapHandler'
+    },
+
+    togglePanel: function() {
+      this.fullyExpanded = null;
+      this.expanded = !this.expanded;
+      this.fullyExpanded = this.expanded;
+    },
+
+    translateYForDeltaY: function(deltaY) {
+      var baseHeight = 64;
+      console.log(parseInt(this.$.drawer.style.height));
+      var newHeight = Math.max(64, this.drawerHeight - deltaY);
+      this.expanded = newHeight != 64
+      return newHeight;
+    },
+
+    trackStart: function(e) {
+      this.dragging = true;
+      e.preventTap();
+    },
+
+    tracky : function(e) {
+      this.drawerHeight = this.$.drawer.offsetHeight;
+      if (this.dragging) {
+        this.moveDrawer(this.translateYForDeltaY(e.dy));
+      }
+    },
+
+    trackEnd: function() {
+      this.dragging = false;
+    },
+
+    moveDrawer: function(translateY) {
+      this.$.drawer.style.height = translateY + 'px';
+    }
+
+  });
+
+</script>
+</polymer-element>
