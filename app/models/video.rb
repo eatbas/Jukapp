@@ -30,6 +30,6 @@ class Video < ActiveRecord::Base
   end
 
   def fetch_video_length
-    self.update(length: YoutubeService.get_length(youtube_id))
+    update(length: YoutubeService.get_length(youtube_id))
   end
 end

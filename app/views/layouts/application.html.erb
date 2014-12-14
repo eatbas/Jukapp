@@ -53,7 +53,9 @@
       <div class="content">
         <%= yield %>
       </div>
-      <%= render "shared/flash_messages" %>
+      <% if false #turn off flash messages for now %>
+        <%= render "shared/flash_messages" %>
+      <% end %>
     </div>
   </jukapp-scaffold>
 
