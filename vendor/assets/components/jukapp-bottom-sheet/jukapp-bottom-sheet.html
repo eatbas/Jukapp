@@ -13,7 +13,7 @@
     background: white;
     bottom: 0;
     right: 0;
-    max-height: {{ drawerHeight }};
+    max-height: {{ actualHeight }};
   }
   .transition {
     transition: left ease-in-out 0.3s, height ease-in-out 0.3s;
@@ -31,9 +31,11 @@
     opacity: 0.87;
     padding-left: 16px;
     padding-right: 16px;
+    display: inline-block;
+  }
+  .bottom-sheet-content .small-element {
     width: 24px;
     height: 24px;
-    display: inline-block;
   }
   .bottom-sheet-content .last-element {
     opacity: 0.87;
@@ -55,24 +57,29 @@
 
 </style>
 
-  <div id="drawer" class="bottom-sheet {{ { 'transition': !dragging } | tokenList }}" vertical layout _style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ isHidden ? '0px' : fullyExpanded ? drawerHeight : rowHeight }}">
-    <paper-button flex noink on-tap="{{togglePanel}}">
-      <div class="bottom-sheet-content">
-        <template repeat="{{ video, index in queue }}">
-          <div class="bottom-sheet-row" horizontal relative layout flex center>
+  <div id="drawer" class="bottom-sheet {{ { 'transition': !dragging } | tokenList }}" vertical layout _style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ isHidden ? '0px' : fullyExpanded ? actualHeight : rowHeight }}">
+    <div class="bottom-sheet-content">
+      <template repeat="{{ video, index in queue }}">
+        <div horizontal relative layout flex center>
+          <div class="bottom-sheet-row content" on-tap="{{togglePanel}}" horizontal relative layout flex center>
             <template if="{{ index == 0 }}">
-              <core-icon icon="{{ fullyExpanded ? 'expand-more' : 'expand-less' }}" class="element secondary"></core-icon>
+              <core-icon icon="{{ fullyExpanded ? 'expand-more' : 'expand-less' }}" class="element small-element"></core-icon>
             </template>
             <template if="{{ index != 0 }}">
-              <span class="element"></span>
+              <span class="element small-element"></span>
             </template>
-            <span class="element secondary">{{ index+1 }}</span>
+            <span class="element small-element secondary">{{ index+1 }}</span>
             <span flex>{{ video.title }}</span>
-            <span class="last-element secondary">{{ durationFromSeconds(video.length) }}</span>
+            <span class="element secondary">{{ durationFromSeconds(video.length) }}</span>
           </div>
-        </template>
-      </div>
-    </paper-button>
+          <template if="{{ hasDeleteButton }}">
+            <div class="bottom-sheet-row button" horizontal relative layout center>
+              <paper-icon-button icon="delete" class="element small-element" on-tap="{{deleteTapHandler}}"></paper-icon-button>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
   </div>
 
 </template>
@@ -86,17 +93,26 @@
       drawerHeight: "384px",
       rowHeight: "64px",
       queue: [],
-      isHidden: true
+      isHidden: true,
+      actualHeight: "",
+      hasDeleteButton: true //should be false
     },
 
     eventDelegates: {
       trackstart: 'trackStart',
       tracky: 'tracky',
-      trackend: 'trackEnd',
+      trackend: 'trackEnd'
+    },
+
+    deleteTapHandler: function() {
+      this.fire("delete-tapped");
     },
 
     queueChanged: function() {
       this.isHidden = this.queue.length == 0;
+
+      queueSize = this.queue.length > 6 ? 6 : this.queue.length;
+      this.actualHeight = (queueSize * parseInt(this.rowHeight)) + "px";
     },
 
     togglePanel: function() {
