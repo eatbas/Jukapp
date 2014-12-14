@@ -1,13 +1,6 @@
 <%= render 'shared/searchbar' %>
 <br>
 
-<div class="panel-md panel panel-primary text-center <%= "hidden" if @queued_videos.empty? %>" id="queueHeader">
-  <div class="panel-heading">
-    <h4>Queue</h4>
-  </div>
-  <%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
-</div>
-
 <div class="panel-md panel panel-primary text-center">
   <div class="panel-heading"><h4>Pinned Videos</h4></div>
   <%= render 'shared/videos_table', videos: @recommended_videos, hide_favorites: true %>
