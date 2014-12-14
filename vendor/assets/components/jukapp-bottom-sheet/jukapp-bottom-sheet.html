@@ -62,10 +62,10 @@
       <template repeat="{{ video, index in queue }}">
         <div horizontal relative layout flex center>
           <div class="bottom-sheet-row content" on-tap="{{togglePanel}}" horizontal relative layout flex center>
-            <template if="{{ index == 0 }}">
+            <template if="{{ isExpandable(index) }}">
               <core-icon icon="{{ fullyExpanded ? 'expand-more' : 'expand-less' }}" class="element small-element"></core-icon>
             </template>
-            <template if="{{ index != 0 }}">
+            <template if="{{ !isExpandable(index) }}">
               <span class="element small-element"></span>
             </template>
             <span class="element small-element secondary">{{ index+1 }}</span>
@@ -106,6 +106,10 @@
 
     deleteTapHandler: function(e) {
       this.fire("delete-tapped", {id: e.srcElement.getAttribute("video-id")});
+    },
+
+    isExpandable: function(index) {
+      return index == 0 && this.queue.length != 1;
     },
 
     queueChanged: function() {
