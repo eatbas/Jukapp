@@ -18,15 +18,13 @@ class @EventStream
       VideoOperations.currentQueue()
 
   forQueue: ->
+    @channel.bind "subscription_error", (status) ->
+      alert('Pusher subscription_error')
     @channel.bind "next", () ->
-      $("#queueHeader").removeClass("hidden")
       VideoOperations.currentQueue()
     @channel.bind "new", () ->
-      $("#queueHeader").removeClass("hidden")
       VideoOperations.currentQueue()
     @channel.bind "play", () ->
-      $("#queueHeader").removeClass("hidden")
       VideoOperations.currentQueue()
     @channel.bind "delete", () ->
-      $("#queueHeader").removeClass("hidden")
       VideoOperations.currentQueue()

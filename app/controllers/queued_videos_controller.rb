@@ -30,7 +30,7 @@ class QueuedVideosController < ApplicationController
   end
 
   def index
-    render partial: "shared/queued_videos_table", locals: { queued_videos: QueuedVideo.queue_in(current_room) }
+    render json: QueuedVideo.queue_in(current_room).as_json(only: [:id, :video])
   end
 
   def destroy

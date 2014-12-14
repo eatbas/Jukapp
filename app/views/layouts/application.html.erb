@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  <core-scaffold id="core_scaffold">
+  <jukapp-scaffold <%= "isOwner='true'" if owner? %>>
     <core-header-panel navigation flex id="core_header_panel" mode="seamed">
       <core-toolbar id="core_toolbar">
         <core-item icon="home" label="Jukapp" horizontal center layout>
@@ -53,28 +53,21 @@
       <div class="content">
         <%= yield %>
       </div>
-      <div class="bottom-sheet" vertical layout>
-        <div horizontal layout flex center>
-          <div>
-            <span>
-              <core-icon icon="expand-less"></core-icon>
-            </span>
-          </div>
-          <div>
-            <span class="index-number">1</span>
-          </div>
-          <div flex>
-            <span>Hey Rosetta</span>
-          </div>
-          <div>
-            <span>3:14</span>
-          </div>
-        </div>
-      </div>
       <%= render "shared/flash_messages" %>
     </div>
-  </core-scaffold>
+  </jukapp-scaffold>
 
   <%= render "shared/google_analytics" %>
+  <script>
+    $(function() {
+      <% if current_room %>
+        VideoOperations.currentQueue();
+      <% end %>
+
+      document.querySelector("jukapp-scaffold").addEventListener("delete-tapped", function(e) {
+        VideoOperations.deleteQueuedVideo(e.detail.id);
+      });
+    });
+  </script>
 </body>
 </html>

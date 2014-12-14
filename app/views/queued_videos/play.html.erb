@@ -4,15 +4,6 @@
   <%= render "shared/player", video: @current %>
 </div>
 
-<paper-shadow>
-  <core-toolbar class="toolbar-title">
-    <div class="indent">
-      <h3>Queue</h3>
-    </div>
-  </core-toolbar>
-</paper-shadow>
-<%= render "shared/queued_videos_table", queued_videos: @queued_videos %>
-
 <div style="display: none;">
   <%= render "shared/ajax_searchbar" %>
 </div>
