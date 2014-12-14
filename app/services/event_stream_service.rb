@@ -1,5 +1,6 @@
 class EventStreamService
   def self.send_message_to(room, message)
-    ESHQ.send(channel: "queue-#{room.id}", data: message.to_json)
+    Pusher.url = ENV['PUSHER_URL']
+    Pusher["queue-#{room.id}"].trigger(message, {})
   end
 end

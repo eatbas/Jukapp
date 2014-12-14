@@ -98,6 +98,7 @@ GEM
       uuidtools (>= 2.1.0)
     hike (1.2.3)
     htmlentities (4.3.2)
+    httpclient (2.5.3.3)
     i18n (0.6.11)
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
@@ -129,6 +130,10 @@ GEM
     orm_adapter (0.5.0)
     pg (0.17.1)
     polyglot (0.3.5)
+    pusher (0.14.2)
+      httpclient (~> 2.4)
+      multi_json (~> 1.0)
+      signature (~> 0.1.6)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -167,6 +172,7 @@ GEM
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
+    signature (0.1.7)
     signet (0.5.1)
       addressable (>= 2.2.3)
       faraday (>= 0.9.0.rc5)
@@ -220,6 +226,7 @@ DEPENDENCIES
   mocha
   newrelic_rpm
   pg
+  pusher
   quiet_assets
   rails (= 4.1.1)
   rails_12factor
