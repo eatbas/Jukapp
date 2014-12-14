@@ -1,6 +1,6 @@
 class @VideoOperations
 
-  @currentQueue: (button, youtube_id, title) ->
+  @currentQueue: () ->
     $.ajax (
       type: "GET"
       url: "/queued_videos"

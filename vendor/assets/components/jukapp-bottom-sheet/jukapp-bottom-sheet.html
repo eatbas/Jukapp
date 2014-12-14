@@ -111,8 +111,10 @@
     queueChanged: function() {
       this.isHidden = this.queue.length == 0;
 
-      queueSize = this.queue.length > 6 ? 6 : this.queue.length;
-      this.actualHeight = (queueSize * parseInt(this.rowHeight)) + "px";
+      if (!this.isHidden) {
+        queueSize = this.queue.length > 6 ? 6 : this.queue.length;
+        this.actualHeight = (queueSize * parseInt(this.rowHeight)) + "px";
+      }
     },
 
     togglePanel: function() {
