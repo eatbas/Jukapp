@@ -4,7 +4,7 @@
 <link rel="import" href="../core-icon-button/core-icon-button.html">
 <link rel="import" href="../jukapp-bottom-sheet/jukapp-bottom-sheet.html">
 
-<polymer-element name="jukapp-scaffold" attributes="queue">
+<polymer-element name="jukapp-scaffold" attributes="queue isOwner">
   <template>
 
   <style>
@@ -86,7 +86,7 @@
 
       <content select="*"></content>
 
-      <jukapp-bottom-sheet drawerWidth="{{drawerWidth}}" narrow={{narrow}} queue={{queue}}></jukapp-bottom-sheet>
+      <jukapp-bottom-sheet hasDeleteButton={{isOwner}} drawerWidth="{{drawerWidth}}" narrow={{narrow}} queue={{queue}}></jukapp-bottom-sheet>
     </core-header-panel>
 
   </core-drawer-panel>

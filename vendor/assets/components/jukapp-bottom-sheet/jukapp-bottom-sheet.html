@@ -3,7 +3,7 @@
 <link rel="import" href="../core-header-panel/core-header-panel.html">
 <link rel="import" href="../core-icon-button/core-icon-button.html">
 
-<polymer-element name="jukapp-bottom-sheet" attributes="drawerWidth narrow queue">
+<polymer-element name="jukapp-bottom-sheet" attributes="drawerWidth narrow queue hasDeleteButton">
   <template>
 
   <style>
@@ -74,7 +74,7 @@
           </div>
           <template if="{{ hasDeleteButton }}">
             <div class="bottom-sheet-row button" horizontal relative layout center>
-              <paper-icon-button icon="delete" class="element small-element" on-tap="{{deleteTapHandler}}"></paper-icon-button>
+              <paper-icon-button video-id="{{video.id}}" icon="delete" class="element small-element" on-tap="{{deleteTapHandler}}"></paper-icon-button>
             </div>
           </template>
         </div>
@@ -95,7 +95,7 @@
       queue: [],
       isHidden: true,
       actualHeight: "",
-      hasDeleteButton: true //should be false
+      hasDeleteButton: false
     },
 
     eventDelegates: {
@@ -104,8 +104,8 @@
       trackend: 'trackEnd'
     },
 
-    deleteTapHandler: function() {
-      this.fire("delete-tapped");
+    deleteTapHandler: function(e) {
+      this.fire("delete-tapped", {id: e.srcElement.getAttribute("video-id")});
     },
 
     queueChanged: function() {

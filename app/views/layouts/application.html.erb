@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  <jukapp-scaffold>
+  <jukapp-scaffold <%= "isOwner='true'" if owner? %>>
     <core-header-panel navigation flex id="core_header_panel" mode="seamed">
       <core-toolbar id="core_toolbar">
         <core-item icon="home" label="Jukapp" horizontal center layout>
@@ -65,7 +65,7 @@
       <% end %>
 
       document.querySelector("jukapp-scaffold").addEventListener("delete-tapped", function(e) {
-
+        VideoOperations.deleteQueuedVideo(e.detail.id);
       });
     });
   </script>

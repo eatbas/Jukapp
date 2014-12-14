@@ -6,9 +6,16 @@ class @VideoOperations
       url: "/queued_videos"
       success: (data, textStatus, jqXHR) ->
         queue = $.map data, (queuedVideo) ->
+          id: queuedVideo.id
           title: queuedVideo.video.title
           length: queuedVideo.video.length
         document.querySelector("jukapp-scaffold").queue = queue
+    )
+
+  @deleteQueuedVideo: (id) ->
+    $.ajax (
+      type: "DELETE"
+      url: "/queued_videos/" + id
     )
 
   @playNext: () ->
