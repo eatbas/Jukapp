@@ -54,10 +54,14 @@
   paper-button /deep/ .button-content {
     padding: 0px;
   }
+  paper-ripple {
+    color: #FF5722;
+  }
 
 </style>
 
   <div id="drawer" class="bottom-sheet {{ { 'transition': !dragging } | tokenList }}" vertical layout _style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ isHidden ? '0px' : fullyExpanded ? actualHeight : rowHeight }}">
+    <paper-ripple id="ripple" fit></paper-ripple>
     <div class="bottom-sheet-content">
       <template repeat="{{ video, index in queue }}">
         <div horizontal relative layout flex center>
@@ -113,6 +117,13 @@
     },
 
     queueChanged: function() {
+
+      this.$.ripple.downAction({x:0, y:0});
+
+      setTimeout(function(){
+        this.$.ripple.upAction();
+      }.bind(this), 200);
+
       this.isHidden = this.queue.length == 0;
 
       if (!this.isHidden) {
