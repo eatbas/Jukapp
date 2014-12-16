@@ -53,7 +53,6 @@ jukapp-scaffold::shadow core-header-panel {
 }
 .toolbar {
   padding-left: 40px;
-  padding-right: 40px;
 }
 .toolbar-title {
   background: #7596AD;
@@ -71,6 +70,10 @@ jukapp-scaffold::shadow core-header-panel {
   background-color: white;
   padding-top: 10px;
   padding-bottom: 25px;
+}
+a paper-item {
+  color: black;
+  opacity: 0.87;
 }
 
 /* Paper input decorator */
