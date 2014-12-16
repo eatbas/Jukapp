@@ -46,10 +46,8 @@
       width: 40px;
     }
     polyfill-next-selector { content: ':host .secondary-button'; }
-    ::content .secondary-button {
+    ::content .secondary-action {
       height: 24px;
-      width: 24px;
-      padding: 0px;
     }
   </style>
 
@@ -58,12 +56,16 @@
       <div id="primaryContent" horizontal layout center>
         <content select=".primary-action"></content>
       </div>
-      <div class="element" vertical layout flex>
-        <span flex class="title-element">{{title}}</span>
+      <div class="element" horizontal?="{{!subtitle}}" vertical?="{{subtitle}}" layout flex>
+        <div horizontal layout flex center?="{{!subtitle}}">
+          <span flex class="title-element">{{title}}</span>
+        </div>
         <div horizontal layout>
-          <span flex class="subtitle-element">{{subtitle}}</span>
+          <template if="{{subtitle}}">
+            <span flex class="subtitle-element">{{subtitle}}</span>
+          </template>
           <paper-ripple fit on-tap="{{primaryTapped}}"></paper-ripple>
-          <div id="secondaryContent">
+          <div id="secondaryContent" self-end>
             <content select=".secondary-action"></content>
           </div>
         </div>

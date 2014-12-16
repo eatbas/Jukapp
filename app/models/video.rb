@@ -6,8 +6,12 @@ class Video < ActiveRecord::Base
   validates_presence_of :youtube_id
   after_create :fetch_video_length
 
-  def self.from_youtube(youtube_id, title: "Unknown")
-    Video.create_with(title: title).find_or_create_by(youtube_id: youtube_id)
+  def self.from_youtube(youtube_id, title: "Unknown", create: true)
+    if create
+      Video.create_with(title: title).find_or_create_by(youtube_id: youtube_id)
+    else
+      Video.find_by(youtube_id: youtube_id)
+    end
   end
 
   def self.from_reddit(subreddit)
@@ -27,6 +31,10 @@ class Video < ActiveRecord::Base
   def play_in(room)
     VideoEvent.play(self, room)
     self
+  end
+
+  def stats_in(room)
+    video_events.find_by(room_id: room.id)
   end
 
   def fetch_video_length
