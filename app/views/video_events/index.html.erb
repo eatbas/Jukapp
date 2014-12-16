@@ -6,10 +6,10 @@
     <core-dropdown class="dropdown" halign="right">
       <core-menu class="menu">
         <%= link_to video_events_path do %>
-          <paper-item>Sort by View Count</paper-item>
+          <paper-item>Populars</paper-item>
         <% end %>
         <%= link_to video_events_path(sort: "played_at") do %>
-          <paper-item>Sort by Last Viewed</paper-item>
+          <paper-item>Recents</paper-item>
         <% end %>
       </core-menu>
     </core-dropdown>
