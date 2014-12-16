@@ -48,13 +48,12 @@ jukapp-scaffold::shadow core-header-panel {
   background-color: #5AA367;
 }
 .content {
-  padding: 35px 35px 35px 35px;
+  padding: 16px;
   margin-bottom: 50px;
 }
-.page-title {
-  width: 100%;
-  text-align: center;
-  margin-left: 40px;
+.toolbar {
+  padding-left: 40px;
+  padding-right: 40px;
 }
 .toolbar-title {
   background: #7596AD;

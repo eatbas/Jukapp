@@ -46,14 +46,15 @@
         </core-item>
       </core-menu>
     </core-header-panel>
-    <span tool>
-      <h3 class="page-title"><%= yield(:title) %></h3>
+    <span tool horizontal layout flex center class="toolbar">
+      <h3 flex><%= yield(:title) %></h3>
+      <%= yield(:menu_button) %>
     </span>
     <div vertical layout>
       <div class="content">
         <%= yield %>
       </div>
-      <% if false #turn off flash messages for now %>
+      <% if false # turn off flash messages for now %>
         <%= render "shared/flash_messages" %>
       <% end %>
     </div>
