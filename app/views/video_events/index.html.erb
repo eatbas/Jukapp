@@ -3,7 +3,7 @@
 <% content_for :menu_button do %>
   <paper-menu-button>
     <paper-icon-button icon="more-vert"></paper-icon-button>
-    <core-dropdown class="dropdown" halign="right">
+    <paper-dropdown class="dropdown" halign="right">
       <core-menu class="menu">
         <%= link_to video_events_path do %>
           <paper-item>Populars</paper-item>
@@ -12,7 +12,7 @@
           <paper-item>Recents</paper-item>
         <% end %>
       </core-menu>
-    </core-dropdown>
+    </paper-dropdown>
   </paper-menu-button>
 <% end %>
 
