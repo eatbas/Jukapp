@@ -8,8 +8,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <!--
-`core-scaffold` provides general application layout, introducing a
-responsive scaffold containing a header, toolbar, menu, title and
+`core-scaffold` provides general application layout, introducing a 
+responsive scaffold containing a header, toolbar, menu, title and 
 areas for application content.
 
 Example:
@@ -38,9 +38,9 @@ button to the far right:
     <core-scaffold rightDrawer>
       <div tool flex >Title</div>
     </core-scaffold>
-
+    
 You may also add `middle` or `bottom` classes to your `tool` content when using tall
-modes to adjust vertical content positioning in the core-toolbar (e.g. when using
+modes to adjust vertical content positioning in the core-toolbar (e.g. when using 
 mode="waterfall-tall"):
 
     <core-scaffold rightDrawer mode="waterfall-tall">
@@ -73,30 +73,30 @@ To have the content fit to the main area, use `fit` attribute.
 <template>
 
   <style>
-
+    
     :host {
       display: block;
     }
-
+    
     [drawer] {
       background-color: #fff;
       box-shadow: 1px 0 1px rgba(0, 0, 0, 0.1);
     }
-
+    
     [main] {
       height: 100%;
       background-color: #eee;
     }
-
+    
     core-toolbar {
       background-color: #526E9C;
       color: #fff;
     }
-
+    
     #drawerPanel:not([narrow]) #menuButton {
       display: none;
     }
-
+    
   </style>
 
   <core-drawer-panel id="drawerPanel" narrow="{{narrow}}" drawerWidth="{{drawerWidth}}" rightDrawer="{{rightDrawer}}" responsiveWidth="{{responsiveWidth}}" disableSwipe="{{disableSwipe}}">
@@ -106,7 +106,7 @@ To have the content fit to the main area, use `fit` attribute.
       <content select="[navigation], nav"></content>
 
     </div>
-
+    
     <core-header-panel id="headerPanel" main mode="{{mode}}">
 
       <core-toolbar>
@@ -118,9 +118,9 @@ To have the content fit to the main area, use `fit` attribute.
           <core-icon-button id="menuButton" icon="menu" on-tap="{{togglePanel}}"></core-icon-button>
         </template>
       </core-toolbar>
-
+      
       <content select="*"></content>
-
+      
     </core-header-panel>
 
   </core-drawer-panel>
@@ -129,7 +129,7 @@ To have the content fit to the main area, use `fit` attribute.
 <script>
 
   Polymer('core-scaffold', {
-
+    
     /**
      * Fired when the main content has been scrolled.  `event.detail.target` returns
      * the scrollable element which you can use to access scroll info such as
@@ -147,9 +147,9 @@ To have the content fit to the main area, use `fit` attribute.
      *
      * @event scroll
      */
-
+    
     publish: {
-
+      
       /**
        * Width of the drawer panel.
        *
@@ -158,18 +158,18 @@ To have the content fit to the main area, use `fit` attribute.
        * @default '256px'
        */
       drawerWidth: '256px',
-
+      
       /**
-       * When the browser window size is smaller than the `responsiveWidth`,
-       * `core-drawer-panel` changes to a narrow layout. In narrow layout,
+       * When the browser window size is smaller than the `responsiveWidth`, 
+       * `core-drawer-panel` changes to a narrow layout. In narrow layout, 
        * the drawer will be stacked on top of the main panel.
        *
        * @attribute responsiveWidth
        * @type string
        * @default '600px'
-       */
+       */    
       responsiveWidth: '600px',
-
+      
       /**
        * If true, position the drawer to the right. Also place menu icon to
        * the right of the content instead of left.
@@ -188,22 +188,22 @@ To have the content fit to the main area, use `fit` attribute.
        * @default false
        */
       disableSwipe: false,
-
+  
       /**
        * Used to control the header and scrolling behaviour of `core-header-panel`
        *
        * @attribute mode
        * @type string
        * @default 'seamed'
-       */
+       */     
       mode: {value: 'seamed', reflect: true}
     },
-
+    
     ready: function() {
       this._scrollHandler = this.scroll.bind(this);
       this.$.headerPanel.addEventListener('scroll', this._scrollHandler);
     },
-
+    
     detached: function() {
       this.$.headerPanel.removeEventListener('scroll', this._scrollHandler);
     },
@@ -211,7 +211,7 @@ To have the content fit to the main area, use `fit` attribute.
     /**
      * Toggle the drawer panel
      * @method togglePanel
-     */
+     */    
     togglePanel: function() {
       this.$.drawerPanel.togglePanel();
     },
@@ -219,7 +219,7 @@ To have the content fit to the main area, use `fit` attribute.
     /**
      * Open the drawer panel
      * @method openDrawer
-     */
+     */      
     openDrawer: function() {
       this.$.drawerPanel.openDrawer();
     },
@@ -227,11 +227,11 @@ To have the content fit to the main area, use `fit` attribute.
     /**
      * Close the drawer panel
      * @method closeDrawer
-     */
+     */     
     closeDrawer: function() {
       this.$.drawerPanel.closeDrawer();
     },
-
+    
     /**
      * Returns the scrollable element on the main area.
      *
@@ -241,11 +241,11 @@ To have the content fit to the main area, use `fit` attribute.
     get scroller() {
       return this.$.headerPanel.scroller;
     },
-
+    
     scroll: function(e) {
       this.fire('scroll', {target: e.detail.target}, this, false);
     }
-
+    
   });
 
 </script>

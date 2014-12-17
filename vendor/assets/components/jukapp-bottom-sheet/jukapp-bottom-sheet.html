@@ -16,7 +16,7 @@
     max-height: {{ actualHeight }};
   }
   .transition {
-    transition: left ease-in-out 0.3s, height ease-in-out 0.3s;
+    transition: left ease-in-out 0.3s, height ease-in-out 0.3s, max-height ease-in-out 0.3s;
   }
   .bottom-sheet-content {
     height: 100%;
@@ -54,18 +54,22 @@
   paper-button /deep/ .button-content {
     padding: 0px;
   }
+  paper-ripple {
+    color: #FF5722;
+  }
 
 </style>
 
   <div id="drawer" class="bottom-sheet {{ { 'transition': !dragging } | tokenList }}" vertical layout _style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ isHidden ? '0px' : fullyExpanded ? actualHeight : rowHeight }}">
+    <paper-ripple id="ripple" fit></paper-ripple>
     <div class="bottom-sheet-content">
       <template repeat="{{ video, index in queue }}">
         <div horizontal relative layout flex center>
           <div class="bottom-sheet-row content" on-tap="{{togglePanel}}" horizontal relative layout flex center>
-            <template if="{{ index == 0 }}">
+            <template if="{{ isExpandable(index) }}">
               <core-icon icon="{{ fullyExpanded ? 'expand-more' : 'expand-less' }}" class="element small-element"></core-icon>
             </template>
-            <template if="{{ index != 0 }}">
+            <template if="{{ !isExpandable(index) }}">
               <span class="element small-element"></span>
             </template>
             <span class="element small-element secondary">{{ index+1 }}</span>
@@ -108,7 +112,18 @@
       this.fire("delete-tapped", {id: e.srcElement.getAttribute("video-id")});
     },
 
+    isExpandable: function(index) {
+      return index == 0 && this.queue.length != 1;
+    },
+
     queueChanged: function() {
+
+      this.$.ripple.downAction({x:0, y:0});
+
+      setTimeout(function(){
+        this.$.ripple.upAction();
+      }.bind(this), 200);
+
       this.isHidden = this.queue.length == 0;
 
       if (!this.isHidden) {

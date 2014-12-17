@@ -1,0 +1,92 @@
+<link rel="import" href="../paper-shadow/paper-shadow.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+
+<polymer-element name="jukapp-row" attributes="youtubeId content subtitle">
+  <template>
+
+  <style>
+    .row {
+      background-color: white;
+      height: 72px;
+      padding-right: 16px;
+    }
+    .element {
+      opacity: 0.87;
+      margin-left: 16px;
+      height: 56px;
+      display: inline-block;
+    }
+    .title-element {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0.87;
+    }
+    .subtitle-element {
+      opacity: 0.54;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 14px;
+    }
+    polyfill-next-selector { content: ':host > .element'; }
+    ::content > .element {
+      opacity: 0.87;
+      margin-left: 16px;
+      display: inline-block;
+      height: 56px;
+    }
+    polyfill-next-selector { content: ':host > .primary-action'; }
+    ::content > .primary-action {
+      border-radius: 50%;
+      background-color: #B2B2B2;
+      color: white;
+      height: 40px;
+      width: 40px;
+    }
+    polyfill-next-selector { content: ':host .secondary-button'; }
+    ::content .secondary-action {
+      height: 24px;
+    }
+  </style>
+
+  <paper-shadow>
+    <div class="row" horizontal layout center>
+      <div id="primaryContent" horizontal layout center>
+        <content select=".primary-action"></content>
+      </div>
+      <div class="element" horizontal?="{{!subtitle}}" vertical?="{{subtitle}}" layout flex>
+        <div horizontal layout flex center>
+          <span flex class="title-element">{{content}}</span>
+        </div>
+        <div horizontal layout>
+          <template if="{{subtitle}}">
+            <span flex class="subtitle-element">{{subtitle}}</span>
+          </template>
+          <paper-ripple fit on-tap="{{primaryTapped}}"></paper-ripple>
+          <div id="secondaryContent" self-end>
+            <content select=".secondary-action"></content>
+          </div>
+        </div>
+      </div>
+    </div>
+  </paper-shadow>
+
+  </template>
+  <script>
+
+    Polymer('jukapp-row', {
+
+      publish: {
+
+      },
+
+      primaryTapped: function(e) {
+        this.fire("primary-action");
+      }
+
+    });
+
+  </script>
+</polymer-element>
