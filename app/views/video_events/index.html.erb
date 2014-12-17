@@ -1,28 +1,20 @@
 <% content_for :title, "Home" %>
 
-<style>
-  paper-item {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  html /deep/ core-collapse {
-    border: 1px solid #ccc;
-    padding: 8px;
-  }
-</style>
-
 <% content_for :menu_button do %>
   <paper-menu-button>
     <paper-icon-button icon="more-vert"></paper-icon-button>
     <paper-dropdown class="dropdown" transition="paper-dropdown-transition" halign="right">
       <core-menu class="menu">
-        <%= link_to video_events_path do %>
-          <paper-item>Populars</paper-item>
-        <% end %>
-        <%= link_to video_events_path(sort: "played_at") do %>
-          <paper-item>Recents</paper-item>
-        <% end %>
+        <paper-item>
+          <%= link_to video_events_path do %>
+            Populars
+          <% end %>
+        </paper-item>
+        <paper-item>
+          <%= link_to video_events_path(sort: "played_at") do %>
+            Recents
+          <% end %>
+        </paper-item>
       </core-menu>
     </paper-dropdown>
   </paper-menu-button>

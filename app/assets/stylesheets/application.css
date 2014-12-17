@@ -71,9 +71,10 @@ jukapp-scaffold::shadow core-header-panel {
   padding-top: 10px;
   padding-bottom: 25px;
 }
-a paper-item {
+paper-item a {
   color: black;
   opacity: 0.87;
+  text-decoration: none;
 }
 
 /* Paper input decorator */
