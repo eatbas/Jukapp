@@ -4,7 +4,7 @@
   <% stat = Video.from_youtube(video.youtube_id, create: false).try!(:stats_in, current_room) %>
   <jukapp-row
     youtubeId="<%= video.youtube_id %>"
-    title="<%= video.title %>"
+    content="<%= video.title %>"
     <% if stat %>
       subtitle="<%= pluralize(stat.play_count, "views") %> &bull; <%= "#{time_ago_in_words(stat.played_at)} ago" %>">
     <% end %>

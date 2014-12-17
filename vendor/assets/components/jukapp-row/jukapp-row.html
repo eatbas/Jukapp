@@ -2,7 +2,7 @@
 <link rel="import" href="../core-icon-button/core-icon-button.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 
-<polymer-element name="jukapp-row" attributes="youtubeId title subtitle">
+<polymer-element name="jukapp-row" attributes="youtubeId content subtitle">
   <template>
 
   <style>
@@ -58,7 +58,7 @@
       </div>
       <div class="element" horizontal?="{{!subtitle}}" vertical?="{{subtitle}}" layout flex>
         <div horizontal layout flex center>
-          <span flex class="title-element">{{title}}</span>
+          <span flex class="title-element">{{content}}</span>
         </div>
         <div horizontal layout>
           <template if="{{subtitle}}">

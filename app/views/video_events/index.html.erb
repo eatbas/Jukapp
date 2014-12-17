@@ -1,9 +1,21 @@
 <% content_for :title, "Home" %>
 
+<style>
+  paper-item {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  html /deep/ core-collapse {
+    border: 1px solid #ccc;
+    padding: 8px;
+  }
+</style>
+
 <% content_for :menu_button do %>
   <paper-menu-button>
     <paper-icon-button icon="more-vert"></paper-icon-button>
-    <paper-dropdown class="dropdown" halign="right">
+    <paper-dropdown class="dropdown" transition="paper-dropdown-transition" halign="right">
       <core-menu class="menu">
         <%= link_to video_events_path do %>
           <paper-item>Populars</paper-item>
@@ -20,7 +32,7 @@
   <% video = stat.video %>
   <jukapp-row
     youtubeId="<%= video.youtube_id %>"
-    title="<%= video.title %>"
+    content="<%= video.title %>"
     subtitle="<%= pluralize(stat.play_count, "views") %> &bull; <%= "#{time_ago_in_words(stat.played_at)} ago" %>">
     <div class="element primary-action" horizontal layout center center-justified>
       <%= form_tag queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
