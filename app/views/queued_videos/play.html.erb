@@ -1,9 +1,31 @@
 <% content_for :title, "Play" %>
 
-<div id="player-view">
-  <%= render "shared/player", video: @current %>
-</div>
+<% if @current.present? %>
+  <jukapp-player videoTitle="<%= @current.title %>" youtubeId="<%= @current.youtube_id %>"></jukapp-player>
+<% else %>
+  <div class="text-center" layout vertical center center-justified>
+    <h1>Empty Queue</h1>
+    <%= image_tag("jukebox.png") %>
+  </div>
+<% end %>
 
 <div style="display: none;">
   <%= render "shared/ajax_searchbar" %>
 </div>
+
+<script>
+  $(function() {
+    var eventStream = new EventStream(<%= event_stream_params %>);
+    eventStream.forPlayer(<%= @current.present? %>);
+
+    document.querySelector("jukapp-player").addEventListener("google-youtube-state-change", function(e) {
+      if (e.detail.data == 0) {
+        VideoOperations.playNext();
+      }
+    });
+
+    document.querySelector("jukapp-player").addEventListener("google-youtube-error", function(e) {
+      VideoOperations.playNext();
+    });
+  });
+</script>
