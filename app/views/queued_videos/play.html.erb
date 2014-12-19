@@ -1,17 +1,23 @@
 <% content_for :title, "Play" %>
 
 <% if @current.present? %>
-  <jukapp-player videoTitle="<%= @current.title %>" youtubeId="<%= @current.youtube_id %>"></jukapp-player>
+  <jukapp-player videoTitle="<%= @current.title %>" youtubeId="<%= @current.youtube_id %>">
+    <div class="first-tab">
+      <%= render "shared/ajax_searchbar" %>
+    </div>
+    <div class="second-tab">
+      Second
+    </div>
+    <div class="third-tab">
+      Third
+    </div>
+  </jukapp-player>
 <% else %>
   <div class="text-center" layout vertical center center-justified>
     <h1>Empty Queue</h1>
     <%= image_tag("jukebox.png") %>
   </div>
 <% end %>
-
-<div style="display: none;">
-  <%= render "shared/ajax_searchbar" %>
-</div>
 
 <script>
   $(function() {

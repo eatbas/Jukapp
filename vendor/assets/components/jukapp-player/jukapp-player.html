@@ -4,6 +4,7 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-progress/paper-progress.html">
 <link rel="import" href="../core-icon/core-icon.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
 
 <polymer-element name="jukapp-player" attributes="youtubeId videoTitle">
   <template>
@@ -17,6 +18,9 @@
       #playerBox{
         padding-left: 75px;
         padding-right: 75px;
+      }
+      paper-tabs{
+        width: 100%;
       }
     </style>
 
@@ -37,7 +41,7 @@
       </div>
 
       <div vertical layout center>
-        <div horizontal layout style="background-color: blue; width: {{playerWidth}};">
+        <div horizontal layout style="width: {{playerWidth}};">
           <paper-progress flex value="{{seekerValue}}" on-click="{{seekerClicked}}"></paper-progress>
         </div>
         <div horizontal layout style="background-color: gray; width: {{playerWidth}};">
@@ -47,6 +51,20 @@
           <paper-button flex on-click="{{nextClicked}}">
             <core-icon icon="av:skip-next"></core-icon>
           </paper-button>
+        </div>
+        <paper-tabs selected={{selectedTab}}>
+          <paper-tab>SEARCH</paper-tab>
+          <paper-tab>RECENTS</paper-tab>
+          <paper-tab>POPULAR</paper-tab>
+        </paper-tabs>
+        <div style="{{selectedTab == 0 ? '' : 'display: none;'}}">
+          <content select=".first-tab"></content>
+        </div>
+        <div style="{{selectedTab == 1 ? '' : 'display: none;'}}">
+          <content select=".second-tab"></content>
+        </div>
+        <div style="{{selectedTab == 2 ? '' : 'display: none;'}}">
+          <content select=".third-tab"></content>
         </div>
       </div>
     </div>
@@ -58,7 +76,8 @@
 
       publish: {
         isPlaying: false,
-        playerWidth: "640px"
+        playerWidth: "640px",
+        selectedTab: 0
       },
 
       primaryTapped: function(e) {
