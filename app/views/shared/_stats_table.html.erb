@@ -32,7 +32,7 @@
     var eventStream = new EventStream(<%= event_stream_params %>);
     eventStream.forQueue();
 
-    $("jukapp-row").bind( "primary-action", function(e) {
+    $("jukapp-row").unbind("primary-action").bind( "primary-action", function(e) {
       $(e.target.querySelector(".primary-action form")).submit();
     });
 
