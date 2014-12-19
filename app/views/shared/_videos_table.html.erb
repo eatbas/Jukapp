@@ -39,13 +39,13 @@ $(function() {
     $(e.target.querySelector(".primary-action form")).submit();
   });
 
-  $(".add-favorite-button").bind("click.addFavorite", function() {
+  $(".add-favorite-button").unbind("click.addFavorite").bind("click.addFavorite", function() {
     $(this).closest("form").submit();
     $(this).attr("disabled", "disabled");
     $(this).attr("icon", "star");
   });
 
-  $(".remove-favorite-button").bind("click.removeFavorite", function() {
+  $(".remove-favorite-button").unbind("click.removeFavorite").bind("click.removeFavorite", function() {
     $(this).closest("form").submit();
     $(this).attr("disabled", "disabled");
     $(this).attr("icon", "star-outline");
