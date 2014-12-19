@@ -1,23 +1,21 @@
-<% content_for :title, "Play" %>
+<% content_for :title, "#{@current.try!(:title) || "Empty Queue"}" %>
 
-<% if @current.present? %>
-  <jukapp-player videoTitle="<%= @current.title %>" youtubeId="<%= @current.youtube_id %>">
-    <div class="first-tab">
-      <%= render "shared/ajax_searchbar" %>
+<div class="search-content">
+  <% if @current.present? %>
+    <jukapp-player youtubeId="<%= @current.youtube_id %>">
+      <div class="first-tab">
+        <%= render 'shared/stats_table', stats: @recents %>
+      </div>
+      <div class="second-tab">
+        <%= render 'shared/stats_table', stats: @populars %>
+      </div>
+    </jukapp-player>
+  <% else %>
+    <div class="text-center" layout vertical center center-justified>
+      <%= image_tag("jukebox.png") %>
     </div>
-    <div class="second-tab">
-      Second
-    </div>
-    <div class="third-tab">
-      Third
-    </div>
-  </jukapp-player>
-<% else %>
-  <div class="text-center" layout vertical center center-justified>
-    <h1>Empty Queue</h1>
-    <%= image_tag("jukebox.png") %>
-  </div>
-<% end %>
+  <% end %>
+</div>
 
 <script>
   $(function() {

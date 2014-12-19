@@ -6,7 +6,7 @@
 <link rel="import" href="../core-icon/core-icon.html">
 <link rel="import" href="../paper-tabs/paper-tabs.html">
 
-<polymer-element name="jukapp-player" attributes="youtubeId videoTitle">
+<polymer-element name="jukapp-player" attributes="youtubeId">
   <template>
     <style>
       paper-progress {
@@ -15,59 +15,72 @@
       paper-progress::shadow #activeProgress {
         background-color: #CC181E;
       }
-      #playerBox{
-        padding-left: 75px;
-        padding-right: 75px;
-      }
       paper-tabs{
         width: 100%;
+        background-color: #E3624D;
+      }
+      paper-tabs::shadow #selectionBar {
+        background-color: #93B1C6;
+      }
+      paper-tabs paper-tab::shadow #ink {
+        color: #93B1C6;
       }
       .tab {
         width: 100%;
       }
+      .inner-tab {
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 8px;
+      }
+      .player-controls {
+        background-color: #93B1C6;
+      }
     </style>
 
-    <div id="playerBox">
-      <div vertical center layout flex id="playerContainer">
-        <google-youtube
-          id="player"
-          videoid="{{youtubeId}}"
-          width="{{playerWidth}}"
-          fluid="1"
-          rel="0"
-          state="{{state}}"
-          currenttime="{{currentTime}}"
-          duration="{{duration}}"
-          autoplay="1"
-          chromeless="1">
-        </google-youtube>
+    <div vertical layout center>
+      <paper-tabs selected={{selectedTab}}>
+        <paper-tab>VIDEO</paper-tab>
+        <paper-tab>RECENTS</paper-tab>
+        <paper-tab>POPULAR</paper-tab>
+      </paper-tabs>
+      <div class="tab" style="{{selectedTab == 0 ? '' : 'display: none;'}}">
+        <div class="inner-tab">
+          <div vertical center layout flex id="playerContainer">
+            <google-youtube
+              id="player"
+              videoid="{{youtubeId}}"
+              width="{{playerWidth}}"
+              fluid="1"
+              rel="0"
+              state="{{state}}"
+              currenttime="{{currentTime}}"
+              duration="{{duration}}"
+              autoplay="1"
+              chromeless="1">
+            </google-youtube>
+          </div>
+          <div horizontal layout style="width: {{playerWidth}};">
+            <paper-progress flex value="{{seekerValue}}" on-click="{{seekerClicked}}"></paper-progress>
+          </div>
+          <div horizontal layout class="player-controls" style="width: {{playerWidth}};">
+            <paper-button flex on-click="{{playPauseClicked}}">
+              <core-icon icon="{{isPlaying ? 'av:pause' : 'av:play-arrow'}}"></core-icon>
+            </paper-button>
+            <paper-button flex on-click="{{nextClicked}}">
+              <core-icon icon="av:skip-next"></core-icon>
+            </paper-button>
+          </div>
+        </div>
       </div>
-
-      <div vertical layout center>
-        <div horizontal layout style="width: {{playerWidth}};">
-          <paper-progress flex value="{{seekerValue}}" on-click="{{seekerClicked}}"></paper-progress>
-        </div>
-        <div horizontal layout style="background-color: gray; width: {{playerWidth}};">
-          <paper-button flex on-click="{{playPauseClicked}}">
-            <core-icon icon="{{isPlaying ? 'av:pause' : 'av:play-arrow'}}"></core-icon>
-          </paper-button>
-          <paper-button flex on-click="{{nextClicked}}">
-            <core-icon icon="av:skip-next"></core-icon>
-          </paper-button>
-        </div>
-        <paper-tabs selected={{selectedTab}}>
-          <paper-tab>SEARCH</paper-tab>
-          <paper-tab>RECENTS</paper-tab>
-          <paper-tab>POPULAR</paper-tab>
-        </paper-tabs>
-        <div class="tab" style="{{selectedTab == 0 ? '' : 'display: none;'}}">
+      <div class="tab" style="{{selectedTab == 1 ? '' : 'display: none;'}}">
+        <div class="inner-tab">
           <content select=".first-tab"></content>
         </div>
-        <div class="tab" style="{{selectedTab == 1 ? '' : 'display: none;'}}">
+      </div>
+      <div class="tab" style="{{selectedTab == 2 ? '' : 'display: none;'}}">
+        <div class="inner-tab">
           <content select=".second-tab"></content>
-        </div>
-        <div class="tab" style="{{selectedTab == 2 ? '' : 'display: none;'}}">
-          <content select=".third-tab"></content>
         </div>
       </div>
     </div>

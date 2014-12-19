@@ -32,7 +32,7 @@ class @VideoOperations
           else
             $("jukapp-player").attr("youtubeId", video.youtube_id)
 
-          $("jukapp-player").attr("videoTitle", video.title)
+          $("#page-title").html(video.title)
         else
           location.reload()
     )

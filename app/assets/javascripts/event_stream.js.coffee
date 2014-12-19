@@ -18,8 +18,6 @@ class @EventStream
       VideoOperations.currentQueue()
 
   forQueue: ->
-    @channel.bind "subscription_error", (status) ->
-      alert('Pusher subscription_error')
     @channel.bind "next", () ->
       VideoOperations.currentQueue()
     @channel.bind "new", () ->

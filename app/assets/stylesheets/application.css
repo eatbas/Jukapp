@@ -48,8 +48,11 @@ jukapp-scaffold::shadow core-header-panel {
   background-color: #5AA367;
 }
 .content {
-  padding: 16px;
+  margin: 16px;
   margin-bottom: 60px;
+}
+.search-content {
+  margin: -16px;
 }
 .toolbar {
   padding-left: 40px;
