@@ -42,7 +42,7 @@
       <paper-tabs selected={{selectedTab}}>
         <paper-tab>VIDEO</paper-tab>
         <paper-tab>RECENTS</paper-tab>
-        <paper-tab>POPULAR</paper-tab>
+        <paper-tab>POPULARS</paper-tab>
       </paper-tabs>
       <div class="tab" style="{{selectedTab == 0 ? '' : 'display: none;'}}">
         <div class="inner-tab">
@@ -56,7 +56,7 @@
               state="{{state}}"
               currenttime="{{currentTime}}"
               duration="{{duration}}"
-              autoplay="1"
+              autoplay="0"
               chromeless="1">
             </google-youtube>
           </div>

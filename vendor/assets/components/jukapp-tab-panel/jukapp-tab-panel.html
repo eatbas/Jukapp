@@ -1,0 +1,87 @@
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+
+<polymer-element name="jukapp-tab-panel">
+  <template>
+  <style>
+    paper-tabs{
+      width: 100%;
+      background-color: #E3624D;
+    }
+    paper-tabs::shadow #selectionBar {
+      background-color: #93B1C6;
+    }
+    paper-tabs paper-tab::shadow #ink {
+      color: #93B1C6;
+    }
+    .tab {
+      width: 100%;
+    }
+    .inner-tab {
+      padding-left: 8px;
+      padding-right: 8px;
+      padding-top: 8px;
+    }
+  </style>
+
+  <div vertical layout center>
+    <paper-tabs selected={{selectedTab}}>
+      <paper-tab>RECENTS</paper-tab>
+      <paper-tab>POPULARS</paper-tab>
+    </paper-tabs>
+    <div class="tab" style="{{selectedTab == 0 ? '' : 'display: none;'}}">
+      <div class="inner-tab">
+        <content select=".first-tab"></content>
+      </div>
+    </div>
+    <div class="tab" style="{{selectedTab == 1 ? '' : 'display: none;'}}">
+      <div class="inner-tab">
+        <content select=".second-tab"></content>
+      </div>
+    </div>
+  </div>
+
+  </template>
+  <script>
+
+    Polymer('jukapp-tab-panel', {
+
+      publish: {
+        selectedTab: 0
+      },
+
+      primaryTapped: function(e) {
+        this.fire("primary-action");
+      },
+
+      playPauseClicked: function() {
+        if(this.isPlaying) {
+          this.$.player.pause();
+        } else {
+          this.$.player.play();
+        }
+      },
+
+      stateChanged: function() {
+        this.isPlaying = this.state == 1;
+      },
+
+      nextClicked: function() {
+        this.fire("next-clicked");
+      },
+
+      seekerClicked: function(e) {
+        seekerPercentage = (e.offsetX / e.target.clientWidth);
+        totalTime = this.duration;
+
+        seekToTime = seekerPercentage * totalTime;
+        this.$.player.seekTo(seekToTime);
+      },
+
+      currentTimeChanged: function() {
+        this.seekerValue = (this.currentTime / this.duration)*100
+      }
+
+    });
+
+  </script>
+</polymer-element>

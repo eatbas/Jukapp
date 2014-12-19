@@ -2,8 +2,7 @@ class VideoEventsController < ApplicationController
   before_action :ensure_in_room
 
   def index
-    order_column = params[:sort] == "played_at" ? "played_at DESC" : "play_count DESC, played_at DESC"
-    @queued_videos   = QueuedVideo.queue_in(current_room)
-    @stats = VideoEvent.where(room: current_room).includes(:video).order("#{order_column}").paginate(:page => params[:page])
+    @recents       = VideoEvent.where(room: current_room).includes(:video).order("played_at DESC").paginate(:page => params[:page])
+    @populars      = VideoEvent.where(room: current_room).includes(:video).order("play_count DESC").paginate(:page => params[:page])
   end
 end

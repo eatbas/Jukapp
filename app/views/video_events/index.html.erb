@@ -1,23 +1,12 @@
 <% content_for :title, "Home" %>
 
-<% content_for :menu_button do %>
-  <paper-menu-button>
-    <paper-icon-button icon="more-vert"></paper-icon-button>
-    <paper-dropdown class="dropdown" transition="paper-dropdown-transition" halign="right">
-      <core-menu class="menu">
-        <paper-item>
-          <%= link_to video_events_path do %>
-            Populars
-          <% end %>
-        </paper-item>
-        <paper-item>
-          <%= link_to video_events_path(sort: "played_at") do %>
-            Recents
-          <% end %>
-        </paper-item>
-      </core-menu>
-    </paper-dropdown>
-  </paper-menu-button>
-<% end %>
-
-<%= render 'shared/stats_table', stats: @stats %>
+<div class="search-content">
+  <jukapp-tab-panel>
+    <div class="first-tab">
+      <%= render 'shared/stats_table', stats: @recents %>
+    </div>
+    <div class="second-tab">
+      <%= render 'shared/stats_table', stats: @populars %>
+    </div>
+  </jukapp-tab-panel>
+</div>
