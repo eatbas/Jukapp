@@ -22,6 +22,9 @@
       paper-tabs{
         width: 100%;
       }
+      .tab {
+        width: 100%;
+      }
     </style>
 
     <div id="playerBox">
@@ -57,13 +60,13 @@
           <paper-tab>RECENTS</paper-tab>
           <paper-tab>POPULAR</paper-tab>
         </paper-tabs>
-        <div style="{{selectedTab == 0 ? '' : 'display: none;'}}">
+        <div class="tab" style="{{selectedTab == 0 ? '' : 'display: none;'}}">
           <content select=".first-tab"></content>
         </div>
-        <div style="{{selectedTab == 1 ? '' : 'display: none;'}}">
+        <div class="tab" style="{{selectedTab == 1 ? '' : 'display: none;'}}">
           <content select=".second-tab"></content>
         </div>
-        <div style="{{selectedTab == 2 ? '' : 'display: none;'}}">
+        <div class="tab" style="{{selectedTab == 2 ? '' : 'display: none;'}}">
           <content select=".third-tab"></content>
         </div>
       </div>

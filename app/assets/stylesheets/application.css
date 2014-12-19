@@ -66,6 +66,9 @@ jukapp-scaffold::shadow core-header-panel {
 .icon-button-link {
   color: black;
 }
+.hidden {
+  display: none;
+}
 paper-item a {
   color: black;
   opacity: 0.87;
