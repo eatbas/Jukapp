@@ -12,16 +12,21 @@
         height: 8px;
       }
       paper-progress::shadow #activeProgress {
-        background-color: rgb(204, 24, 30);
+        background-color: #CC181E;
+      }
+      #playerBox{
+        padding-left: 75px;
+        padding-right: 75px;
       }
     </style>
 
-      <div class="youtube-player" vertical layout flex center>
+    <div id="playerBox">
+      <div vertical center layout flex id="playerContainer">
         <google-youtube
           id="player"
           videoid="{{youtubeId}}"
-          height="390px"
           width="{{playerWidth}}"
+          fluid="1"
           rel="0"
           state="{{state}}"
           currenttime="{{currentTime}}"
@@ -30,6 +35,7 @@
           chromeless="1">
         </google-youtube>
       </div>
+
       <div vertical layout center>
         <div horizontal layout style="background-color: blue; width: {{playerWidth}};">
           <paper-progress flex value="{{seekerValue}}" on-click="{{seekerClicked}}"></paper-progress>
@@ -43,6 +49,7 @@
           </paper-button>
         </div>
       </div>
+    </div>
 
   </template>
   <script>
