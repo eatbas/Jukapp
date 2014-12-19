@@ -2,32 +2,45 @@
 <link rel="import" href="../google-youtube/google-youtube.html">
 <link rel="import" href="../core-toolbar/core-toolbar.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
 <link rel="import" href="../core-icon/core-icon.html">
 
 <polymer-element name="jukapp-player" attributes="youtubeId videoTitle">
   <template>
     <style>
+      paper-progress {
+        height: 8px;
+      }
+      paper-progress::shadow #activeProgress {
+        background-color: rgb(204, 24, 30);
+      }
     </style>
 
-      <div class="youtube-player" style="background-color: red;" vertical layout flex center>
+      <div class="youtube-player" vertical layout flex center>
         <google-youtube
           id="player"
           videoid="{{youtubeId}}"
           height="390px"
-          width="640px"
+          width="{{playerWidth}}"
           rel="0"
-          state={{state}}
-          autoplay="1">
+          state="{{state}}"
+          currenttime="{{currentTime}}"
+          duration="{{duration}}"
+          autoplay="0"
+          chromeless="1">
         </google-youtube>
       </div>
-      <div horizontal layout center-justified style="">
-        <div horizontal layout style="background-color: gray; width: 640px;">
-            <paper-button flex on-click="{{playPauseClicked}}">
-              <core-icon icon="{{isPlaying ? 'av:pause' : 'av:play-arrow'}}"></core-icon>
-            </paper-button>
-            <paper-button flex on-click="{{nextClicked}}">
-              <core-icon icon="av:skip-next"></core-icon>
-            </paper-button>
+      <div vertical layout center>
+        <div horizontal layout style="background-color: blue; width: {{playerWidth}};">
+          <paper-progress flex value="{{seekerValue}}" on-click="{{seekerClicked}}"></paper-progress>
+        </div>
+        <div horizontal layout style="background-color: gray; width: {{playerWidth}};">
+          <paper-button flex on-click="{{playPauseClicked}}">
+            <core-icon icon="{{isPlaying ? 'av:pause' : 'av:play-arrow'}}"></core-icon>
+          </paper-button>
+          <paper-button flex on-click="{{nextClicked}}">
+            <core-icon icon="av:skip-next"></core-icon>
+          </paper-button>
         </div>
       </div>
 
@@ -37,7 +50,8 @@
     Polymer('jukapp-player', {
 
       publish: {
-        isPlaying: false
+        isPlaying: false,
+        playerWidth: "640px"
       },
 
       primaryTapped: function(e) {
@@ -58,6 +72,18 @@
 
       nextClicked: function() {
         this.fire("next-clicked");
+      },
+
+      seekerClicked: function(e) {
+        seekerPercentage = (e.offsetX / e.target.clientWidth);
+        totalTime = this.duration;
+
+        seekToTime = seekerPercentage * totalTime;
+        this.$.player.seekTo(seekToTime);
+      },
+
+      currentTimeChanged: function() {
+        this.seekerValue = (this.currentTime / this.duration)*100
       }
 
     });
