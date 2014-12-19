@@ -18,7 +18,8 @@ class QueuedVideo < ActiveRecord::Base
   end
 
   def play_and_destroy
-    destroy.video.play_in(room)
+    video.play_in(room)
+    # destroy.video.play_in(room)
   end
 
   def as_json(options)

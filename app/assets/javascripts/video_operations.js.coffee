@@ -26,8 +26,13 @@ class @VideoOperations
       success: (data, textStatus, jqXHR) ->
         if data.video
           video = data.video
-          $("#youtube_player").attr("videoid", video.youtube_id)
-          $("#video_title").text(video.title)
+
+          if $("jukapp-player").attr("youtubeId") == video.youtube_id
+            # VideoOperations.playNext()
+          else
+            $("jukapp-player").attr("youtubeId", video.youtube_id)
+
+          $("jukapp-player").attr("videoTitle", video.title)
         else
           location.reload()
     )
