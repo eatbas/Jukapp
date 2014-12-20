@@ -26,7 +26,6 @@ class @VideoOperations
       success: (data, textStatus, jqXHR) ->
         if data.video
           video = data.video
-
           if $("jukapp-player").attr("youtubeId") == video.youtube_id
             # VideoOperations.playNext()
           else
@@ -34,7 +33,8 @@ class @VideoOperations
 
           $("#page-title").html(video.title)
         else
-          location.reload()
+          $("jukapp-player").attr("youtubeId", '')
+          $("#page-title").html("Empty Queue")
     )
 
   @addLoading: ($node) ->

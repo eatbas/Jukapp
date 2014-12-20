@@ -8,10 +8,7 @@ class @EventStream
     @channel.bind "next", () ->
       VideoOperations.playNext()
     @channel.bind "new", () ->
-      if currentVideo
-        VideoOperations.currentQueue()
-      else
-        location.reload()
+      VideoOperations.playNext()
     @channel.bind "play", () ->
       VideoOperations.currentQueue()
     @channel.bind "delete", () ->

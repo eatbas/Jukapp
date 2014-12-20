@@ -45,7 +45,7 @@
         <paper-tab>POPULARS</paper-tab>
       </paper-tabs>
       <div class="tab" style="{{selectedTab == 0 ? '' : 'display: none;'}}">
-        <div class="inner-tab">
+        <div class="inner-tab" style="{{youtubeId ? '' : 'display: none;'}}">
           <div vertical center layout flex id="playerContainer">
             <google-youtube
               id="player"
@@ -70,6 +70,11 @@
             <paper-button flex on-click="{{nextClicked}}">
               <core-icon icon="av:skip-next"></core-icon>
             </paper-button>
+          </div>
+        </div>
+        <div class="inner-tab" style="{{youtubeId ? 'display: none;' : ''}}">
+          <div layout vertical center center-justified>
+            <content select=".empty-tab"></content>
           </div>
         </div>
       </div>
