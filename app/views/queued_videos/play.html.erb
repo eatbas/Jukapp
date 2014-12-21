@@ -3,7 +3,7 @@
 <paper-tabs selected="0" class="paper-tabs">
   <paper-tab id="video-tab">VIDEO</paper-tab>
   <paper-tab id="recents-tab">RECENTS</paper-tab>
-  <paper-tab id="populars-tab">POPULARS</paper-tab>
+  <paper-tab id="popular-tab">POPULAR</paper-tab>
   <% if user_signed_in? %>
     <paper-tab id="favorites-tab">FAVORITES</paper-tab>
   <% end %>
@@ -21,8 +21,8 @@
 <div id="recents-tab-content" class="hidden">
   <%= render 'shared/stats_table', stats: @recents %>
 </div>
-<div id="populars-tab-content" class="hidden">
-  <%= render 'shared/stats_table', stats: @populars %>
+<div id="popular-tab-content" class="hidden">
+  <%= render 'shared/stats_table', stats: @popular %>
 </div>
 <% if user_signed_in? %>
   <div id="favorites-tab-content" class="hidden">
