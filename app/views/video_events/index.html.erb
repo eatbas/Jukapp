@@ -1,12 +1,21 @@
 <% content_for :title, "Home" %>
 
-<div class="search-content">
-  <jukapp-tab-panel>
-    <div class="first-tab">
-      <%= render 'shared/stats_table', stats: @recents %>
-    </div>
-    <div class="second-tab">
-      <%= render 'shared/stats_table', stats: @populars %>
-    </div>
-  </jukapp-tab-panel>
+<paper-tabs selected="0" class="paper-tabs">
+  <paper-tab id="recents-tab">RECENTS</paper-tab>
+  <paper-tab id="populars-tab">POPULARS</paper-tab>
+  <% if user_signed_in? %>
+    <paper-tab id="favorites-tab">FAVORITES</paper-tab>
+  <% end %>
+</paper-tabs>
+
+<div id="recents-tab-content">
+  <%= render 'shared/stats_table', stats: @recents %>
 </div>
+<div id="populars-tab-content" class="hidden">
+  <%= render 'shared/stats_table', stats: @populars %>
+</div>
+<% if user_signed_in? %>
+  <div id="favorites-tab-content" class="hidden">
+    <%= render 'shared/videos_table', videos: @favorites %>
+  </div>
+<% end %>

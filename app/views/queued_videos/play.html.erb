@@ -1,18 +1,33 @@
 <% content_for :title, "#{@current.try!(:title) || "Empty Queue"}" %>
 
-<div class="search-content">
+<paper-tabs selected="0" class="paper-tabs">
+  <paper-tab id="video-tab">VIDEO</paper-tab>
+  <paper-tab id="recents-tab">RECENTS</paper-tab>
+  <paper-tab id="populars-tab">POPULARS</paper-tab>
+  <% if user_signed_in? %>
+    <paper-tab id="favorites-tab">FAVORITES</paper-tab>
+  <% end %>
+</paper-tabs>
+
+<div id="video-tab-content">
   <jukapp-player youtubeId="<%= @current.try(:youtube_id) %>">
-    <div class="empty-tab">
+    <div class="empty-queue">
       <%= image_tag("jukebox.png") %>
-    </div>
-    <div class="first-tab">
-      <%= render 'shared/stats_table', stats: @recents %>
-    </div>
-    <div class="second-tab">
-      <%= render 'shared/stats_table', stats: @populars %>
     </div>
   </jukapp-player>
 </div>
+
+<div id="recents-tab-content" class="hidden">
+  <%= render 'shared/stats_table', stats: @recents %>
+</div>
+<div id="populars-tab-content" class="hidden">
+  <%= render 'shared/stats_table', stats: @populars %>
+</div>
+<% if user_signed_in? %>
+  <div id="favorites-tab-content" class="hidden">
+    <%= render 'shared/videos_table', videos: @favorites %>
+  </div>
+<% end %>
 
 <script>
   $(function() {

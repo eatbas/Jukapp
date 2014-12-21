@@ -16,3 +16,6 @@ $(document).ajaxComplete (event, request) ->
 $ ->
   $(".form-submit").click ->
     $(this).closest("form").submit()
+
+  document.querySelector("paper-tabs").addEventListener "core-select", (e) ->
+    $("#" + e.detail.item.getAttribute("id") + "-content").toggle(e.detail.isSelected)

@@ -47,10 +47,6 @@ jukapp-scaffold::shadow core-header-panel {
 .form-submit.success {
   background-color: #5AA367;
 }
-.content {
-  margin: 16px;
-  margin-bottom: 60px;
-}
 .search-content {
   margin: -16px;
 }
@@ -77,7 +73,12 @@ paper-item a {
   opacity: 0.87;
   text-decoration: none;
 }
-
+paper-tabs::shadow #selectionBar {
+  background-color: #93B1C6;
+}
+paper-tabs paper-tab::shadow #ink {
+  color: #93B1C6;
+}
 /* Paper input decorator */
 paper-input-decorator /deep/ .label-text,
 paper-input-decorator /deep/ .input-body,

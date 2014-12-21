@@ -32,9 +32,13 @@
     display: none;
   }
 
+  .content {
+    margin-bottom: 73px;
+  }
+
   </style>
 
-  <core-drawer-panel id="drawerPanel" narrow="{{narrow}}" drawerWidth="{{drawerWidth}}" rightDrawer="{{rightDrawer}}" responsiveWidth="{{responsiveWidth}}" disableSwipe="{{disableSwipe}}">
+  <core-drawer-panel id="drawerPanel" narrow="{{narrow}}" drawerWidth="{{drawerWidth}}" responsiveWidth="{{responsiveWidth}}" disableSwipe="{{disableSwipe}}">
 
     <div vertical layout drawer>
 
@@ -44,17 +48,17 @@
 
     <core-header-panel id="headerPanel" main mode="{{mode}}">
 
-      <core-toolbar>
-        <template if="{{!rightDrawer}}">
-          <paper-icon-button id="menuButton" icon="menu" on-tap="{{togglePanel}}"></paper-icon-button>
-        </template>
+      <core-toolbar class="medium-tall">
+        <paper-icon-button id="menuButton" icon="menu" on-tap="{{togglePanel}}"></paper-icon-button>
         <content select="[tool]"></content>
-        <template if="{{rightDrawer}}">
-          <paper-icon-button id="menuButton" icon="menu" on-tap="{{togglePanel}}"></paper-icon-button>
-        </template>
+        <div class="middle fit">
+          <content select=".paper-tabs"></content>
+        </div>
       </core-toolbar>
 
-      <content select="*"></content>
+      <div class="content">
+        <content select="*"></content>
+      </div>
 
       <jukapp-bottom-sheet hasDeleteButton={{isOwner}} drawerWidth="{{drawerWidth}}" narrow={{narrow}} queue={{queue}}></jukapp-bottom-sheet>
     </core-header-panel>
@@ -105,16 +109,6 @@
       * @default '600px'
       */
       responsiveWidth: '600px',
-
-      /**
-      * If true, position the drawer to the right. Also place menu icon to
-      * the right of the content instead of left.
-      *
-      * @attribute rightDrawer
-      * @type boolean
-      * @default false
-      */
-      rightDrawer: false,
 
       /**
       * If true, swipe to open/close the drawer is disabled.

@@ -8,7 +8,10 @@ class @EventStream
     @channel.bind "next", () ->
       VideoOperations.playNext()
     @channel.bind "new", () ->
-      VideoOperations.playNext()
+      if $("jukapp-player").attr("youtubeId")
+        VideoOperations.currentQueue()
+      else
+        VideoOperations.playNext()
     @channel.bind "play", () ->
       VideoOperations.currentQueue()
     @channel.bind "delete", () ->

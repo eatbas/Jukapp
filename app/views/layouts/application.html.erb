@@ -32,9 +32,6 @@
         <core-item icon="av:play-arrow" label="Play" horizontal center layout>
           <%= link_to "", play_video_path %>
         </core-item>
-        <core-item icon="star" label="Favorites" horizontal center layout>
-          <%= link_to "", favorites_path %>
-        </core-item>
         <core-item icon="av:skip-next" label="Next" horizontal center layout>
           <%= link_to "", next_video_path %>
         </core-item>
@@ -46,14 +43,10 @@
     <span tool horizontal layout flex center class="toolbar">
       <div flex id="page-title"><%= yield(:title) %></div>
     </span>
-    <div vertical layout>
-      <div class="content">
-        <%= yield %>
-      </div>
-      <% if false # turn off flash messages for now %>
-        <%= render "shared/flash_messages" %>
-      <% end %>
-    </div>
+    <%= yield %>
+    <% if false # turn off flash messages for now %>
+      <%= render "shared/flash_messages" %>
+    <% end %>
   </jukapp-scaffold>
 
   <%= render "shared/google_analytics" %>
