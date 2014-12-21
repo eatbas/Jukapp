@@ -91,6 +91,18 @@ paper-tabs::shadow #selectionBar {
   left: 50%;
   top: 10px;
 }
+.loading-indicator.fixed-bottom {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  margin-left: 128px;
+}
+.loading-indicator.fixed-bottom.narrow {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  margin-left: 0px;
+}
 
 paper-tabs paper-tab::shadow #ink {
   color: #93B1C6;

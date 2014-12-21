@@ -5,7 +5,7 @@ class VideoEvent < ActiveRecord::Base
   scope :top_ten_in, -> (room) { where(room_id: room.id).order('play_count DESC').first(10) }
   scope :last_ten_in, -> (room) { where(room_id: room.id).order('played_at DESC').first(10) }
 
-  self.per_page = 50
+  self.per_page = 15
 
   def self.play(video, room)
     event = VideoEvent.find_or_create_by(video: video, room: room)

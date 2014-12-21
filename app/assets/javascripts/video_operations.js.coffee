@@ -10,6 +10,7 @@ class @VideoOperations
 
   @fetchActiveTab: () ->
     selectedTab = $("paper-tab.core-selected")
+    selectedTab.attr("page", "")
     tabUrl = selectedTab.attr("tabUrl")
     if tabUrl
       tabContentId = "#" + selectedTab.attr("id") + "-content"
@@ -45,6 +46,23 @@ class @VideoOperations
         document.querySelector("jukapp-scaffold").queue = queue
     )
 
+  @fetchNextPage: () ->
+    this.addPaginationLoading()
+    selectedTab = $("paper-tab.core-selected")
+    currentPage = selectedTab.attr("page")
+    currentPage = 1 if !currentPage or currentPage == ""
+    nextPage    = parseInt(currentPage) + 1
+
+    $.ajax (
+      type: "GET"
+      url: "/recents?page=" + nextPage
+      success: (data, textStatus, jqXHR) ->
+        selectedTab.attr("page", nextPage)
+        tabContentId = "#" + selectedTab.attr("id") + "-content"
+        $(tabContentId).append(data)
+        VideoOperations.removePaginationLoading();
+    )
+
   @deleteQueuedVideo: (id) ->
     $.ajax (
       type: "DELETE"
@@ -71,11 +89,24 @@ class @VideoOperations
           $("#page-title").html("Empty Queue")
     )
 
-  @addLoading: ($node) ->
-    $(".loading-indicator").show()
+  @addLoading: () ->
+    $("#main-loading-indicator").addClass("fixed-top")
+    $("#main-loading-indicator").show()
 
-  @removeLoading: ($node) ->
-    $(".loading-indicator").hide()
+  @removeLoading: () ->
+    $("#main-loading-indicator").removeClass("fixed-top")
+    $("#main-loading-indicator").hide()
+
+  @addPaginationLoading: () ->
+    if document.querySelector("jukapp-scaffold").narrow
+      $("#main-loading-indicator").addClass("narrow")
+    $("#main-loading-indicator").addClass("fixed-bottom")
+    $("#main-loading-indicator").show()
+
+  @removePaginationLoading: () ->
+    $("#main-loading-indicator").removeClass("narrow")
+    $("#main-loading-indicator").removeClass("fixed-bottom")
+    $("#main-loading-indicator").hide()
 
   @disable: ($button, text) ->
     $button.text(text) if text

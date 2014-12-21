@@ -84,23 +84,21 @@
 
     <core-header-panel id="headerPanel" main mode="{{mode}}">
 
-      <paper-shadow>
-        <core-toolbar class="medium-tall" raised>
-          <paper-icon-button id="menuButton" icon="{{searchMode ? 'arrow-back' : 'menu'}}" on-tap="{{menuClicked}}"></paper-icon-button>
-          <div flex style="{{searchMode ? 'display: none;' : ''}}">
-            <content select="[tool]"></content>
-          </div>
-          <div flex style="{{searchMode ? '' : 'display: none;'}}">
-            <paper-input-decorator id="searchInputDecorator" label="Search">
-              <input id="searchInput" is="core-input" on-keydown="{{keydownHandler}}">
-            </paper-input-decorator>
-          </div>
-          <paper-icon-button id="searchButton" icon="search" on-tap="{{searchClicked}}"></paper-icon-button>
-          <div class="middle fit">
-            <content select=".paper-tabs"></content>
-          </div>
-        </core-toolbar>
-      </paper-shadow>
+      <core-toolbar class="medium-tall" raised>
+        <paper-icon-button id="menuButton" icon="{{searchMode ? 'arrow-back' : 'menu'}}" on-tap="{{menuClicked}}"></paper-icon-button>
+        <div flex style="{{searchMode ? 'display: none;' : ''}}">
+          <content select="[tool]"></content>
+        </div>
+        <div flex style="{{searchMode ? '' : 'display: none;'}}">
+          <paper-input-decorator id="searchInputDecorator" label="Search">
+            <input id="searchInput" is="core-input" on-keydown="{{keydownHandler}}">
+          </paper-input-decorator>
+        </div>
+        <paper-icon-button id="searchButton" icon="search" on-tap="{{searchClicked}}"></paper-icon-button>
+        <div class="middle fit">
+          <content select=".paper-tabs"></content>
+        </div>
+      </core-toolbar>
 
       <div class="content">
         <content select="*"></content>
