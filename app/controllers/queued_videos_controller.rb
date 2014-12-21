@@ -15,9 +15,6 @@ class QueuedVideosController < ApplicationController
       format.json { render json: {video: @current} }
       format.html do
         @queued_videos = QueuedVideo.queue_in(current_room)
-        @recents       = VideoEvent.where(room: current_room).includes(:video).order("played_at DESC").paginate(:page => params[:page])
-        @popular      = VideoEvent.where(room: current_room).includes(:video).order("play_count DESC").paginate(:page => params[:page])
-        @favorites     = current_user ? Favorite.where(user: current_user).includes(:video).map(&:video) : []
       end
     end
   end

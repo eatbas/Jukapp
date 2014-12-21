@@ -1,31 +1,17 @@
 <% content_for :title, "Home" %>
 
 <paper-tabs selected="0" class="paper-tabs">
-  <paper-tab id="recents-tab">RECENTS</paper-tab>
-  <paper-tab id="popular-tab">POPULAR</paper-tab>
-  <% if user_signed_in? %>
-    <paper-tab id="favorites-tab">FAVORITES</paper-tab>
-  <% end %>
-  <paper-tab id="search-tab" style="display: none;">RESULTS</paper-tab>
+  <%= render "shared/common_tabs" %>
 </paper-tabs>
 
-<div id="recents-tab-content">
-  <%= render 'shared/stats_table', stats: @recents %>
-</div>
-<div id="popular-tab-content" class="hidden">
-  <%= render 'shared/stats_table', stats: @popular %>
-</div>
-<% if user_signed_in? %>
-  <div id="favorites-tab-content" class="hidden">
-    <%= render 'shared/videos_table', videos: @favorites %>
-  </div>
-<% end %>
-
-<div id="search-tab-content" class="hidden"></div>
+<%= render "shared/common_tab_contents" %>
 
 <script>
   $(function() {
     var eventStream = new EventStream(<%= event_stream_params %>);
     eventStream.forQueue();
+
+    VideoOperations.fetchRows("<%= recents_path %>", "#recents-tab-content");
+    $("#recents-tab-content").show();
   });
 </script>

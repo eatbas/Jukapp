@@ -3,7 +3,8 @@ class FavoritesController < ApplicationController
   before_action :set_video, only: [:create, :destroy]
 
   def index
-    @favorite_videos = Favorite.where(user: current_user).includes(:video).map(&:video)
+    favorite_videos = Favorite.where(user: current_user).includes(:video).map(&:video)
+    render_video_rows(favorite_videos)
   end
 
   def create

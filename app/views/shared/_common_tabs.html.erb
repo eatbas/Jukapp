@@ -1,0 +1,6 @@
+<paper-tab id="recents-tab" tabUrl="<%= recents_path %>">RECENTS</paper-tab>
+<paper-tab id="popular-tab" tabUrl="<%= popular_path %>">POPULAR</paper-tab>
+<% if user_signed_in? %>
+  <paper-tab id="favorites-tab" tabUrl="<%= favorites_path %>">FAVORITES</paper-tab>
+<% end %>
+<paper-tab id="search-tab" style="display: none;">RESULTS</paper-tab>

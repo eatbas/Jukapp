@@ -80,15 +80,18 @@ paper-tabs /deep/ .tab-content {
 paper-tabs::shadow #selectionBar {
   background-color: #93B1C6;
 }
-#loading-indicator {
-  position: absolute;
-  left: 50%;
-  top: 10px;
+.loading-indicator {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   background-color: white;
 }
+.loading-indicator.fixed-top {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+}
+
 paper-tabs paper-tab::shadow #ink {
   color: #93B1C6;
 }

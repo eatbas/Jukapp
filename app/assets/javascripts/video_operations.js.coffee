@@ -1,5 +1,13 @@
 class @VideoOperations
 
+  @fetchRows: (url, node) ->
+    $.ajax(
+      type: "GET"
+      url: url
+      success: (data, textStatus, jqXHR) ->
+        $(node).html(data)
+    )
+
   @search: (query) ->
     return if query == ""
 
@@ -55,10 +63,10 @@ class @VideoOperations
     )
 
   @addLoading: ($node) ->
-    $("#loading-indicator").show()
+    $(".loading-indicator").show()
 
   @removeLoading: ($node) ->
-    $("#loading-indicator").hide()
+    $(".loading-indicator").hide()
 
   @disable: ($button, text) ->
     $button.text(text) if text
