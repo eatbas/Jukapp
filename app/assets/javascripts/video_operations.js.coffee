@@ -38,7 +38,7 @@ class @VideoOperations
       type: "GET"
       url: "/queued_videos"
       success: (data, textStatus, jqXHR) ->
-        VideoOperations.fetchActiveTab()
+        # VideoOperations.fetchActiveTab()
         queue = $.map data, (queuedVideo) ->
           id: queuedVideo.id
           title: queuedVideo.video.title
@@ -82,7 +82,7 @@ class @VideoOperations
       url: "/play"
       contentType: "application/json",
       success: (data, textStatus, jqXHR) ->
-        VideoOperations.fetchActiveTab()
+        # VideoOperations.fetchActiveTab()
         if data.video
           video = data.video
           if $("jukapp-player").attr("youtubeId") == video.youtube_id

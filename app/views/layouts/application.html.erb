@@ -38,6 +38,9 @@
     <span tool horizontal layout flex center class="toolbar">
       <div flex id="page-title"><%= yield(:title) %></div>
     </span>
+    <div class="secondaryButton">
+      <jukapp-remote-control></jukapp-remote-control>
+    </div>
     <%= yield %>
     <paper-shadow id="main-loading-indicator" style="display: none;" class="loading-indicator" horizontal layout center center-justified>
       <paper-spinner active></paper-spinner>

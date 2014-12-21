@@ -1,0 +1,29 @@
+<link rel="import" href="../paper-menu-button/paper-menu-button.html">
+
+<polymer-element name="jukapp-remote-control">
+  <template>
+
+    <style>
+      .remoteContent {
+        width: 250px;
+        height: 250px;
+      }
+    </style>
+
+    <paper-menu-button vertical layout center>
+      <paper-icon-button icon="settings-remote"></paper-icon-button>
+      <paper-dropdown class="dropdown" halign="right">
+        <core-menu>
+          <div class="remoteContent">
+            <paper-button>Selam</paper-button>
+          </div>
+        </core-menu>
+      </paper-dropdown>
+    </paper-menu-button>
+  </template>
+  <script>
+    Polymer('jukapp-remote-control', {
+
+    });
+  </script>
+</polymer-element>
