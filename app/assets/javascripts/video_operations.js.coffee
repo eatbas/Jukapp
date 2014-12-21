@@ -47,20 +47,27 @@ class @VideoOperations
     )
 
   @fetchNextPage: () ->
-    this.addPaginationLoading()
     selectedTab = $("paper-tab.core-selected")
+    paginated = selectedTab.attr("paginated")
     currentPage = selectedTab.attr("page")
+    return if currentPage == "last" or !paginated
+
     currentPage = 1 if !currentPage or currentPage == ""
     nextPage    = parseInt(currentPage) + 1
 
+    this.addPaginationLoading()
     $.ajax (
       type: "GET"
       url: "/recents?page=" + nextPage
       success: (data, textStatus, jqXHR) ->
-        selectedTab.attr("page", nextPage)
         tabContentId = "#" + selectedTab.attr("id") + "-content"
-        $(tabContentId).append(data)
-        VideoOperations.removePaginationLoading();
+        if data.trim() == ""
+          selectedTab.attr("page", "last")
+          VideoOperations.removePaginationLoading();
+        else
+          selectedTab.attr("page", nextPage)
+          $(tabContentId).append(data)
+          VideoOperations.removePaginationLoading();
     )
 
   @deleteQueuedVideo: (id) ->
