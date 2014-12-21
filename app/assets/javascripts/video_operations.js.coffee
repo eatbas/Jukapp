@@ -2,14 +2,18 @@ class @VideoOperations
 
   @search: (query) ->
     return if query == ""
+
+    $("#search-tab").show();
+    paperTabs = document.querySelector("paper-tabs")
+    paperTabs.selected = paperTabs.childElementCount - 1
+    VideoOperations.addLoading();
+
     $.ajax(
       type: "GET"
       url: "/ajax_search"
       data: {query: query}
       success: (data, textStatus, jqXHR) ->
-        $("#search-tab").show();
-        paperTabs = document.querySelector("paper-tabs")
-        paperTabs.selected = paperTabs.childElementCount - 1
+        VideoOperations.removeLoading();
         $("#search-tab-content").html(data)
     )
 
@@ -51,18 +55,10 @@ class @VideoOperations
     )
 
   @addLoading: ($node) ->
-    $search_icon = $node.find(".glyphicon-search")
-    $search_load_icon = $node.find(".loading-indicator")
-
-    $search_icon.addClass("hidden")
-    $search_load_icon.removeClass("hidden")
+    $("#loading-indicator").show()
 
   @removeLoading: ($node) ->
-    $search_icon = $node.find(".glyphicon-search")
-    $search_load_icon = $node.find(".loading-indicator")
-
-    $search_icon.removeClass("hidden")
-    $search_load_icon.addClass("hidden")
+    $("#loading-indicator").hide()
 
   @disable: ($button, text) ->
     $button.text(text) if text

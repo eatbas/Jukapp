@@ -44,6 +44,9 @@
       <div flex id="page-title"><%= yield(:title) %></div>
     </span>
     <%= yield %>
+    <paper-shadow style="display: none;" id="loading-indicator" horizontal layout center center-justified>
+      <paper-spinner active></paper-spinner>
+    </paper-shadow>
     <% if false # turn off flash messages for now %>
       <%= render "shared/flash_messages" %>
     <% end %>
