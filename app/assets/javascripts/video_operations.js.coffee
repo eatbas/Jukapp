@@ -50,6 +50,7 @@ class @VideoOperations
     selectedTab = $("paper-tab.core-selected")
     paginated = selectedTab.attr("paginated")
     currentPage = selectedTab.attr("page")
+    tabUrl = selectedTab.attr("tabUrl")
     return if currentPage == "last" or !paginated
 
     currentPage = 1 if !currentPage or currentPage == ""
@@ -58,7 +59,7 @@ class @VideoOperations
     this.addPaginationLoading()
     $.ajax (
       type: "GET"
-      url: "/recents?page=" + nextPage
+      url: tabUrl + "?page=" + nextPage
       success: (data, textStatus, jqXHR) ->
         tabContentId = "#" + selectedTab.attr("id") + "-content"
         if data.trim() == ""
