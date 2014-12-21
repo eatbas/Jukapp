@@ -8,18 +8,16 @@ class @EventStream
     @channel.bind "next", () ->
       VideoOperations.playNext()
     @channel.bind "new", () ->
-      if currentVideo
+      if $("jukapp-player").attr("youtubeId")
         VideoOperations.currentQueue()
       else
-        location.reload()
+        VideoOperations.playNext()
     @channel.bind "play", () ->
       VideoOperations.currentQueue()
     @channel.bind "delete", () ->
       VideoOperations.currentQueue()
 
   forQueue: ->
-    @channel.bind "subscription_error", (status) ->
-      alert('Pusher subscription_error')
     @channel.bind "next", () ->
       VideoOperations.currentQueue()
     @channel.bind "new", () ->

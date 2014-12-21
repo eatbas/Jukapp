@@ -1,12 +1,9 @@
-<% videos.each_with_index do |video, index| %>
-  <% stat = Video.from_youtube(video.youtube_id, create: false).try!(:stats_in, current_room) %>
+<% stats.each_with_index do |stat, index| %>
+  <% video = stat.video %>
   <jukapp-row
     youtubeId="<%= video.youtube_id %>"
     content="<%= video.title %>"
-    <% if stat %>
-      subtitle="<%= pluralize(stat.play_count, "views") %> &bull; <%= "#{time_ago_in_words(stat.played_at)} ago" %>">
-    <% end %>
-    >
+    subtitle="<%= pluralize(stat.play_count, "views") %> &bull; <%= "#{time_ago_in_words(stat.played_at)} ago" %>">
     <div class="element primary-action" horizontal layout center center-justified>
       <%= form_tag queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
         <core-icon icon="add"></core-icon>
@@ -31,23 +28,23 @@
 <% end %>
 
 <script>
-$(function() {
+  $(function() {
 
-  $("jukapp-row").unbind("primary-action").bind( "primary-action", function(e) {
-    $(e.target.querySelector(".primary-action form")).submit();
+    $("jukapp-row").unbind("primary-action").bind( "primary-action", function(e) {
+      $(e.target.querySelector(".primary-action form")).submit();
+    });
+
+    $(".add-favorite-button").unbind("click.addFavorite").bind("click.addFavorite", function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+      $(this).attr("icon", "star");
+    });
+
+    $(".remove-favorite-button").unbind("click.removeFavorite").bind("click.removeFavorite", function() {
+      $(this).closest("form").submit();
+      $(this).attr("disabled", "disabled");
+      $(this).attr("icon", "star-outline");
+    });
+
   });
-
-  $(".add-favorite-button").unbind("click.addFavorite").bind("click.addFavorite", function() {
-    $(this).closest("form").submit();
-    $(this).attr("disabled", "disabled");
-    $(this).attr("icon", "star");
-  });
-
-  $(".remove-favorite-button").unbind("click.removeFavorite").bind("click.removeFavorite", function() {
-    $(this).closest("form").submit();
-    $(this).attr("disabled", "disabled");
-    $(this).attr("icon", "star-outline");
-  });
-
-});
 </script>

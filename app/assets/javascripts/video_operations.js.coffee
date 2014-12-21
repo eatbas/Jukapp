@@ -1,10 +1,43 @@
 class @VideoOperations
 
+  @fetchTab: (url, node) ->
+    $.ajax(
+      type: "GET"
+      url: url
+      success: (data, textStatus, jqXHR) ->
+        $(node).html(data)
+    )
+
+  @fetchActiveTab: () ->
+    selectedTab = $("paper-tab.core-selected")
+    tabUrl = selectedTab.attr("tabUrl")
+    if tabUrl
+      tabContentId = "#" + selectedTab.attr("id") + "-content"
+      this.fetchTab(tabUrl, tabContentId)
+
+  @search: (query) ->
+    return if query == ""
+
+    $("#search-tab").show();
+    paperTabs = document.querySelector("paper-tabs")
+    paperTabs.selected = paperTabs.childElementCount - 1
+    VideoOperations.addLoading();
+
+    $.ajax(
+      type: "GET"
+      url: "/ajax_search"
+      data: {query: query}
+      success: (data, textStatus, jqXHR) ->
+        VideoOperations.removeLoading();
+        $("#search-tab-content").html(data)
+    )
+
   @currentQueue: () ->
     $.ajax (
       type: "GET"
       url: "/queued_videos"
       success: (data, textStatus, jqXHR) ->
+        VideoOperations.fetchActiveTab()
         queue = $.map data, (queuedVideo) ->
           id: queuedVideo.id
           title: queuedVideo.video.title
@@ -24,27 +57,25 @@ class @VideoOperations
       url: "/play"
       contentType: "application/json",
       success: (data, textStatus, jqXHR) ->
+        VideoOperations.fetchActiveTab()
         if data.video
           video = data.video
-          $("#youtube_player").attr("videoid", video.youtube_id)
-          $("#video_title").text(video.title)
+          if $("jukapp-player").attr("youtubeId") == video.youtube_id
+            # VideoOperations.playNext()
+          else
+            $("jukapp-player").attr("youtubeId", video.youtube_id)
+
+          $("#page-title").html(video.title)
         else
-          location.reload()
+          $("jukapp-player").attr("youtubeId", '')
+          $("#page-title").html("Empty Queue")
     )
 
   @addLoading: ($node) ->
-    $search_icon = $node.find(".glyphicon-search")
-    $search_load_icon = $node.find(".loading-indicator")
-
-    $search_icon.addClass("hidden")
-    $search_load_icon.removeClass("hidden")
+    $(".loading-indicator").show()
 
   @removeLoading: ($node) ->
-    $search_icon = $node.find(".glyphicon-search")
-    $search_load_icon = $node.find(".loading-indicator")
-
-    $search_icon.removeClass("hidden")
-    $search_load_icon.addClass("hidden")
+    $(".loading-indicator").hide()
 
   @disable: ($button, text) ->
     $button.text(text) if text

@@ -1,9 +1,39 @@
-<% content_for :title, "Play" %>
+<% content_for :title, "#{@current.try!(:title) || "Empty Queue"}" %>
 
-<div id="player-view">
-  <%= render "shared/player", video: @current %>
+<paper-tabs selected="0" class="paper-tabs">
+  <paper-tab id="video-tab">VIDEO</paper-tab>
+  <%= render "shared/common_tabs" %>
+</paper-tabs>
+
+<div id="video-tab-content">
+  <jukapp-player youtubeId="<%= @current.try(:youtube_id) %>">
+    <div class="empty-queue">
+      <%= image_tag("jukebox.png") %>
+    </div>
+  </jukapp-player>
 </div>
 
-<div style="display: none;">
-  <%= render "shared/ajax_searchbar" %>
-</div>
+<%= render "shared/common_tab_contents" %>
+
+<script>
+  $(function() {
+    var eventStream = new EventStream(<%= event_stream_params %>);
+    eventStream.forPlayer(<%= @current.present? %>);
+
+    document.querySelector("jukapp-scaffold").$.drawerPanel.forceNarrow = true;
+
+    document.querySelector("jukapp-player").addEventListener("google-youtube-state-change", function(e) {
+      if (e.detail.data == 0) {
+        VideoOperations.playNext();
+      }
+    });
+
+    document.querySelector("jukapp-player").addEventListener("google-youtube-error", function(e) {
+      VideoOperations.playNext();
+    });
+
+    document.querySelector("jukapp-player").addEventListener("next-clicked", function(e) {
+      VideoOperations.playNext();
+    });
+  });
+</script>

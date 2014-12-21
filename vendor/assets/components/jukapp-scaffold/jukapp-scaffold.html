@@ -3,38 +3,78 @@
 <link rel="import" href="../core-header-panel/core-header-panel.html">
 <link rel="import" href="../core-icon-button/core-icon-button.html">
 <link rel="import" href="../jukapp-bottom-sheet/jukapp-bottom-sheet.html">
+<link rel="import" href="../paper-input/paper-input.html">
 
 <polymer-element name="jukapp-scaffold" attributes="queue isOwner">
   <template>
 
   <style>
 
-  :host {
-    display: block;
-  }
+    :host {
+      display: block;
+    }
 
-  [drawer] {
-    background-color: #fff;
-    box-shadow: 1px 0 1px rgba(0, 0, 0, 0.1);
-  }
+    [drawer] {
+      background-color: #fff;
+      box-shadow: 1px 0 1px rgba(0, 0, 0, 0.1);
+    }
 
-  [main] {
-    height: 100%;
-    background-color: #eee;
-  }
+    [main] {
+      height: 100%;
+      background-color: #eee;
+    }
 
-  core-toolbar {
-    background-color: #526E9C;
-    color: #fff;
-  }
+    core-toolbar {
+      background-color: #526E9C;
+      color: #fff;
+    }
 
-  #drawerPanel:not([narrow]) #menuButton {
-    display: none;
-  }
+    #drawerPanel:not([narrow]) #menuButton {
+      display: none;
+    }
 
+    .content {
+      margin-bottom: 73px;
+    }
+    /* Paper input decorator */
+    paper-input-decorator /deep/ .label-text,
+    paper-input-decorator /deep/ .input-body {
+      /* inline label,  floating label, error message and error icon color when the input is unfocused */
+      opacity: 0.87;
+      color: black;
+    }
+    paper-input-decorator /deep/ ::-webkit-input-placeholder {
+      /* platform specific rules for placeholder text */
+      opacity: 0.54;
+      color: white;
+    }
+    paper-input-decorator /deep/ ::-moz-placeholder {
+      opacity: 0.54;
+      color: white;
+    }
+    paper-input-decorator /deep/ :-ms-input-placeholder {
+      opacity: 0.54;
+      color: white;
+    }
+
+    paper-input-decorator /deep/ .unfocused-underline {
+      /* line color when the input is unfocused */
+      background-color: black;
+    }
+
+    paper-input-decorator[focused] /deep/ .floated-label .label-text {
+      /* floating label color when the input is focused */
+      opacity: 0.87;
+      color: black;
+    }
+
+    paper-input-decorator /deep/ .focused-underline {
+      /* line color when the input is focused */
+      background-color: black;
+    }
   </style>
 
-  <core-drawer-panel id="drawerPanel" narrow="{{narrow}}" drawerWidth="{{drawerWidth}}" rightDrawer="{{rightDrawer}}" responsiveWidth="{{responsiveWidth}}" disableSwipe="{{disableSwipe}}">
+  <core-drawer-panel id="drawerPanel" narrow="{{narrow}}" drawerWidth="{{drawerWidth}}" responsiveWidth="{{responsiveWidth}}" disableSwipe="{{disableSwipe}}">
 
     <div vertical layout drawer>
 
@@ -44,17 +84,27 @@
 
     <core-header-panel id="headerPanel" main mode="{{mode}}">
 
-      <core-toolbar>
-        <template if="{{!rightDrawer}}">
-          <paper-icon-button id="menuButton" icon="menu" on-tap="{{togglePanel}}"></paper-icon-button>
-        </template>
-        <content select="[tool]"></content>
-        <template if="{{rightDrawer}}">
-          <paper-icon-button id="menuButton" icon="menu" on-tap="{{togglePanel}}"></paper-icon-button>
-        </template>
-      </core-toolbar>
+      <paper-shadow>
+        <core-toolbar class="medium-tall" raised>
+          <paper-icon-button id="menuButton" icon="{{searchMode ? 'arrow-back' : 'menu'}}" on-tap="{{menuClicked}}"></paper-icon-button>
+          <div flex style="{{searchMode ? 'display: none;' : ''}}">
+            <content select="[tool]"></content>
+          </div>
+          <div flex style="{{searchMode ? '' : 'display: none;'}}">
+            <paper-input-decorator id="searchInputDecorator" label="Search">
+              <input id="searchInput" is="core-input" on-keydown="{{keydownHandler}}">
+            </paper-input-decorator>
+          </div>
+          <paper-icon-button id="searchButton" icon="search" on-tap="{{searchClicked}}"></paper-icon-button>
+          <div class="middle fit">
+            <content select=".paper-tabs"></content>
+          </div>
+        </core-toolbar>
+      </paper-shadow>
 
-      <content select="*"></content>
+      <div class="content">
+        <content select="*"></content>
+      </div>
 
       <jukapp-bottom-sheet hasDeleteButton={{isOwner}} drawerWidth="{{drawerWidth}}" narrow={{narrow}} queue={{queue}}></jukapp-bottom-sheet>
     </core-header-panel>
@@ -107,16 +157,6 @@
       responsiveWidth: '600px',
 
       /**
-      * If true, position the drawer to the right. Also place menu icon to
-      * the right of the content instead of left.
-      *
-      * @attribute rightDrawer
-      * @type boolean
-      * @default false
-      */
-      rightDrawer: false,
-
-      /**
       * If true, swipe to open/close the drawer is disabled.
       *
       * @attribute disableSwipe
@@ -133,7 +173,8 @@
       * @default 'seamed'
       */
       mode: {value: 'seamed', reflect: true},
-      queue: []
+      queue: [],
+      searchMode: false
     },
 
     ready: function() {
@@ -143,6 +184,43 @@
 
     detached: function() {
       this.$.headerPanel.removeEventListener('scroll', this._scrollHandler);
+    },
+
+    searchClicked: function() {
+      if(this.searchMode) {
+        this.fire("search", {query: this.$.searchInput.value});
+        this.$.searchInput.value = "";
+        this.searchMode = false;
+      } else {
+        this.searchMode = true;
+      }
+    },
+
+    keydownHandler: function(e) {
+      switch (e.keyCode) {
+        case 13: // enter
+          this.searchClicked();
+          break;
+      }
+    },
+
+    menuClicked: function() {
+      if(this.searchMode) {
+        this.searchMode = false;
+      } else {
+        this.togglePanel();
+      }
+    },
+
+    searchModeChanged: function() {
+      if(this.searchMode) {
+        setTimeout(function() {
+          this.$.searchInput.focus();
+        }.bind(this), 50);
+        $(this.$.menuButton).show();
+      } else {
+        $(this.$.menuButton).attr("style", "");
+      }
     },
 
     /**

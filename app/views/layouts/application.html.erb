@@ -21,19 +21,11 @@
         </core-item>
       </core-toolbar>
       <core-menu selected="<%= yield(:title) %>" valueattr="label">
-        <%= form_tag search_videos_path, method: :get do %>
-        <paper-input-decorator label="Search" floatingLabel>
-          <%= text_field_tag "query", params[:query], placeholder: "Search on YouTube", is: "core-input" %>
-        </paper-input-decorator>
-        <% end %>
         <core-item icon="home" label="Home" horizontal center layout active>
           <%= link_to "", root_path %>
         </core-item>
         <core-item icon="av:play-arrow" label="Play" horizontal center layout>
           <%= link_to "", play_video_path %>
-        </core-item>
-        <core-item icon="star" label="Favorites" horizontal center layout>
-          <%= link_to "", favorites_path %>
         </core-item>
         <core-item icon="av:skip-next" label="Next" horizontal center layout>
           <%= link_to "", next_video_path %>
@@ -44,17 +36,15 @@
       </core-menu>
     </core-header-panel>
     <span tool horizontal layout flex center class="toolbar">
-      <h3 flex><%= yield(:title) %></h3>
-      <%= yield(:menu_button) %>
+      <div flex id="page-title"><%= yield(:title) %></div>
     </span>
-    <div vertical layout>
-      <div class="content">
-        <%= yield %>
-      </div>
-      <% if false # turn off flash messages for now %>
-        <%= render "shared/flash_messages" %>
-      <% end %>
-    </div>
+    <%= yield %>
+    <paper-shadow style="display: none;" class="loading-indicator fixed-top" horizontal layout center center-justified>
+      <paper-spinner active></paper-spinner>
+    </paper-shadow>
+    <% if false # turn off flash messages for now %>
+      <%= render "shared/flash_messages" %>
+    <% end %>
   </jukapp-scaffold>
 
   <%= render "shared/google_analytics" %>
