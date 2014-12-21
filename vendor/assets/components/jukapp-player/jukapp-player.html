@@ -22,6 +22,9 @@
       .player-controls {
         background-color: #93B1C6;
       }
+      .empty {
+        padding-top: 16px;
+      }
     </style>
 
     <div class="inner-tab" style="{{youtubeId ? '' : 'display: none;'}}">
@@ -43,16 +46,19 @@
         <paper-progress flex value="{{seekerValue}}" on-click="{{seekerClicked}}"></paper-progress>
       </div>
       <div horizontal layout class="player-controls" style="width: {{playerWidth}};">
-        <paper-button flex on-click="{{playPauseClicked}}">
+        <paper-button flex four on-click="{{playPauseClicked}}">
           <core-icon icon="{{isPlaying ? 'av:pause' : 'av:play-arrow'}}"></core-icon>
         </paper-button>
-        <paper-button flex on-click="{{nextClicked}}">
+        <paper-button flex four on-click="{{nextClicked}}">
           <core-icon icon="av:skip-next"></core-icon>
+        </paper-button>
+        <paper-button flex one on-click="{{fullscreenClicked}}">
+          <core-icon icon="fullscreen"></core-icon>
         </paper-button>
       </div>
     </div>
     <div class="inner-tab" style="{{youtubeId ? 'display: none;' : ''}}">
-      <div layout horizontal center center-justified>
+      <div class="empty" layout horizontal center center-justified>
         <content select=".empty-queue"></content>
       </div>
     </div>
@@ -69,6 +75,16 @@
 
       primaryTapped: function(e) {
         this.fire("primary-action");
+      },
+
+      fullscreenClicked: function() {
+        if (this.$.player.requestFullScreen) {
+          this.$.player.requestFullScreen();
+        } else if (this.$.player.mozRequestFullScreen) {
+          this.$.player.mozRequestFullScreen();
+        } else if (this.$.player.webkitRequestFullScreen) {
+          this.$.player.webkitRequestFullScreen();
+        }
       },
 
       playPauseClicked: function() {
