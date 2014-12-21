@@ -21,11 +21,6 @@
         </core-item>
       </core-toolbar>
       <core-menu selected="<%= yield(:title) %>" valueattr="label">
-        <%= form_tag search_videos_path, method: :get do %>
-        <paper-input-decorator label="Search" floatingLabel>
-          <%= text_field_tag "query", params[:query], placeholder: "Search on YouTube", is: "core-input" %>
-        </paper-input-decorator>
-        <% end %>
         <core-item icon="home" label="Home" horizontal center layout active>
           <%= link_to "", root_path %>
         </core-item>
