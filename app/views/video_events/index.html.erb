@@ -1,35 +1,16 @@
 <% content_for :title, "Home" %>
 
-<paper-shadow>
-  <core-toolbar class="toolbar-title first-element">
-    <div class="indent">
-      <h3>Queue</h3>
-    </div>
-  </core-toolbar>
-</paper-shadow>
-<%= render 'shared/queued_videos_table', queued_videos: @queued_videos %>
+<paper-tabs selected="0" class="paper-tabs">
+  <%= render "shared/common_tabs" %>
+</paper-tabs>
 
-<paper-shadow>
-  <core-toolbar class="toolbar-title">
-    <div class="indent">
-      <h3>Top 10</h3>
-    </div>
-  </core-toolbar>
-</paper-shadow>
-<%= render 'shared/videos_table', videos: @top_ten_videos %>
-
-<paper-shadow>
-  <core-toolbar class="toolbar-title">
-    <div class="indent">
-      <h3>Last 10</h3>
-    </div>
-  </core-toolbar>
-</paper-shadow>
-<%= render 'shared/videos_table', videos: @last_ten_videos %>
+<%= render "shared/common_tab_contents" %>
 
 <script>
   $(function() {
     var eventStream = new EventStream(<%= event_stream_params %>);
     eventStream.forQueue();
+
+    $("#recents-tab-content").show();
   });
 </script>

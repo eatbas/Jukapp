@@ -1,0 +1,55 @@
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+
+<polymer-element name="jukapp-tab-panel">
+  <template>
+  <style>
+    paper-tabs{
+      width: 100%;
+      background-color: #E3624D;
+    }
+    paper-tabs::shadow #selectionBar {
+      background-color: #93B1C6;
+    }
+    paper-tabs paper-tab::shadow #ink {
+      color: #93B1C6;
+    }
+    .tab {
+      width: 100%;
+    }
+    .inner-tab {
+      padding-left: 8px;
+      padding-right: 8px;
+      padding-top: 8px;
+    }
+  </style>
+
+  <div vertical layout center>
+    <paper-tabs selected={{selectedTab}}>
+      <paper-tab>RECENTS</paper-tab>
+      <paper-tab>POPULAR</paper-tab>
+    </paper-tabs>
+    <div class="tab" style="{{selectedTab == 0 ? '' : 'display: none;'}}">
+      <div class="inner-tab">
+        <content select=".first-tab"></content>
+      </div>
+    </div>
+    <div class="tab" style="{{selectedTab == 1 ? '' : 'display: none;'}}">
+      <div class="inner-tab">
+        <content select=".second-tab"></content>
+      </div>
+    </div>
+  </div>
+
+  </template>
+  <script>
+
+    Polymer('jukapp-tab-panel', {
+
+      publish: {
+        selectedTab: 0
+      }
+
+    });
+
+  </script>
+</polymer-element>

@@ -1,0 +1,121 @@
+<link rel="import" href="../paper-shadow/paper-shadow.html">
+<link rel="import" href="../google-youtube/google-youtube.html">
+<link rel="import" href="../core-toolbar/core-toolbar.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
+<link rel="import" href="../core-icon/core-icon.html">
+
+<polymer-element name="jukapp-player" attributes="youtubeId">
+  <template>
+    <style>
+      paper-progress {
+        height: 8px;
+      }
+      paper-progress::shadow #activeProgress {
+        background-color: #CC181E;
+      }
+      .inner-tab {
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 8px;
+      }
+      .player-controls {
+        background-color: #93B1C6;
+      }
+      .empty {
+        padding-top: 16px;
+      }
+    </style>
+
+    <div class="inner-tab" style="{{youtubeId ? '' : 'display: none;'}}">
+      <div vertical center layout flex id="playerContainer">
+        <google-youtube
+          id="player"
+          videoid="{{youtubeId}}"
+          width="{{playerWidth}}"
+          fluid="1"
+          rel="0"
+          state="{{state}}"
+          currenttime="{{currentTime}}"
+          duration="{{duration}}"
+          autoplay="1"
+          chromeless="1">
+        </google-youtube>
+      </div>
+      <div horizontal layout style="width: {{playerWidth}};">
+        <paper-progress flex value="{{seekerValue}}" on-click="{{seekerClicked}}"></paper-progress>
+      </div>
+      <div horizontal layout class="player-controls" style="width: {{playerWidth}};">
+        <paper-button flex four on-click="{{playPauseClicked}}">
+          <core-icon icon="{{isPlaying ? 'av:pause' : 'av:play-arrow'}}"></core-icon>
+        </paper-button>
+        <paper-button flex four on-click="{{nextClicked}}">
+          <core-icon icon="av:skip-next"></core-icon>
+        </paper-button>
+        <paper-button flex one on-click="{{fullscreenClicked}}">
+          <core-icon icon="fullscreen"></core-icon>
+        </paper-button>
+      </div>
+    </div>
+    <div class="inner-tab" style="{{youtubeId ? 'display: none;' : ''}}">
+      <div class="empty" layout horizontal center center-justified>
+        <content select=".empty-queue"></content>
+      </div>
+    </div>
+
+  </template>
+  <script>
+
+    Polymer('jukapp-player', {
+
+      publish: {
+        isPlaying: false,
+        playerWidth: "640px"
+      },
+
+      primaryTapped: function(e) {
+        this.fire("primary-action");
+      },
+
+      fullscreenClicked: function() {
+        if (this.$.player.requestFullScreen) {
+          this.$.player.requestFullScreen();
+        } else if (this.$.player.mozRequestFullScreen) {
+          this.$.player.mozRequestFullScreen();
+        } else if (this.$.player.webkitRequestFullScreen) {
+          this.$.player.webkitRequestFullScreen();
+        }
+      },
+
+      playPauseClicked: function() {
+        if(this.isPlaying) {
+          this.$.player.pause();
+        } else {
+          this.$.player.play();
+        }
+      },
+
+      stateChanged: function() {
+        this.isPlaying = this.state == 1;
+      },
+
+      nextClicked: function() {
+        this.fire("next-clicked");
+      },
+
+      seekerClicked: function(e) {
+        seekerPercentage = (e.offsetX / e.target.clientWidth);
+        totalTime = this.duration;
+
+        seekToTime = seekerPercentage * totalTime;
+        this.$.player.seekTo(seekToTime);
+      },
+
+      currentTimeChanged: function() {
+        this.seekerValue = (this.currentTime / this.duration)*100
+      }
+
+    });
+
+  </script>
+</polymer-element>

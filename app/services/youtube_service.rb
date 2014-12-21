@@ -55,6 +55,17 @@ class YoutubeService
     client.videos.map { |video| structurize(video) }
   end
 
+  def self.get_length(youtube_id)
+    client = Yourub::Client.new
+    response = client.client.execute!(
+      api_method: client.youtube.videos.list,
+      parameters: {id: youtube_id, part: "contentDetails"}
+    )
+    parsed_response = JSON.parse(response.data.to_json)
+    duration = parsed_response["items"].first["contentDetails"]["duration"]
+    ISO8601::Duration.new(duration).to_seconds
+  end
+
   def self.parse_url(youtube_url)
     raise ArgumentError, "not a youtube url" unless youtube_url =~ /youtu.?be/
     youtube_uri = URI(youtube_url)

@@ -939,7 +939,7 @@ window.PolymerGestures = {};
   };
 })(window.PolymerGestures);
 
-(function (scope) {
+(function(scope) {
   var dispatcher = scope.dispatcher;
   var pointermap = dispatcher.pointermap;
   // radius around touchend that swallows mouse events
@@ -948,10 +948,22 @@ window.PolymerGestures = {};
   var WHICH_TO_BUTTONS = [0, 1, 4, 2];
 
   var CURRENT_BUTTONS = 0;
-  var HAS_BUTTONS = false;
-  try {
-    HAS_BUTTONS = new MouseEvent('test', {buttons: 1}).buttons === 1;
-  } catch (e) {}
+
+  var FIREFOX_LINUX = /Linux.*Firefox\//i;
+
+  var HAS_BUTTONS = (function() {
+    // firefox on linux returns spec-incorrect values for mouseup.buttons
+    // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.buttons#See_also
+    // https://codereview.chromium.org/727593003/#msg16
+    if (FIREFOX_LINUX.test(navigator.userAgent)) {
+      return false;
+    }
+    try {
+      return new MouseEvent('test', {buttons: 1}).buttons === 1;
+    } catch (e) {
+      return false;
+    }
+  })();
 
   // handler block for native mouse events
   var mouseEvents = {
@@ -1273,7 +1285,7 @@ window.PolymerGestures = {};
         d.forEach(function(p) {
           this.cancel(p);
           pointermap.delete(p.pointerId);
-        });
+        }, this);
       }
     },
     touchstart: function(inEvent) {
@@ -2047,7 +2059,9 @@ window.PolymerGestures = {};
       'cancel'
     ],
     exposes: [
+      'pinchstart',
       'pinch',
+      'pinchend',
       'rotate'
     ],
     defaultActions: {
@@ -2065,11 +2079,19 @@ window.PolymerGestures = {};
           diameter: points.diameter,
           target: scope.targetFinding.LCA(points.a.target, points.b.target)
         };
+
+        this.firePinch('pinchstart', points.diameter, points);
       }
     },
     up: function(inEvent) {
       var p = pointermap.get(inEvent.pointerId);
+      var num = pointermap.pointers();
       if (p) {
+        if (num === 2) {
+          // fire 'pinchend' before deleting pointer
+          var points = this.calcChord();
+          this.firePinch('pinchend', points.diameter, points);
+        }
         pointermap.delete(inEvent.pointerId);
       }
     },
@@ -2084,9 +2106,9 @@ window.PolymerGestures = {};
     cancel: function(inEvent) {
         this.up(inEvent);
     },
-    firePinch: function(diameter, points) {
+    firePinch: function(type, diameter, points) {
       var zoom = diameter / this.reference.diameter;
-      var e = eventFactory.makeGestureEvent('pinch', {
+      var e = eventFactory.makeGestureEvent(type, {
         bubbles: true,
         cancelable: true,
         scale: zoom,
@@ -2113,7 +2135,7 @@ window.PolymerGestures = {};
       var diameter = points.diameter;
       var angle = this.calcAngle(points);
       if (diameter != this.reference.diameter) {
-        this.firePinch(diameter, points);
+        this.firePinch('pinch', diameter, points);
       }
       if (angle != this.reference.angle) {
         this.fireRotate(angle, points);
@@ -3258,7 +3280,7 @@ window.PolymerGestures = {};
     },
 
     setValue: function(model, newValue) {
-      if (this.path.length == 1);
+      if (this.path.length == 1)
         model = findScope(model, this.path[0]);
 
       return this.path.setValueFrom(model, newValue);
@@ -3882,12 +3904,12 @@ if (!window.WebComponents) {
       return obj instanceof base;
     }
   };
-
+  
   HTMLImports = {
   	useNative: true
   };
 
-
+  
   addEventListener('HTMLImportsLoaded', function() {
     document.dispatchEvent(
       new CustomEvent('WebComponentsReady', {bubbles: true})
@@ -4120,19 +4142,19 @@ scope.isIE = isIE;
 
 (function(scope) {
 
-  // TODO(sorvell): It's desireable to provide a default stylesheet
+  // TODO(sorvell): It's desireable to provide a default stylesheet 
   // that's convenient for styling unresolved elements, but
   // it's cumbersome to have to include this manually in every page.
-  // It would make sense to put inside some HTMLImport but
-  // the HTMLImports polyfill does not allow loading of stylesheets
+  // It would make sense to put inside some HTMLImport but 
+  // the HTMLImports polyfill does not allow loading of stylesheets 
   // that block rendering. Therefore this injection is tolerated here.
   var style = document.createElement('style');
   style.textContent = ''
       + 'body {'
-      + 'transition: opacity ease-in 0.2s;'
+      + 'transition: opacity ease-in 0.2s;' 
       + ' } \n'
       + 'body[unresolved] {'
-      + 'opacity: 0; display: block; overflow: hidden;'
+      + 'opacity: 0; display: block; overflow: hidden;' 
       + ' } \n'
       ;
   var head = document.querySelector('head');
@@ -5830,7 +5852,7 @@ scope.isIE = isIE;
       expose = exports = module.exports;
     }
     expose = exports;
-  }
+  } 
 
   expose.Observer = Observer;
   expose.Observer.runEOM_ = runEOM;
@@ -5847,7 +5869,7 @@ scope.isIE = isIE;
   expose.CompoundObserver = CompoundObserver;
   expose.Path = Path;
   expose.ObserverTransform = ObserverTransform;
-
+  
 })(typeof global !== 'undefined' && global && typeof module !== 'undefined' && module ? global : this || window);
 
 // Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
@@ -8104,7 +8126,7 @@ new (window.MutationObserver || JsMutationObserver)(atEndOfMicrotask)
 
 // exports
 scope.endOfMicrotask = endOfMicrotask;
-// bc
+// bc 
 Platform.endOfMicrotask = endOfMicrotask;
 
 })(Polymer);
@@ -8130,15 +8152,15 @@ head.insertBefore(style, head.firstChild);
 
 
 /**
- * Force any pending data changes to be observed before
+ * Force any pending data changes to be observed before 
  * the next task. Data changes are processed asynchronously but are guaranteed
- * to be processed, for example, before paintin. This method should rarely be
- * needed. It does nothing when Object.observe is available;
- * when Object.observe is not available, Polymer automatically flushes data
- * changes approximately every 1/10 second.
- * Therefore, `flush` should only be used when a data mutation should be
+ * to be processed, for example, before painting. This method should rarely be 
+ * needed. It does nothing when Object.observe is available; 
+ * when Object.observe is not available, Polymer automatically flushes data 
+ * changes approximately every 1/10 second. 
+ * Therefore, `flush` should only be used when a data mutation should be 
  * observed sooner than this.
- *
+ * 
  * @method flush
  */
 // flush (with logging)
@@ -8566,12 +8588,12 @@ scope.styleResolver = styleResolver;
 })(Polymer);
 
 (function(scope) {
-
+  
   // usage
-
+  
   // invoke cb.call(this) in 100ms, unless the job is re-registered,
   // which resets the timer
-  //
+  // 
   // this.myJob = this.job(this.myJob, cb, 100)
   //
   // returns a job handle which can be used to re-register a job
@@ -8609,7 +8631,7 @@ scope.styleResolver = styleResolver;
       }
     }
   };
-
+  
   function job(job, callback, wait) {
     if (job) {
       job.stop();
@@ -8619,11 +8641,11 @@ scope.styleResolver = styleResolver;
     job.go(callback, wait);
     return job;
   }
-
-  // exports
+  
+  // exports 
 
   scope.job = job;
-
+  
 })(Polymer);
 
 (function(scope) {
@@ -8649,8 +8671,8 @@ scope.styleResolver = styleResolver;
     this.cancelBubble = true;
     originalStopPropagation.apply(this, arguments);
   };
-
-
+  
+  
   // polyfill DOMTokenList
   // * add/remove: allow these methods to take multiple classNames
   // * toggle: add a 2nd argument which forces the given state rather
@@ -8724,17 +8746,17 @@ scope.styleResolver = styleResolver;
 
     //    will not work if function objects are not unique, for example,
     //    when using mixins.
-    //    The memoization strategy assumes each function exists on only one
+    //    The memoization strategy assumes each function exists on only one 
     //    prototype chain i.e. we use the function object for memoizing)
     //    perhaps we can bookkeep on the prototype itself instead
     function $super(arrayOfArgs) {
-      // since we are thunking a method call, performance is important here:
-      // memoize all lookups, once memoized the fast path calls no other
+      // since we are thunking a method call, performance is important here: 
+      // memoize all lookups, once memoized the fast path calls no other 
       // functions
       //
       // find the caller (cannot be `strict` because of 'caller')
       var caller = $super.caller;
-      // memoized 'name of method'
+      // memoized 'name of method' 
       var nom = caller.nom;
       // memoized next implementation prototype
       var _super = caller._super;
@@ -8747,8 +8769,8 @@ scope.styleResolver = styleResolver;
         }
         // super prototype is either cached or we have to find it
         // by searching __proto__ (at the 'top')
-        // invariant: because we cache _super on fn below, we never reach
-        // here from inside a series of calls to super(), so it's ok to
+        // invariant: because we cache _super on fn below, we never reach 
+        // here from inside a series of calls to super(), so it's ok to 
         // start searching from the prototype of 'this' (at the 'top')
         // we must never memoize a null super for this reason
         _super = memoizeSuper(caller, nom, getPrototypeOf(this));
@@ -8810,7 +8832,7 @@ scope.styleResolver = styleResolver;
       return Object;
     }
 
-    // NOTE: In some platforms (IE10) the prototype chain is faked via
+    // NOTE: In some platforms (IE10) the prototype chain is faked via 
     // __proto__. Therefore, always get prototype via __proto__ instead of
     // the more standard Object.getPrototypeOf.
     function getPrototypeOf(prototype) {
@@ -8938,8 +8960,8 @@ scope.styleResolver = styleResolver;
 
     /**
       * Invokes a function asynchronously. The context of the callback
-      * function is bound to 'this' automatically. Returns a handle which may
-      * be passed to <a href="#cancelAsync">cancelAsync</a> to cancel the
+      * function is bound to 'this' automatically. Returns a handle which may 
+      * be passed to <a href="#cancelAsync">cancelAsync</a> to cancel the 
       * asynchronous call.
       *
       * @method async
@@ -8948,7 +8970,7 @@ scope.styleResolver = styleResolver;
       * @param {number} timeout
       */
     async: function(method, args, timeout) {
-      // when polyfilling Object.observe, ensure changes
+      // when polyfilling Object.observe, ensure changes 
       // propagate before executing the async method
       Polymer.flush();
       // second argument to `apply` must be an array
@@ -8965,8 +8987,8 @@ scope.styleResolver = styleResolver;
     },
 
     /**
-      * Cancels a pending callback that was scheduled via
-      * <a href="#async">async</a>.
+      * Cancels a pending callback that was scheduled via 
+      * <a href="#async">async</a>. 
       *
       * @method cancelAsync
       * @param {handle} handle Handle of the `async` to cancel.
@@ -9101,8 +9123,8 @@ scope.styleResolver = styleResolver;
           fn[args ? 'apply' : 'call'](obj, args);
         }
         log.events && console.groupEnd();
-        // NOTE: dirty check right after calling method to ensure
-        // changes apply quickly; in a very complicated app using high
+        // NOTE: dirty check right after calling method to ensure 
+        // changes apply quickly; in a very complicated app using high 
         // frequency events, this can be a perf concern; in this case,
         // imperative handlers can be used to avoid flushing.
         Polymer.flush();
@@ -9119,11 +9141,11 @@ scope.styleResolver = styleResolver;
    */
 
   /**
-   * Add a gesture aware event handler to the given `node`. Can be used
+   * Add a gesture aware event handler to the given `node`. Can be used 
    * in place of `element.addEventListener` and ensures gestures will function
    * as expected on mobile platforms. Please note that Polymer's declarative
    * event handlers include this functionality by default.
-   *
+   * 
    * @method addEventListener
    * @param {Node} node node on which to listen
    * @param {String} eventType name of the event
@@ -9140,7 +9162,7 @@ scope.styleResolver = styleResolver;
    * Remove a gesture aware event handler on the given `node`. To remove an
    * event listener, the exact same arguments are required that were passed
    * to `Polymer.addEventListener`.
-   *
+   * 
    * @method removeEventListener
    * @param {Node} node node on which to listen
    * @param {String} eventType name of the event
@@ -9621,7 +9643,7 @@ scope.styleResolver = styleResolver;
       this.bindings_[name] = observer;
     },
 
-    // Called by TemplateBinding when all bindings on an element have been
+    // Called by TemplateBinding when all bindings on an element have been 
     // executed. This signals that all element inputs have been gathered
     // and it's safe to ready the element, create shadow-root and start
     // data-observation.
@@ -9638,15 +9660,15 @@ scope.styleResolver = styleResolver;
         this._unbindAllJob = this.job(this._unbindAllJob, this.unbindAll, 0);
       }
     },
-
+    
     /**
-     * This method should rarely be used and only if
-     * <a href="#cancelUnbindAll">`cancelUnbindAll`</a> has been called to
-     * prevent element unbinding. In this case, the element's bindings will
-     * not be automatically cleaned up and it cannot be garbage collected
-     * by the system. If memory pressure is a concern or a
+     * This method should rarely be used and only if 
+     * <a href="#cancelUnbindAll">`cancelUnbindAll`</a> has been called to 
+     * prevent element unbinding. In this case, the element's bindings will 
+     * not be automatically cleaned up and it cannot be garbage collected 
+     * by the system. If memory pressure is a concern or a 
      * large amount of elements need to be managed in this way, `unbindAll`
-     * can be called to deactivate the element's bindings and allow its
+     * can be called to deactivate the element's bindings and allow its 
      * memory to be reclaimed.
      *
      * @method unbindAll
@@ -9660,13 +9682,13 @@ scope.styleResolver = styleResolver;
     },
 
     /**
-     * Call in `detached` to prevent the element from unbinding when it is
-     * detached from the dom. The element is unbound as a cleanup step that
-     * allows its memory to be reclaimed.
-     * If `cancelUnbindAll` is used, consider calling
+     * Call in `detached` to prevent the element from unbinding when it is 
+     * detached from the dom. The element is unbound as a cleanup step that 
+     * allows its memory to be reclaimed. 
+     * If `cancelUnbindAll` is used, consider calling 
      * <a href="#unbindAll">`unbindAll`</a> when the element is no longer
      * needed. This will allow its memory to be reclaimed.
-     *
+     * 
      * @method cancelUnbindAll
      */
     cancelUnbindAll: function() {
@@ -9712,7 +9734,7 @@ scope.styleResolver = styleResolver;
 
   /**
    * Common prototype for all Polymer Elements.
-   *
+   * 
    * @class polymer-base
    * @homepage polymer.github.io
    */
@@ -9727,11 +9749,11 @@ scope.styleResolver = styleResolver;
     PolymerBase: true,
 
     /**
-     * Debounce signals.
-     *
-     * Call `job` to defer a named signal, and all subsequent matching signals,
+     * Debounce signals. 
+     * 
+     * Call `job` to defer a named signal, and all subsequent matching signals, 
      * until a wait time has elapsed with no new signal.
-     *
+     * 
      *     debouncedClickAction: function(e) {
      *       // processClick only when it's been 100ms since the last click
      *       this.job('click', function() {
@@ -9756,17 +9778,17 @@ scope.styleResolver = styleResolver;
     },
 
     /**
-     * Invoke a superclass method.
-     *
-     * Use `super()` to invoke the most recently overridden call to the
-     * currently executing function.
-     *
-     * To pass arguments through, use the literal `arguments` as the parameter
+     * Invoke a superclass method. 
+     * 
+     * Use `super()` to invoke the most recently overridden call to the 
+     * currently executing function. 
+     * 
+     * To pass arguments through, use the literal `arguments` as the parameter 
      * to `super()`.
      *
      *     nextPageAction: function(e) {
      *       // invoke the superclass version of `nextPageAction`
-     *       this.super(arguments);
+     *       this.super(arguments); 
      *     }
      *
      * To pass custom arguments, arrange them in an array.
@@ -9785,12 +9807,12 @@ scope.styleResolver = styleResolver;
 
     /**
      * Lifecycle method called when the element is instantiated.
-     *
-     * Override `created` to perform custom create-time tasks. No need to call
+     * 
+     * Override `created` to perform custom create-time tasks. No need to call 
      * super-class `created` unless you are extending another Polymer element.
      * Created is called before the element creates `shadowRoot` or prepares
      * data-observation.
-     *
+     * 
      * @method created
      * @type void
      */
@@ -9800,7 +9822,7 @@ scope.styleResolver = styleResolver;
     /**
      * Lifecycle method called when the element has populated it's `shadowRoot`,
      * prepared data-observation, and made itself ready for API interaction.
-     *
+     * 
      * @method ready
      * @type void
      */
@@ -9809,10 +9831,10 @@ scope.styleResolver = styleResolver;
 
     /**
      * Low-level lifecycle method called as part of standard Custom Elements
-     * operation. Polymer implements this method to provide basic default
-     * functionality. For custom create-time tasks, implement `created`
-     * instead, which is called immediately after `createdCallback`.
-     *
+     * operation. Polymer implements this method to provide basic default 
+     * functionality. For custom create-time tasks, implement `created` 
+     * instead, which is called immediately after `createdCallback`. 
+     * 
      * @method createdCallback
      */
     createdCallback: function() {
@@ -9865,10 +9887,10 @@ scope.styleResolver = styleResolver;
 
     /**
      * Low-level lifecycle method called as part of standard Custom Elements
-     * operation. Polymer implements this method to provide basic default
-     * functionality. For custom tasks in your element, implement `attributeChanged`
-     * instead, which is called immediately after `attributeChangedCallback`.
-     *
+     * operation. Polymer implements this method to provide basic default 
+     * functionality. For custom tasks in your element, implement `attributeChanged` 
+     * instead, which is called immediately after `attributeChangedCallback`. 
+     * 
      * @method attributeChangedCallback
      */
     attributeChangedCallback: function(name, oldValue) {
@@ -9883,10 +9905,10 @@ scope.styleResolver = styleResolver;
 
     /**
      * Low-level lifecycle method called as part of standard Custom Elements
-     * operation. Polymer implements this method to provide basic default
-     * functionality. For custom create-time tasks, implement `attached`
-     * instead, which is called immediately after `attachedCallback`.
-     *
+     * operation. Polymer implements this method to provide basic default 
+     * functionality. For custom create-time tasks, implement `attached` 
+     * instead, which is called immediately after `attachedCallback`. 
+     * 
      * @method attachedCallback
      */
      attachedCallback: function() {
@@ -9905,21 +9927,21 @@ scope.styleResolver = styleResolver;
     },
 
      /**
-     * Implement to access custom elements in dom descendants, ancestors,
-     * or siblings. Because custom elements upgrade in document order,
+     * Implement to access custom elements in dom descendants, ancestors, 
+     * or siblings. Because custom elements upgrade in document order, 
      * elements accessed in `ready` or `attached` may not be upgraded. When
      * `domReady` is called, all registered custom elements are guaranteed
      * to have been upgraded.
-     *
+     * 
      * @method domReady
      */
 
     /**
      * Low-level lifecycle method called as part of standard Custom Elements
-     * operation. Polymer implements this method to provide basic default
-     * functionality. For custom create-time tasks, implement `detached`
-     * instead, which is called immediately after `detachedCallback`.
-     *
+     * operation. Polymer implements this method to provide basic default 
+     * functionality. For custom create-time tasks, implement `detached` 
+     * instead, which is called immediately after `detachedCallback`. 
+     * 
      * @method detachedCallback
      */
     detachedCallback: function() {
@@ -9939,7 +9961,7 @@ scope.styleResolver = styleResolver;
     /**
      * Walks the prototype-chain of this element and allows specific
      * classes a chance to process static declarations.
-     *
+     * 
      * In particular, each polymer-element has it's own `template`.
      * `parseDeclarations` is used to accumulate all element `template`s
      * from an inheritance chain.
@@ -9947,9 +9969,9 @@ scope.styleResolver = styleResolver;
      * `parseDeclaration` static methods implemented in the chain are called
      * recursively, oldest first, with the `<polymer-element>` associated
      * with the current prototype passed as an argument.
-     *
-     * An element may override this method to customize shadow-root generation.
-     *
+     * 
+     * An element may override this method to customize shadow-root generation. 
+     * 
      * @method parseDeclarations
      */
     parseDeclarations: function(p) {
@@ -9966,9 +9988,9 @@ scope.styleResolver = styleResolver;
      * For example, the standard implementation locates the template associated
      * with the given `<polymer-element>` and stamps it into a shadow-root to
      * implement shadow inheritance.
-     *
-     * An element may override this method for custom behavior.
-     *
+     *  
+     * An element may override this method for custom behavior. 
+     * 
      * @method parseDeclaration
      */
     parseDeclaration: function(elementElement) {
@@ -9983,8 +10005,8 @@ scope.styleResolver = styleResolver;
      * Given a `<polymer-element>`, find an associated template (if any) to be
      * used for shadow-root generation.
      *
-     * An element may override this method for custom behavior.
-     *
+     * An element may override this method for custom behavior. 
+     * 
      * @method fetchTemplate
      */
     fetchTemplate: function(elementElement) {
@@ -9992,11 +10014,11 @@ scope.styleResolver = styleResolver;
     },
 
     /**
-     * Create a shadow-root in this host and stamp `template` as it's
-     * content.
+     * Create a shadow-root in this host and stamp `template` as it's 
+     * content. 
      *
-     * An element may override this method for custom behavior.
-     *
+     * An element may override this method for custom behavior. 
+     * 
      * @method shadowFromTemplate
      */
     shadowFromTemplate: function(template) {
@@ -10063,10 +10085,10 @@ scope.styleResolver = styleResolver;
 
     /**
      * Register a one-time callback when a child-list or sub-tree mutation
-     * occurs on node.
+     * occurs on node. 
      *
-     * For persistent callbacks, call onMutation from your listener.
-     *
+     * For persistent callbacks, call onMutation from your listener. 
+     * 
      * @method onMutation
      * @param Node {Node} node Node to watch for mutations.
      * @param Function {Function} listener Function to call on mutation. The function is invoked as `listener.call(this, observer, mutations);` where `observer` is the MutationObserver that triggered the notification, and `mutations` is the native mutation list.
@@ -10083,10 +10105,10 @@ scope.styleResolver = styleResolver;
   /**
    * @class Polymer
    */
-
+  
   /**
    * Returns true if the object includes <a href="#polymer-base">polymer-base</a> in it's prototype chain.
-   *
+   * 
    * @method isBase
    * @param Object {Object} object Object to test.
    * @type Boolean
@@ -10099,7 +10121,7 @@ scope.styleResolver = styleResolver;
 
   /**
    * The Polymer base-class constructor.
-   *
+   * 
    * @property Base
    * @type Function
    */
@@ -10123,14 +10145,14 @@ scope.styleResolver = styleResolver;
   var hasShadowDOMPolyfill = window.ShadowDOMPolyfill;
 
   // magic words
-
+  
   var STYLE_SCOPE_ATTRIBUTE = 'element';
   var STYLE_CONTROLLER_SCOPE = 'controller';
-
+  
   var styles = {
     STYLE_SCOPE_ATTRIBUTE: STYLE_SCOPE_ATTRIBUTE,
     /**
-     * Installs external stylesheets and <style> elements with the attribute
+     * Installs external stylesheets and <style> elements with the attribute 
      * polymer-scope='controller' into the scope of element. This is intended
      * to be a called during custom element construction.
     */
@@ -10201,7 +10223,7 @@ scope.styleResolver = styleResolver;
   };
 
   var polyfillScopeStyleCache = {};
-
+  
   // NOTE: use raw prototype traversal so that we ensure correct traversal
   // on platforms where the protoype chain is simulated via __proto__ (IE10)
   function getPrototypeOf(prototype) {
@@ -10221,7 +10243,7 @@ scope.styleResolver = styleResolver;
   // exports
 
   scope.api.instance.styles = styles;
-
+  
 })(Polymer);
 
 (function(scope) {
@@ -10275,7 +10297,7 @@ scope.styleResolver = styleResolver;
   // using document.registerElement are available from
   // HTMLElement.getPrototypeForTag().
   // If an element was fully registered by Polymer, then
-  // Polymer.getRegisteredPrototype(name) ===
+  // Polymer.getRegisteredPrototype(name) === 
   //   HTMLElement.getPrototypeForTag(name)
 
   var prototypesByName = {};
@@ -10309,7 +10331,7 @@ scope.styleResolver = styleResolver;
   scope.waitingForPrototype = waitingForPrototype;
   scope.instanceOfType = instanceOfType;
 
-  // namespace shenanigans so we can expose our scope on the registration
+  // namespace shenanigans so we can expose our scope on the registration 
   // function
 
   // make window.Polymer reference `element()`
@@ -10350,11 +10372,11 @@ scope.styleResolver = styleResolver;
   * paths from element's in templates loaded in HTMLImports to be relative
   * to the document containing the element. Polymer automatically does this for
   * url attributes in element templates; however, if a url, for
-  * example, contains a binding, then `resolvePath` can be used to ensure it is
+  * example, contains a binding, then `resolvePath` can be used to ensure it is 
   * relative to the element document. For example, in an element's template,
   *
   *     <a href="{{resolvePath(path)}}">Resolved</a>
-  *
+  * 
   * @method resolvePath
   * @param {String} url Url path to resolve.
   * @param {String} base Optional base url against which to resolve, defaults
@@ -10446,7 +10468,7 @@ scope.api.declaration.path = path;
       return loadables;
     },
     /**
-     * Install external stylesheets loaded in <polymer-element> elements into the
+     * Install external stylesheets loaded in <polymer-element> elements into the 
      * element's template.
      * @param elementElement The <element> element to style.
      */
@@ -10478,7 +10500,7 @@ scope.api.declaration.path = path;
     /**
      * Takes external stylesheets loaded in an <element> element and moves
      * their content into a <style> element inside the <element>'s template.
-     * The sheet is then removed from the <element>. This is done only so
+     * The sheet is then removed from the <element>. This is done only so 
      * that if the element is loaded in the main document, the sheet does
      * not become active.
      * Note, ignores sheets with the attribute 'polymer-scope'.
@@ -10510,9 +10532,9 @@ scope.api.declaration.path = path;
       return matcher ? nodes.filter(matcher) : nodes;
     },
     /**
-     * Promotes external stylesheets and <style> elements with the attribute
+     * Promotes external stylesheets and <style> elements with the attribute 
      * polymer-scope='global' into global scope.
-     * This is particularly useful for defining @keyframe rules which
+     * This is particularly useful for defining @keyframe rules which 
      * currently do not function in scoped or shadow style elements.
      * (See wkb.ug/72462)
      * @param elementElement The <element> element to style.
@@ -10577,7 +10599,7 @@ scope.api.declaration.path = path;
       if (attr) {
         clone.setAttribute(STYLE_SCOPE_ATTRIBUTE, attr);
       }
-      // TODO(sorvell): probably too brittle; try to figure out
+      // TODO(sorvell): probably too brittle; try to figure out 
       // where to put the element.
       var refNode = scope.firstElementChild;
       if (scope === document.head) {
@@ -10609,14 +10631,14 @@ scope.api.declaration.path = path;
     }
   }
   var p = HTMLElement.prototype;
-  var matches = p.matches || p.matchesSelector || p.webkitMatchesSelector
+  var matches = p.matches || p.matchesSelector || p.webkitMatchesSelector 
       || p.mozMatchesSelector;
-
+  
   // exports
 
   scope.api.declaration.styles = styles;
   scope.applyStyleToScope = applyStyleToScope;
-
+  
 })(Polymer);
 
 (function(scope) {
@@ -10831,7 +10853,7 @@ scope.api.declaration.path = path;
       }
     },
     //
-    // `name: value` entries in the `publish` object may need to generate
+    // `name: value` entries in the `publish` object may need to generate 
     // matching properties on the prototype.
     //
     // Values that are objects may have a `reflect` property, which
@@ -10840,13 +10862,13 @@ scope.api.declaration.path = path;
     // is encoded in the `value` property.
     //
     // publish: {
-    //   foo: 5,
+    //   foo: 5, 
     //   bar: {value: true, reflect: true},
     //   zot: {}
     // }
     //
     // `reflect` metadata property controls whether changes to the property
-    // are reflected back to the attribute (default false).
+    // are reflected back to the attribute (default false). 
     //
     // A value is stored on the prototype unless it's === `undefined`,
     // in which case the base chain is checked for a value.
@@ -10968,7 +10990,7 @@ scope.api.declaration.path = path;
   // attributes api
 
   var attributes = {
-
+    
     inheritAttributesObjects: function(prototype) {
       // chain our lower-cased publish map to the inherited version
       this.inheritObject(prototype, 'publishLC');
@@ -10981,13 +11003,13 @@ scope.api.declaration.path = path;
       var attributes = this.getAttribute(ATTRIBUTES_ATTRIBUTE);
       if (attributes) {
         // create a `publish` object if needed.
-        // the `publish` object is only relevant to this prototype, the
+        // the `publish` object is only relevant to this prototype, the 
         // publishing logic in `declaration/properties.js` is responsible for
         // managing property values on the prototype chain.
-        // TODO(sjmiles): the `publish` object is later chained to it's
-        //                ancestor object, presumably this is only for
-        //                reflection or other non-library uses.
-        var publish = prototype.publish || (prototype.publish = {});
+        // TODO(sjmiles): the `publish` object is later chained to it's 
+        //                ancestor object, presumably this is only for 
+        //                reflection or other non-library uses. 
+        var publish = prototype.publish || (prototype.publish = {}); 
         // names='a b c' or names='a,b,c'
         var names = attributes.split(ATTRIBUTES_REGEX);
         // record each name for publishing
@@ -11009,7 +11031,7 @@ scope.api.declaration.path = path;
       var clonable = this.prototype._instanceAttributes;
       // merge attributes from element
       var a$ = this.attributes;
-      for (var i=0, l=a$.length, a; (i<l) && (a=a$[i]); i++) {
+      for (var i=0, l=a$.length, a; (i<l) && (a=a$[i]); i++) {  
         if (this.isInstanceAttribute(a.name)) {
           clonable[a.name] = a.value;
         }
@@ -11029,7 +11051,7 @@ scope.api.declaration.path = path;
       assetpath: 1,
       'cache-csstext': 1
     }
-
+    
   };
 
   // add ATTRIBUTES_ATTRIBUTE to the blacklist
@@ -11081,7 +11103,7 @@ scope.api.declaration.path = path;
 (function(scope) {
 
   // imports
-
+  
   var api = scope.api;
   var isBase = scope.isBase;
   var extend = scope.extend;
@@ -11124,7 +11146,7 @@ scope.api.declaration.path = path;
       this.publishProperties(prototype, base);
       // infer observers for `observe` list based on method names
       this.inferObservers(prototype);
-      // desugar compound observer syntax, e.g. 'a b c'
+      // desugar compound observer syntax, e.g. 'a b c' 
       this.explodeObservers(prototype);
     },
 
@@ -11169,7 +11191,7 @@ scope.api.declaration.path = path;
       // parse on-* delegates declared on `this` element
       this.parseHostEvents();
       //
-      // install a helper method this.resolvePath to aid in
+      // install a helper method this.resolvePath to aid in 
       // setting resource urls. e.g.
       // this.$.image.src = this.resolvePath('images/foo.png')
       this.addResolvePathApi();
@@ -11211,7 +11233,7 @@ scope.api.declaration.path = path;
       return memoizedBases[name];
     },
 
-    // install Polymer instance api into prototype chain, as needed
+    // install Polymer instance api into prototype chain, as needed 
     ensureBaseApi: function(prototype) {
       if (prototype.PolymerBase) {
         return prototype;
@@ -11223,11 +11245,11 @@ scope.api.declaration.path = path;
       // TODO(sjmiles): sharing methods across prototype chains is
       // not supported by 'super' implementation which optimizes
       // by memoizing prototype relationships.
-      // Probably we should have a version of 'extend' that is
+      // Probably we should have a version of 'extend' that is 
       // share-aware: it could study the text of each function,
       // look for usage of 'super', and wrap those functions in
       // closures.
-      // As of now, there is only one problematic method, so
+      // As of now, there is only one problematic method, so 
       // we just patch it manually.
       // To avoid re-entrancy problems, the special super method
       // installed is called `mixinSuper` and the mixin method
@@ -11255,8 +11277,8 @@ scope.api.declaration.path = path;
       prototype[name] = this.chainObject(source, base[name]);
     },
 
-    // register 'prototype' to custom element 'name', store constructor
-    registerPrototype: function(name, extendee) {
+    // register 'prototype' to custom element 'name', store constructor 
+    registerPrototype: function(name, extendee) { 
       var info = {
         prototype: this.prototype
       }
@@ -11329,22 +11351,22 @@ scope.api.declaration.path = path;
 
   /*
 
-    Elements are added to a registration queue so that they register in
+    Elements are added to a registration queue so that they register in 
     the proper order at the appropriate time. We do this for a few reasons:
 
-    * to enable elements to load resources (like stylesheets)
+    * to enable elements to load resources (like stylesheets) 
     asynchronously. We need to do this until the platform provides an efficient
-    alternative. One issue is that remote @import stylesheets are
+    alternative. One issue is that remote @import stylesheets are 
     re-fetched whenever stamped into a shadowRoot.
 
     * to ensure elements loaded 'at the same time' (e.g. via some set of
     imports) are registered as a batch. This allows elements to be enured from
     upgrade ordering as long as they query the dom tree 1 task after
     upgrade (aka domReady). This is a performance tradeoff. On the one hand,
-    elements that could register while imports are loading are prevented from
+    elements that could register while imports are loading are prevented from 
     doing so. On the other, grouping upgrades into a single task means less
-    incremental work (for example style recalcs),  Also, we can ensure the
-    document is in a known state at the single quantum of time when
+    incremental work (for example style recalcs),  Also, we can ensure the 
+    document is in a known state at the single quantum of time when 
     elements upgrade.
 
   */
@@ -11372,10 +11394,10 @@ scope.api.declaration.path = path;
     indexOf: function(element) {
       var i = queueForElement(element).indexOf(element);
       if (i >= 0 && document.contains(element)) {
-        i += (HTMLImports.useNative || HTMLImports.ready) ?
+        i += (HTMLImports.useNative || HTMLImports.ready) ? 
           importQueue.length : 1e9;
       }
-      return i;
+      return i;  
     },
 
     // tell the queue an element is ready to be registered
@@ -11418,7 +11440,7 @@ scope.api.declaration.path = path;
     },
 
     isEmpty: function() {
-      for (var i=0, l=elements.length, e; (i<l) &&
+      for (var i=0, l=elements.length, e; (i<l) && 
           (e=elements[i]); i++) {
         if (e.__queue && !e.__queue.flushable) {
           return;
@@ -11428,7 +11450,7 @@ scope.api.declaration.path = path;
     },
 
     addToFlushQueue: function(element) {
-      flushQueue.push(element);
+      flushQueue.push(element);  
     },
 
     flush: function() {
@@ -11479,14 +11501,14 @@ scope.api.declaration.path = path;
         }
       }
     },
-
+  
     /**
-    Returns a list of elements that have had polymer-elements created but
+    Returns a list of elements that have had polymer-elements created but 
     are not yet ready to register. The list is an array of element definitions.
     */
     waitingFor: function() {
       var e$ = [];
-      for (var i=0, l=elements.length, e; (i<l) &&
+      for (var i=0, l=elements.length, e; (i<l) && 
           (e=elements[i]); i++) {
         if (e.__queue && !e.__queue.flushable) {
           e$.push(e);
@@ -11582,9 +11604,9 @@ scope.api.declaration.path = path;
       this.registerWhenReady();
     },
 
-    // TODO(sorvell): we currently queue in the order the prototypes are
+    // TODO(sorvell): we currently queue in the order the prototypes are 
     // registered, but we should queue in the order that polymer-elements
-    // are registered. We are currently blocked from doing this based on
+    // are registered. We are currently blocked from doing this based on 
     // crbug.com/395686.
     registerWhenReady: function() {
      if (this.registered
@@ -11649,7 +11671,7 @@ scope.api.declaration.path = path;
 
   });
 
-  // semi-pluggable APIs
+  // semi-pluggable APIs 
 
   // TODO(sjmiles): should be fully pluggable (aka decoupled, currently
   // the various plugins are allowed to depend on each other directly)
@@ -11691,18 +11713,18 @@ var whenReady = scope.whenReady;
 /**
  * Loads the set of HTMLImports contained in `node`. Notifies when all
  * the imports have loaded by calling the `callback` function argument.
- * This method can be used to lazily load imports. For example, given a
+ * This method can be used to lazily load imports. For example, given a 
  * template:
- *
+ *     
  *     <template>
  *       <link rel="import" href="my-import1.html">
  *       <link rel="import" href="my-import2.html">
  *     </template>
  *
  *     Polymer.importElements(template.content, function() {
- *       console.log('imports lazily loaded');
+ *       console.log('imports lazily loaded'); 
  *     });
- *
+ * 
  * @method importElements
  * @param {Node} node Node containing the HTMLImports to load.
  * @param {Function} callback Callback called when all imports have loaded.
@@ -11718,14 +11740,14 @@ function importElements(node, callback) {
 
 /**
  * Loads an HTMLImport for each url specified in the `urls` array.
- * Notifies when all the imports have loaded by calling the `callback`
- * function argument. This method can be used to lazily load imports.
+ * Notifies when all the imports have loaded by calling the `callback` 
+ * function argument. This method can be used to lazily load imports. 
  * For example,
  *
  *     Polymer.import(['my-import1.html', 'my-import2.html'], function() {
- *       console.log('imports lazily loaded');
+ *       console.log('imports lazily loaded'); 
  *     });
- *
+ * 
  * @method import
  * @param {Array} urls Array of urls to load as HTMLImports.
  * @param {Function} callback Callback called when all imports have loaded.
@@ -11750,6 +11772,35 @@ scope.import = _import;
 scope.importElements = importElements;
 
 })(Polymer);
+
+/**
+ * The `auto-binding` element extends the template element. It provides a quick 
+ * and easy way to do data binding without the need to setup a model. 
+ * The `auto-binding` element itself serves as the model and controller for the 
+ * elements it contains. Both data and event handlers can be bound. 
+ *
+ * The `auto-binding` element acts just like a template that is bound to 
+ * a model. It stamps its content in the dom adjacent to itself. When the 
+ * content is stamped, the `template-bound` event is fired.
+ *
+ * Example:
+ *
+ *     <template is="auto-binding">
+ *       <div>Say something: <input value="{{value}}"></div>
+ *       <div>You said: {{value}}</div>
+ *       <button on-tap="{{buttonTap}}">Tap me!</button>
+ *     </template>
+ *     <script>
+ *       var template = document.querySelector('template');
+ *       template.value = 'something';
+ *       template.buttonTap = function() {
+ *         console.log('tap!');
+ *       };
+ *     </script>
+ *
+ * @module Polymer
+ * @status stable
+*/
 
 (function() {
 
@@ -11787,7 +11838,7 @@ scope.importElements = importElements;
       events.findController = function() { return self.model; };
 
       var syntax = new PolymerExpressions();
-      var prepareBinding = syntax.prepareBinding;
+      var prepareBinding = syntax.prepareBinding;  
       syntax.prepareBinding = function(pathString, name, node) {
         return events.prepareEventBinding(pathString, name, node) ||
                prepareBinding.call(syntax, pathString, name, node);

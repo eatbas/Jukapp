@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   end
 
   resources :video_events, path: 'statistics', only: :index
-  get "/stats" => "video_events#stats"
 
   resources :favorites, only: [:index, :create] do
     collection do
@@ -30,6 +29,8 @@ Rails.application.routes.draw do
   get "/ajax_search" => "videos#ajax_search", as: :ajax_search_videos
   get "/pings/ping" => "pings#ping"
   get "/settings" => "settings#index", as: :settings
+  get "/popular" => "video_events#popular"
+  get "/recents" => "video_events#recents"
 
   root "video_events#index"
 end

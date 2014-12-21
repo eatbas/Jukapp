@@ -36,6 +36,18 @@ class ApplicationController < ActionController::Base
     settings_path
   end
 
+  def render_video_rows(videos)
+    if videos.present?
+      if videos.first.class == VideoEvent
+        render partial: "shared/stats_table", locals: { stats: videos }
+      else
+        render partial: "shared/videos_table", locals: { videos: videos }
+      end
+    else
+      render nothing: true
+    end
+  end
+
   private
 
   def flash_to_headers

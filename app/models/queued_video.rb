@@ -6,7 +6,7 @@ class QueuedVideo < ActiveRecord::Base
 
   def self.queue(video, room)
     create(video_id: video.id, room_id: room.id)
-    EventStreamService.send_message_to(room, {operation: "new"})
+    EventStreamService.send_message_to(room, "new")
   end
 
   def self.videos_in(room)
@@ -19,5 +19,11 @@ class QueuedVideo < ActiveRecord::Base
 
   def play_and_destroy
     destroy.video.play_in(room)
+  end
+
+  def as_json(options)
+    result = super(options)
+    result["video"] = video.as_json(only: [:title, :length])
+    result
   end
 end
