@@ -1,6 +1,7 @@
 #= require webcomponentsjs/webcomponents
 #= require jquery
 #= require jquery_ujs
+#= require fastclick
 #= require_tree .
 
 ajaxMessage = (msg, type) ->
@@ -14,6 +15,8 @@ $(document).ajaxComplete (event, request) ->
     ajaxMessage(msg, type)
 
 $ ->
+  new FastClick(document.body)
+
   $(".form-submit").click ->
     $(this).closest("form").submit()
 
