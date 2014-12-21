@@ -18,9 +18,7 @@ $ ->
     $(this).closest("form").submit()
 
   document.querySelector("jukapp-scaffold").addEventListener "search", (e) ->
-    console.log(e.detail)
     VideoOperations.search(e.detail.query)
-
 
   document.querySelector("paper-tabs").addEventListener "core-select", (e) ->
     $("#" + e.detail.item.getAttribute("id") + "-content").toggle(e.detail.isSelected)

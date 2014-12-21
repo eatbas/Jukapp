@@ -186,7 +186,8 @@
 
     searchClicked: function() {
       if(this.searchMode) {
-        this.fire("search", {query: this.$.searchInput.value})
+        this.fire("search", {query: this.$.searchInput.value});
+        this.$.searchInput.value = "";
         this.searchMode = false;
       } else {
         this.searchMode = true;
@@ -211,6 +212,9 @@
 
     searchModeChanged: function() {
       if(this.searchMode) {
+        setTimeout(function() {
+          this.$.searchInput.focus();
+        }.bind(this), 50);
         $(this.$.menuButton).show();
       } else {
         $(this.$.menuButton).attr("style", "");
