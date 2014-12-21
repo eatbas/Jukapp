@@ -1,12 +1,19 @@
 class @VideoOperations
 
-  @fetchRows: (url, node) ->
+  @fetchTab: (url, node) ->
     $.ajax(
       type: "GET"
       url: url
       success: (data, textStatus, jqXHR) ->
         $(node).html(data)
     )
+
+  @fetchActiveTab: () ->
+    selectedTab = $("paper-tab.core-selected")
+    tabUrl = selectedTab.attr("tabUrl")
+    if tabUrl
+      tabContentId = "#" + selectedTab.attr("id") + "-content"
+      this.fetchTab(tabUrl, tabContentId)
 
   @search: (query) ->
     return if query == ""
@@ -30,6 +37,7 @@ class @VideoOperations
       type: "GET"
       url: "/queued_videos"
       success: (data, textStatus, jqXHR) ->
+        VideoOperations.fetchActiveTab()
         queue = $.map data, (queuedVideo) ->
           id: queuedVideo.id
           title: queuedVideo.video.title
@@ -49,6 +57,7 @@ class @VideoOperations
       url: "/play"
       contentType: "application/json",
       success: (data, textStatus, jqXHR) ->
+        VideoOperations.fetchActiveTab()
         if data.video
           video = data.video
           if $("jukapp-player").attr("youtubeId") == video.youtube_id

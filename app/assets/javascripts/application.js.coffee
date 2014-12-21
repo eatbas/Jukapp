@@ -21,8 +21,6 @@ $ ->
     VideoOperations.search(e.detail.query)
 
   document.querySelector("paper-tabs").addEventListener "core-select", (e) ->
-    tabContentId = "#" + e.detail.item.getAttribute("id") + "-content"
-    $(tabContentId).toggle(e.detail.isSelected)
-    tabUrl = e.detail.item.getAttribute("tabUrl")
-    if e.detail.isSelected and tabUrl
-      VideoOperations.fetchRows(tabUrl, tabContentId)
+    $("#" + e.detail.item.getAttribute("id") + "-content").toggle(e.detail.isSelected)
+    if e.detail.isSelected
+      VideoOperations.fetchActiveTab()
