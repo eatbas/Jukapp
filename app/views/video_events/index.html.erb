@@ -6,6 +6,7 @@
   <% if user_signed_in? %>
     <paper-tab id="favorites-tab">FAVORITES</paper-tab>
   <% end %>
+  <paper-tab id="search-tab" style="display: none;">RESULTS</paper-tab>
 </paper-tabs>
 
 <div id="recents-tab-content">
@@ -19,3 +20,5 @@
     <%= render 'shared/videos_table', videos: @favorites %>
   </div>
 <% end %>
+
+<div id="search-tab-content" class="hidden"></div>

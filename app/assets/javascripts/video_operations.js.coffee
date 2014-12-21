@@ -1,5 +1,18 @@
 class @VideoOperations
 
+  @search: (query) ->
+    return if query == ""
+    $.ajax(
+      type: "GET"
+      url: "/ajax_search"
+      data: {query: query}
+      success: (data, textStatus, jqXHR) ->
+        $("#search-tab").show();
+        paperTabs = document.querySelector("paper-tabs")
+        paperTabs.selected = paperTabs.childElementCount - 1
+        $("#search-tab-content").html(data)
+    )
+
   @currentQueue: () ->
     $.ajax (
       type: "GET"

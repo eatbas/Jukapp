@@ -73,6 +73,10 @@ paper-item a {
   opacity: 0.87;
   text-decoration: none;
 }
+paper-tabs /deep/ .tab-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 paper-tabs::shadow #selectionBar {
   background-color: #93B1C6;
 }
