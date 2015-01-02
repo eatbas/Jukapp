@@ -17,12 +17,8 @@ $(document).ajaxComplete (event, request) ->
 $ ->
   new FastClick(document.body)
 
-  $(window).on 'scroll', ->
-    if $(window).scrollTop() > ( $(document).height() - $(window).height() )
-      clearTimeout(this.paginationTimeout)
-      this.paginationTimeout = setTimeout ->
-        VideoOperations.fetchNextPage()
-      , 100
+  document.querySelector("jukapp-scaffold").addEventListener "bottom-reached", (e) ->
+    VideoOperations.fetchNextPage()
 
   $(".form-submit").click ->
     $(this).closest("form").submit()

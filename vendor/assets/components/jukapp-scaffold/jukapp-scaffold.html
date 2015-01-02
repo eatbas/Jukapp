@@ -82,7 +82,7 @@
 
     </div>
 
-    <core-header-panel id="headerPanel" main mode="{{mode}}">
+    <core-header-panel id="headerPanel" main mode="{{mode}}" on-scroll="{{scrollHandler}}">
 
       <core-toolbar class="medium-tall" raised>
         <paper-icon-button id="menuButton" icon="{{searchMode ? 'arrow-back' : 'menu'}}" on-tap="{{menuClicked}}"></paper-icon-button>
@@ -95,12 +95,13 @@
           </paper-input-decorator>
         </div>
         <paper-icon-button id="searchButton" icon="search" on-tap="{{searchClicked}}"></paper-icon-button>
+        <content select=".secondaryButton"></content>
         <div class="middle fit">
           <content select=".paper-tabs"></content>
         </div>
       </core-toolbar>
 
-      <div class="content">
+      <div id="content" class="content">
         <content select="*"></content>
       </div>
 
@@ -191,6 +192,16 @@
         this.searchMode = false;
       } else {
         this.searchMode = true;
+      }
+    },
+
+    scrollHandler: function(e) {
+      magicNumber = 201 // Consoledan bakarak hesapladim
+      if(e.detail.target.scrollTop + this.$.drawerPanel.clientHeight == this.$.content.clientHeight + magicNumber) {
+        clearTimeout(this.paginationTimeout);
+        this.paginationTimeout = setTimeout(function() {
+          this.fire("bottom-reached");
+        }.bind(this), 100);
       }
     },
 

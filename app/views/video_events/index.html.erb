@@ -11,6 +11,7 @@
     var eventStream = new EventStream(<%= event_stream_params %>);
     eventStream.forQueue();
 
+    VideoOperations.fetchActiveTab()
     $("#recents-tab-content").show();
   });
 </script>
