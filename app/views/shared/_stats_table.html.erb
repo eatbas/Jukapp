@@ -7,6 +7,7 @@
     <div class="element primary-action" horizontal layout center center-justified>
       <%= form_tag queue_video_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
         <core-icon icon="add"></core-icon>
+        <%= submit_tag "", class: "hidden" %>
       <% end %>
     </div>
     <% if user_signed_in? && ( !local_variables.include?(:hide_favorites) || !hide_favorites ) %>
@@ -14,12 +15,14 @@
         <div class="secondary-action" horizontal layout center center-justified>
           <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :delete, remote: true do %>
             <paper-icon-button icon="star" class="secondary-button remove-favorite-button"></paper-icon-button>
+            <%= submit_tag "", class: "hidden" %>
           <% end %>
         </div>
       <% else %>
         <div class="secondary-action" horizontal layout center center-justified>
           <%= form_tag favorites_path(youtube_id: video.youtube_id, title: video.title), method: :post, remote: true do %>
             <paper-icon-button icon="star-outline" class="secondary-button add-favorite-button"></paper-icon-button>
+            <%= submit_tag "", class: "hidden" %>
           <% end %>
         </div>
       <% end %>
@@ -30,18 +33,18 @@
 <script>
   $(function() {
 
-    $("jukapp-row").unbind("primary-action").bind( "primary-action", function(e) {
-      $(e.target.querySelector(".primary-action form")).submit();
+    $("jukapp-row").unbind("primary-action").bind("primary-action", function(e) {
+      $(e.target.querySelector(".primary-action form input:last-child")).click();
     });
 
     $(".add-favorite-button").unbind("click.addFavorite").bind("click.addFavorite", function() {
-      $(this).closest("form").submit();
+      $(this).closest("form").find("input:last-child").click();
       $(this).attr("disabled", "disabled");
       $(this).attr("icon", "star");
     });
 
     $(".remove-favorite-button").unbind("click.removeFavorite").bind("click.removeFavorite", function() {
-      $(this).closest("form").submit();
+      $(this).closest("form").find("input:last-child").click();
       $(this).attr("disabled", "disabled");
       $(this).attr("icon", "star-outline");
     });

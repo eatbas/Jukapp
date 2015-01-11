@@ -9,20 +9,17 @@ ajaxMessage = (msg, type) ->
   $(".toast-message")[0].show()
 
 $(document).ajaxComplete (event, request) ->
-  msg = request.getResponseHeader("X-Toast")
-  type = request.getResponseHeader("X-Toast-Type")
-  if msg != null
-    ajaxMessage(msg, type)
+  if false
+    msg = request.getResponseHeader("X-Toast")
+    type = request.getResponseHeader("X-Toast-Type")
+    if msg != null
+      ajaxMessage(msg, type)
 
 $ ->
   new FastClick(document.body)
 
-  $(window).on 'scroll', ->
-    if $(window).scrollTop() > ( $(document).height() - $(window).height() )
-      clearTimeout(this.paginationTimeout)
-      this.paginationTimeout = setTimeout ->
-        VideoOperations.fetchNextPage()
-      , 100
+  document.querySelector("jukapp-scaffold").addEventListener "bottom-reached", (e) ->
+    VideoOperations.fetchNextPage()
 
   $(".form-submit").click ->
     $(this).closest("form").submit()

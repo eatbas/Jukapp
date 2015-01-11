@@ -3,11 +3,11 @@
 <head>
   <title>Jukapp</title>
   <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag    "application", media: "all", "shim-shadowdom" => "" %>
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "http://js.pusher.com/2.0/pusher.min.js" %>
   <%= html_import_tag "application" %>
-  <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#E7E7E7">
 </head>
