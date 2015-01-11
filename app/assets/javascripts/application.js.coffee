@@ -9,10 +9,11 @@ ajaxMessage = (msg, type) ->
   $(".toast-message")[0].show()
 
 $(document).ajaxComplete (event, request) ->
-  msg = request.getResponseHeader("X-Toast")
-  type = request.getResponseHeader("X-Toast-Type")
-  if msg != null
-    ajaxMessage(msg, type)
+  if false
+    msg = request.getResponseHeader("X-Toast")
+    type = request.getResponseHeader("X-Toast-Type")
+    if msg != null
+      ajaxMessage(msg, type)
 
 $ ->
   new FastClick(document.body)

@@ -98,7 +98,7 @@
     },
 
     deleteTapHandler: function(e) {
-      this.fire("delete-tapped", {id: e.srcElement.getAttribute("video-id")});
+      this.fire("delete-tapped", {id: e.target.getAttribute("video-id")});
     },
 
     isExpandable: function(index) {
