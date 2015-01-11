@@ -52,11 +52,11 @@
     </style>
 
     <div id="drawer" class="bottom-sheet {{ { 'transition': !dragging } | tokenList }}" vertical layout style="left: {{ narrow ? '0px' : drawerWidth }}; height: {{ isHidden ? '0px' : fullyExpanded ? actualHeight : rowHeight }}">
-      <paper-ripple id="ripple" fit></paper-ripple>
+      <paper-ripple on-tap="{{togglePanel}}" id="ripple" fit></paper-ripple>
       <div class="bottom-sheet-content">
         <template repeat="{{ video, index in queue }}">
           <div class="bottom-sheet-row" horizontal layout flex center>
-            <div class="content" on-tap="{{togglePanel}}" horizontal layout flex center>
+            <div  horizontal layout flex center>
               <template if="{{ isExpandable(index) }}">
                 <core-icon icon="{{ fullyExpanded ? 'expand-more' : 'expand-less' }}" class="element small-element"></core-icon>
               </template>
