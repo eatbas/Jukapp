@@ -5,6 +5,7 @@ class QueuedVideosController < ApplicationController
     QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), current_room)
 
     flash[:notice] = "Added new video"
+
     render nothing: true
   end
 
