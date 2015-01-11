@@ -37,15 +37,15 @@
       display: inline-block;
       height: 56px;
     }
-    polyfill-next-selector { content: ':host > .primary-action'; }
-    ::content > .primary-action {
+    polyfill-next-selector { content: ':host .primary-action'; }
+    ::content .primary-action {
       border-radius: 50%;
       background-color: #B2B2B2;
       color: white;
       height: 40px;
       width: 40px;
     }
-    polyfill-next-selector { content: ':host .secondary-button'; }
+    polyfill-next-selector { content: ':host .secondary-action'; }
     ::content .secondary-action {
       height: 24px;
     }
@@ -60,7 +60,7 @@
         <div horizontal layout flex center>
           <span flex class="title-element">{{content}}</span>
         </div>
-        <div horizontal layout>
+        <div horizontal layout center>
           <template if="{{subtitle}}">
             <span flex class="subtitle-element">{{subtitle}}</span>
           </template>
