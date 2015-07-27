@@ -1,8 +1,10 @@
 class QueuedVideosController < ApplicationController
-  before_action :ensure_in_room
+  # before_action :ensure_in_room
 
   def queue
-    QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), current_room)
+    room = current_room || Room.find(18)
+
+    QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), room)
 
     redirect_to search_videos_path
   end

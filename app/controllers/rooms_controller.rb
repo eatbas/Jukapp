@@ -1,6 +1,11 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :join]
   before_action :authenticate_user!, only: :create
+  respond_to :html, :json
+
+  def index
+    respond_with Room.all
+  end
 
   def show
     @queued_videos = QueuedVideo.queue_in(@room)
@@ -19,7 +24,12 @@ class RoomsController < ApplicationController
 
   def join
     join_room(@room)
-    redirect_to settings_path, notice: "Joined"
+
+    respond_with(@room) do |format|
+      format.html do
+        redirect_to settings_path, notice: "Joined"
+      end
+    end
   end
 
   def leave
