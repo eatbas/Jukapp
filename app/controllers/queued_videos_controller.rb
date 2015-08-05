@@ -2,7 +2,7 @@ class QueuedVideosController < ApplicationController
   # before_action :ensure_in_room
 
   def queue
-    room = current_room || Room.find(18)
+    room = current_room || Room.find_by(18) || Room.first
 
     QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), room)
 
