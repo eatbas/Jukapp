@@ -13,6 +13,7 @@ class RoomsController < ApplicationController
 
   def create
     @room = Room.new(room_params)
+    @room.owner = current_user
     success = @room.save
     if success
       join_room(@room)
