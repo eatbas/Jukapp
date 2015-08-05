@@ -1,8 +1,4 @@
-class @EventStream
-
-  constructor: (room_id, socket_path, csrf_token) ->
-    @eshq = new ESHQ("queue-#{room_id}", { auth_url: socket_path, auth_headers: {'X-CSRF-Token': csrf_token} })
-
+jQuery ($) ->
   forPlayer: (currentVideo, player) ->
     @eshq.onmessage = (e) ->
       data = JSON.parse(e.data)
@@ -17,10 +13,27 @@ class @EventStream
         when "play", "delete"
           VideoOperations.currentQueue()
 
-  forQueue: ->
-    @eshq.onmessage = (e) ->
-      $("#queueHeader").removeClass("hidden")
-      data = JSON.parse(e.data)
-      switch data.operation
-        when "next", "new", "play", "delete"
-          VideoOperations.currentQueue()
+  forQueue = (message) ->
+    $("#queueHeader").removeClass("hidden")
+    data = JSON.parse(message.data)
+    switch data.operation
+      when "next", "new", "play", "delete"
+        VideoOperations.currentQueue()
+
+  retries = 0
+  listenToEventSource = (url) ->
+    source = new EventSource(url)
+    source.addEventListener 'queue', forQueue
+    interval = setInterval ->
+      switch source.readyState
+        when source.CLOSED
+          clearInterval(interval)
+          if retries > 0
+            retries -= 1
+            listenToEventSource(url)
+        else
+          retries = 2
+    , 30000
+
+  $('[data-event-stream]').each ->
+    listenToEventSource($(this).data('event-stream'))

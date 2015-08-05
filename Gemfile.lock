@@ -77,9 +77,10 @@ GEM
       railties (>= 3.2.6, < 5)
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    em-hiredis (0.3.0)
+      eventmachine (~> 1.0)
+      hiredis (~> 0.5.0)
     erubis (2.7.0)
-    eshq (0.0.9)
-      multi_json (~> 1.3)
     eventmachine (1.0.7)
     execjs (2.2.1)
     extlib (0.9.16)
@@ -97,6 +98,7 @@ GEM
       signet (>= 0.5.0)
       uuidtools (>= 2.1.0)
     hike (1.2.3)
+    hiredis (0.5.2)
     htmlentities (4.3.2)
     i18n (0.6.11)
     jquery-rails (3.1.2)
@@ -124,9 +126,16 @@ GEM
     orm_adapter (0.5.0)
     pg (0.17.1)
     polyglot (0.3.5)
+    pubsubstub (0.0.14)
+      em-hiredis (~> 0.2)
+      eventmachine (~> 1.0)
+      redis (~> 3.0)
+      sinatra (~> 1.4)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.1.1)
@@ -167,6 +176,10 @@ GEM
       faraday (>= 0.9.0.rc5)
       jwt (>= 0.1.5)
       multi_json (>= 1.0.0)
+    sinatra (1.4.6)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
     spring (1.1.3)
     sprockets (2.11.0)
       hike (~> 1.2)
@@ -213,12 +226,12 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.0.0)
   devise
-  eshq
   jquery-rails
   lol_dba
   mocha
   newrelic_rpm
   pg
+  pubsubstub
   quiet_assets
   rails (= 4.1.1)
   rails_12factor

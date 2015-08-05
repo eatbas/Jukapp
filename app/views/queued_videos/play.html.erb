@@ -64,3 +64,5 @@
     eventStream.forPlayer(<%= @current.present? %>, youtube_player.player);
   }
 </script>
+
+<div data-event-stream="<%= events_path(channels: ["queue-#{current_room.id}"]) %>"></div>

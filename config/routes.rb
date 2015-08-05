@@ -32,4 +32,6 @@ Rails.application.routes.draw do
   get "/settings" => "settings#index", as: :settings
 
   root "video_events#index"
+
+  mount Pubsubstub::Application.new, at: "/events", as: :events
 end

@@ -15,9 +15,4 @@
 
 <%= will_paginate @recommendedations, renderer: BootstrapPagination::Rails %>
 
-<script>
-  $(function() {
-    var eventStream = new EventStream(<%= event_stream_params %>);
-    eventStream.forQueue();
-  });
-</script>
+<div data-event-stream="<%= events_path(channels: ["queue-#{current_room.id}"]) %>"></div>

@@ -7,7 +7,6 @@ gem 'rails', '4.1.1'
 group :production do
   gem 'pg'
   gem 'rails_12factor'
-  gem 'thin'
 end
 
 group :development do
@@ -38,9 +37,10 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'thin'
 
 gem 'yourub', :git => 'git://github.com/edap/yourub.git', ref: 'ba8435e33457a6c2d861dae8144e215df0579fd7'
-gem 'eshq'
+gem 'pubsubstub'
 gem 'newrelic_rpm'
 gem 'autoprefixer-rails'
 gem 'devise'
