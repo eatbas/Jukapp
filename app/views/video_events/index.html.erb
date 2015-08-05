@@ -18,4 +18,9 @@
   <%= render 'shared/videos_table', videos: @last_ten_videos %>
 </div>
 
-<div data-event-stream="<%= events_path(channels: ["queue-#{current_room.id}"]) %>"></div>
+<script>
+  $(function() {
+    var eventStream = new EventStream('<%= events_path(channels: ["queue-#{current_room.id}"]) %>');
+    eventStream.forQueue();
+  });
+</script>
