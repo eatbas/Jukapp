@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: "users/sessions" }
 
   resources :rooms, only: [:index, :create, :show, :destroy] do
     collection do
