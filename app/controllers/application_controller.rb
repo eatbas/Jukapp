@@ -12,7 +12,9 @@ class ApplicationController < ActionController::Base
   end
 
   def current_room
-    Room.find(session[:current_room_id]) if session[:current_room_id]
+    if current_room_id = session[:current_room_id] || request.headers["X-Room-ID"]
+      @current_room ||= Room.find(current_room_id)
+    end
   end
 
   def ensure_room_exists
