@@ -3,7 +3,6 @@ class Users::SessionsController < Devise::SessionsController
   respond_to :html, :json
 
   def create
-    byebug
     super
   end
 end
