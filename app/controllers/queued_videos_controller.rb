@@ -1,12 +1,14 @@
 class QueuedVideosController < ApplicationController
   before_action :ensure_in_room
+  respond_to :html, :json
 
   def queue
     room = current_room
-
     QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), room)
 
-    redirect_to search_videos_path
+    respond_with({}, location: search_videos_path) do |format|
+      format.html { redirect_to search_videos_path }
+    end
   end
 
   def play
