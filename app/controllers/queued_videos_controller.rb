@@ -27,13 +27,12 @@ class QueuedVideosController < ApplicationController
     redirect_to :back, notice: "Skipped to the next video"
   end
 
-  def socket
-    socket = ESHQ.open(:channel => params[:channel])
-    render json: {socket: socket}
-  end
-
   def index
-    render partial: "shared/queued_videos_table", locals: { queued_videos: QueuedVideo.queue_in(current_room) }
+    queued_videos = QueuedVideo.queue_in(current_room)
+
+    respond_with(queued_videos) do |format|
+      format.html { render partial: "shared/queued_videos_table", locals: { queued_videos: queued_videos } }
+    end
   end
 
   def destroy

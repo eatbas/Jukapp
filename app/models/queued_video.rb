@@ -2,7 +2,11 @@ class QueuedVideo < ActiveRecord::Base
   belongs_to :video
   belongs_to :room
 
-  scope :queue_in, -> (room) { where(room_id: room).includes(:video).order(:created_at) }
+  scope :queue_in, -> (room) { where(room_id: room).includes(video: :video_events).order(:created_at) }
+
+  def as_json(options={})
+    super(include: {video: {include: :video_events}})
+  end
 
   def self.queue(video, room)
     create(video_id: video.id, room_id: room.id)
