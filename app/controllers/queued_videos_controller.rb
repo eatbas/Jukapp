@@ -30,7 +30,7 @@ class QueuedVideosController < ApplicationController
   def index
     queued_videos = QueuedVideo.queue_in(current_room)
 
-    respond_with(queued_videos) do |format|
+    respond_with(queued_videos.includes(video: :video_events)) do |format|
       format.html { render partial: "shared/queued_videos_table", locals: { queued_videos: queued_videos } }
     end
   end
