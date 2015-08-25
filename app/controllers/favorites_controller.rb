@@ -4,9 +4,11 @@ class FavoritesController < ApplicationController
   respond_to :html, :json
 
   def index
-    @favorite_videos = Favorite.where(user_id: current_user).includes(:video).map(&:video)
+    favorites = Favorite.where(user_id: current_user).includes(:video)
 
-    respond_with @favorite_videos
+    respond_with(favorites) do |format|
+      format.html { @favorite_videos = favorites.map(&:video) }
+    end
   end
 
   def create
