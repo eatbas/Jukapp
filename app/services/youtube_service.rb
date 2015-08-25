@@ -52,7 +52,7 @@ class YoutubeService
   def self.retrieve_videos(query)
     client = Yourub::Client.new
     client.search(query)
-    client.videos.map { |video| structurize(video) }
+    client.videos.map { |video| Video.find_by(youtube_id: video["id"]) || Video.new(youtube_id: video["id"], title: video["title"]) }
   end
 
   def self.parse_url(youtube_url)
