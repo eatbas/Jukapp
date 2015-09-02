@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   resources :queued_videos, only: [:index, :destroy]
   resources :recommended_videos, only: :index
 
+  resources :videos, only: :index
+
   post "/queue" => "queued_videos#queue", as: :queue_video
   get "/play"   => "queued_videos#play", as: :play_video
   get "/next"   => "queued_videos#next", as: :next_video

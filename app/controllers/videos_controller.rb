@@ -2,6 +2,11 @@ class VideosController < ApplicationController
   before_action :ensure_in_room
   respond_to :html, :json
 
+  def index
+    videos = VideoEvent.includes(:video).top_ten_in(current_room).map(&:video)
+    respond_with(videos)
+  end
+
   def search
     @videos = search_videos
 
