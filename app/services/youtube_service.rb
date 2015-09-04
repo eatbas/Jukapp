@@ -65,9 +65,4 @@ class YoutubeService
       youtube_url.last(11)
     end
   end
-
-  def self.structurize(video)
-    video[:youtube_id] = video.delete("id")
-    OpenStruct.new(video)
-  end
 end

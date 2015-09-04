@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150808042157) do
+ActiveRecord::Schema.define(version: 20150904233446) do
 
   create_table "favorites", force: true do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "video_id",   null: false
+    t.integer  "user_id",          null: false
+    t.integer  "youtube_video_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "favorites", ["user_id", "video_id"], name: "index_favorites_on_user_id_and_video_id", unique: true
+  add_index "favorites", ["user_id", "youtube_video_id"], name: "index_favorites_on_user_id_and_youtube_video_id", unique: true
   add_index "favorites", ["user_id"], name: "index_favorites_on_user_id"
-  add_index "favorites", ["video_id"], name: "index_favorites_on_video_id"
+  add_index "favorites", ["youtube_video_id"], name: "index_favorites_on_youtube_video_id"
 
   create_table "queued_videos", force: true do |t|
     t.integer  "video_id"
@@ -46,11 +46,14 @@ ActiveRecord::Schema.define(version: 20150808042157) do
   add_index "recommended_videos", ["video_id"], name: "index_recommended_videos_on_video_id"
 
   create_table "rooms", force: true do |t|
-    t.string   "name",       null: false
+    t.string   "name",                                null: false
     t.string   "password"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "owner_id",   null: false
+    t.integer  "owner_id",                            null: false
+    t.decimal  "lat",        precision: 10, scale: 6
+    t.decimal  "lng",        precision: 10, scale: 6
+    t.text     "settings"
   end
 
   add_index "rooms", ["name"], name: "index_rooms_on_name", unique: true
@@ -81,10 +84,15 @@ ActiveRecord::Schema.define(version: 20150808042157) do
   create_table "video_events", force: true do |t|
     t.integer  "room_id"
     t.integer  "video_id"
-    t.integer  "play_count", default: 0
+    t.integer  "play_count",     default: 0
     t.datetime "played_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status"
+    t.datetime "queued_at"
+    t.integer  "queued_by"
+    t.datetime "prioritized_at"
+    t.integer  "prioritized_by"
   end
 
   add_index "video_events", ["room_id"], name: "index_video_events_on_room_id"
@@ -93,11 +101,28 @@ ActiveRecord::Schema.define(version: 20150808042157) do
   create_table "videos", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "youtube_video_id"
+    t.integer  "room_id"
+    t.string   "status"
+    t.datetime "queued_at"
+    t.integer  "queued_by"
+    t.datetime "played_at"
+    t.integer  "play_count",       default: 0
+    t.datetime "prioritized_at"
+    t.integer  "prioritized_by"
+  end
+
+  add_index "videos", ["room_id"], name: "index_videos_on_room_id"
+  add_index "videos", ["youtube_video_id"], name: "index_videos_on_youtube_video_id"
+
+  create_table "youtube_videos", force: true do |t|
     t.string   "title"
     t.string   "youtube_id", null: false
     t.integer  "length"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "videos", ["youtube_id"], name: "index_videos_on_youtube_id"
+  add_index "youtube_videos", ["youtube_id"], name: "index_youtube_videos_on_youtube_id"
 
 end
