@@ -20,7 +20,7 @@
 
 <script>
   $(function() {
-    var eventStream = new EventStream(<%= event_stream_params %>);
+    var eventStream = new EventStream('<%= events_path(channels: ["queue-#{current_room.id}"]) %>');
     eventStream.forQueue();
   });
 </script>

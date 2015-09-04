@@ -60,7 +60,7 @@
   function onYouTubePlayerAPIReady() {
     var youtube_player = new YoutubePlayer("<%= @current.try(:youtube_id) %>");
 
-    var eventStream = new EventStream(<%= event_stream_params %>);
+    var eventStream = new EventStream('<%= events_path(channels: ["queue-#{current_room.id}"]) %>');
     eventStream.forPlayer(<%= @current.present? %>, youtube_player.player);
   }
 </script>

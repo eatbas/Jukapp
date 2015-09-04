@@ -1,5 +1,6 @@
 class EventStreamService
   def self.send_message_to(room, message)
-    ESHQ.send(channel: "queue-#{room.id}", data: message.to_json)
+    event = Pubsubstub::Event.new(message.to_json, name: "queue")
+    Pubsubstub::RedisPubSub.publish("queue-#{room.id}", event)
   end
 end

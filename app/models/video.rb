@@ -5,6 +5,10 @@ class Video < ActiveRecord::Base
 
   validates_presence_of :youtube_id
 
+  def as_json(options={})
+    super(include: :video_events)
+  end
+
   def self.from_youtube(youtube_id, title: "Unknown")
     Video.create_with(title: title).find_or_create_by(youtube_id: youtube_id)
   end

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: "users/sessions" }
 
-  resources :rooms, only: [:create, :show, :destroy] do
+  resources :rooms, only: [:index, :create, :show, :destroy] do
     collection do
       get :leave
     end
@@ -22,7 +22,8 @@ Rails.application.routes.draw do
   resources :queued_videos, only: [:index, :destroy]
   resources :recommended_videos, only: :index
 
-  post "/socket"   => "queued_videos#socket", as: :queue_socket
+  resources :videos, only: :index
+
   post "/queue" => "queued_videos#queue", as: :queue_video
   get "/play"   => "queued_videos#play", as: :play_video
   get "/next"   => "queued_videos#next", as: :next_video
@@ -32,4 +33,6 @@ Rails.application.routes.draw do
   get "/settings" => "settings#index", as: :settings
 
   root "video_events#index"
+
+  mount Pubsubstub::Application.new, at: "/events", as: :events
 end

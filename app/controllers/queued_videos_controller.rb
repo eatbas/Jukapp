@@ -1,10 +1,14 @@
 class QueuedVideosController < ApplicationController
   before_action :ensure_in_room
+  respond_to :html, :json
 
   def queue
-    QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), current_room)
+    room = current_room
+    QueuedVideo.queue(Video.from_youtube(params[:youtube_id], title: params[:title]), room)
 
-    redirect_to search_videos_path
+    respond_with({}, location: search_videos_path) do |format|
+      format.html { redirect_to search_videos_path }
+    end
   end
 
   def play
@@ -23,13 +27,12 @@ class QueuedVideosController < ApplicationController
     redirect_to :back, notice: "Skipped to the next video"
   end
 
-  def socket
-    socket = ESHQ.open(:channel => params[:channel])
-    render json: {socket: socket}
-  end
-
   def index
-    render partial: "shared/queued_videos_table", locals: { queued_videos: QueuedVideo.queue_in(current_room) }
+    queued_videos = QueuedVideo.queue_in(current_room)
+
+    respond_with(queued_videos.includes(video: :video_events)) do |format|
+      format.html { render partial: "shared/queued_videos_table", locals: { queued_videos: queued_videos } }
+    end
   end
 
   def destroy

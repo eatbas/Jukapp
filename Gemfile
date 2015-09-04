@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '2.1.1'
+ruby '2.1.5'
 
-gem 'rails', '4.1.1'
+gem 'rails', '4.1.11'
 
 group :production do
   gem 'pg'
@@ -37,12 +37,14 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'thin'
 
 gem 'yourub', :git => 'git://github.com/edap/yourub.git', ref: 'ba8435e33457a6c2d861dae8144e215df0579fd7'
-gem 'eshq'
+gem 'pubsubstub'
 gem 'newrelic_rpm'
 gem 'autoprefixer-rails'
 gem 'devise'
+gem 'simple_token_authentication', '~> 1.0'
 gem 'redditkit', '~> 1.0.1'
 gem 'redis'
 gem 'will_paginate-bootstrap'

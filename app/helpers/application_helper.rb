@@ -3,10 +3,6 @@ module ApplicationHelper
     Room.find(session[:current_room_id]) if session[:current_room_id]
   end
 
-  def event_stream_params
-    "'#{current_room.id}', '#{queue_socket_path}', '#{session[:_csrf_token]}'".html_safe
-  end
-
   def bootstrap_class_for(flash_type)
     case flash_type
       when "success"

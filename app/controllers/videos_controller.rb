@@ -1,11 +1,16 @@
 class VideosController < ApplicationController
   before_action :ensure_in_room
+  respond_to :html, :json
+
+  def index
+    videos = VideoEvent.includes(:video).top_ten_in(current_room).map(&:video)
+    respond_with(videos)
+  end
 
   def search
-    respond_to do |format|
-      format.json { render json: search_params[:query] ? { videos: search_videos.map(&:marshal_dump) } : {} }
-      format.html { @videos = search_videos }
-    end
+    @videos = search_videos
+
+    respond_with(@videos)
   end
 
   def ajax_search

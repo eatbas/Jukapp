@@ -1,9 +1,14 @@
 class FavoritesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_video, only: [:create, :destroy]
+  respond_to :html, :json
 
   def index
-    @favorite_videos = Favorite.where(user: current_user).includes(:video).map(&:video)
+    favorites = Favorite.where(user_id: current_user).includes(:video)
+
+    respond_with(favorites) do |format|
+      format.html { @favorite_videos = favorites.map(&:video) }
+    end
   end
 
   def create
