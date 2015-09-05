@@ -1,0 +1,56 @@
+<video id="vid"
+  src=""
+  class="video-js vjs-default-skin <%= 'hidden' unless @current.present? %>"
+  controls="true" preload="auto"
+  width="640"
+  height="360"
+>
+</video>
+
+<div id='empty-queue' class="text-center <%= 'hidden' if @current.present? %>">
+  <h1>Empty Queue</h1>
+  <%= image_tag("jukebox.png") %>
+</div>
+
+<script>
+  var eventStream = new EventStream('<%= events_path(channels: ["queue-#{current_room.id}"]) %>');
+  // eventStream.forPlayer(<%= @current.present? %>, youtube_player.player);
+
+  videojs('vid', { "techOrder": ["youtube"] }).ready(function() {
+    var player = this;
+
+    <% if @current %>
+      player.src('http://www.youtube.com/watch?v=<%= @current.try(:youtube_id) %>');
+      player.play();
+    <% end %>
+
+
+    // queueing
+    player.on('ended', function() {
+      // fetch next video
+      console.log('ended')
+      VideoOperations.playNext(player)
+    });
+
+    player.on('pause', function() {
+      // ajax pause
+    });
+
+    player.on('play', function() {
+      // ajax play
+    });
+
+    // TODO
+    // player.imageOverlay({
+    //   image_url: "http://img.youtube.com/vi/aNYjOVo5IEw/hqdefault.jpg",
+    //   opacity: 0.5,
+    //   height: '18em',
+    //   width: '32em',
+    //   right: '3em',
+    //   bottom: '8em',
+    //   position: 'absolute',
+    //   only_fullscreen: true
+    // });
+  });
+
+</script>

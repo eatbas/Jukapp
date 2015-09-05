@@ -1,6 +1,6 @@
 class VideosController < ApplicationController
   respond_to :json
-  respond_to :html, only: :play
+  respond_to :html, only: [:play, :play_new]
   before_action :ensure_in_room
 
   before_action :fetch_video, only: [:queue, :dequeue, :prioritize, :deprioritize, :pause, :continue]
@@ -16,6 +16,19 @@ class VideosController < ApplicationController
     end
 
     respond_with(videos)
+  end
+
+  def play_new
+    @queued_videos = current_room.videos.queued.to_a
+
+    if next_video = @queued_videos.shift # removes first item
+      if next_video.play && next_video.save
+        stream :play
+        @current = next_video.youtube_video
+      end
+    end
+
+    respond_with(@current)
   end
 
   def play

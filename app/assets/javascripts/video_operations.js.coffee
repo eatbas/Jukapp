@@ -8,17 +8,20 @@ class @VideoOperations
         $('#queue').html(data)
     )
 
-  @playNext: (youtube_player) ->
+  @playNext: (player) ->
     $.ajax (
       type: "GET"
-      url: "/play"
+      url: "/play_new"
       contentType: "application/json",
       success: (data, textStatus, jqXHR) ->
-        if data.video
-          youtube_service = new YoutubeService(youtube_player)
-          youtube_service.play(data.video)
+        console.log(data)
+        if data
+          player.src('http://www.youtube.com/watch?v=' + data.youtube_id);
+          player.play();
         else
-          location.reload()
+          $('#empty-queue').removeClass('hidden');
+          console.log($('#empty-queue'))
+          player.hide();
     )
 
   @addLoading: ($node) ->

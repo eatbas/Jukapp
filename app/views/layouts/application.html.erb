@@ -2,9 +2,10 @@
 <html>
 <head>
   <title>Jukapp</title>
-  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= stylesheet_link_tag "http://vjs.zencdn.net/4.12/video-js.css" %>
+  <%= javascript_include_tag "http://vjs.zencdn.net/4.12/video.js" %>
   <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag "http://www.youtube.com/player_api" %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#E7E7E7">
@@ -26,46 +27,10 @@
       </div>
 
       <div class="collapse navbar-collapse" id="main-navbar">
-        <ul class="nav navbar-nav">
-          <li>
-            <%= link_to search_videos_path do %>
-              <span class="glyphicon glyphicon-search"></span>
-            <% end %>
-          </li>
-          <% if current_room.try(:has_recommendations?) %>
-            <li>
-              <%= link_to recommended_videos_path do %>
-                <span class="glyphicon glyphicon-pushpin"></span>
-              <% end %>
-            </li>
-          <% end %>
-          <li>
-            <%= link_to play_video_path do %>
-              <span class="glyphicon glyphicon-play"></span>
-            <% end %>
-          </li>
-          <% if user_signed_in? %>
-            <li>
-              <%= link_to favorites_path do %>
-                <span class="glyphicon glyphicon-star"></span>
-              <% end %>
-            </li>
-          <% end %>
-          <% if owner? %>
-            <li>
-              <%= link_to next_video_path do %>
-                <span class="glyphicon glyphicon-step-forward"></span>
-              <% end %>
-            </li>
-          <% end %>
-          <li>
-            <%= link_to stats_path do %>
-            <span class="glyphicon glyphicon-th-list"></span>
-            <% end %>
-          </li>
+        <ul class="nav navbar-nav navbar-right">
           <li>
             <%= link_to settings_path do %>
-              <span class="glyphicon glyphicon-cog"></span>
+              Leave
             <% end %>
           </li>
         </ul>
