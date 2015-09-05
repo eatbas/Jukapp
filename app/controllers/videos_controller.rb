@@ -12,7 +12,7 @@ class VideosController < ApplicationController
     when 'latest'
       current_room.videos.not_on_player.order(played_at: :desc).paginate(page: params[:page])
     else
-      current_room.videos.order(play_count: :desc).paginate(page: params[:page])
+      current_room.videos.order(play_count: :desc, played_at: :desc).paginate(page: params[:page])
     end
 
     respond_with(videos)
