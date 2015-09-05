@@ -14,20 +14,18 @@
 </div>
 
 <script>
-  // eventStream.forPlayer(<%= @current.present? %>, youtube_player.player);
-
   videojs('vid', { "techOrder": ["youtube"] }).ready(function() {
     var player = this;
     var streamUrl = '<%= events_path(channels: ["queue-#{current_room.id}"]) %>'
-    var videoOperations = new VideoOperations();
+    var videoOperations = new VideoOperations(player);
     var eventStream = new EventStream(streamUrl);
-    eventStream.forPlayer(player, videoOperations)
 
-    videoOperations.playNext(player)
+    eventStream.forPlayer(player, videoOperations)
+    videoOperations.playNext()
 
     // queueing
     player.on('ended', function() {
-      videoOperations.playNext(player)
+      videoOperations.playNext()
     });
 
     player.on('pause', function() {
@@ -37,7 +35,7 @@
     });
 
     player.on('play', function() {
-      if (player.currentTime() != 0) {
+      if (player.currentTime() != 0 && !player.ended()) {
         videoOperations.continue()
       }
     });

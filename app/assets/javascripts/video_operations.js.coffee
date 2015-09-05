@@ -1,15 +1,18 @@
 class @VideoOperations
   @currentVideo;
 
+  constructor: (player) ->
+    @player = player
+
   currentQueue: (button, youtube_id, title) ->
     $.ajax (
       type: "GET"
-      url: "/queued_videos"
+      url: "/jukebox"
       success: (data, textStatus, jqXHR) ->
         $('#queue').html(data)
     )
 
-  playNext: (player) ->
+  playNext: () ->
     $.ajax (
       type: "GET"
       url: "/play"
@@ -18,20 +21,27 @@ class @VideoOperations
         if data
           @currentVideo = data
 
-          player.src('http://www.youtube.com/watch?v=' + data.youtube_video.youtube_id);
-          player.play();
+          @player.src('http://www.youtube.com/watch?v=' + data.youtube_video.youtube_id);
+          @player.play();
 
-          player.show();
+          @player.show();
           $('#empty-queue').addClass('hidden');
         else
           $('#empty-queue').removeClass('hidden');
-          player.hide();
+          @player.hide();
     )
 
   pause: () ->
     $.ajax (
       type: "PUT"
       url: "/videos/" + @currentVideo.id + "/pause"
+      contentType: "application/json"
+    )
+
+  continue: () ->
+    $.ajax (
+      type: "PUT"
+      url: "/videos/" + @currentVideo.id + "/continue"
       contentType: "application/json"
     )
 
