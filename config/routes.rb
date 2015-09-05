@@ -22,9 +22,13 @@ Rails.application.routes.draw do
   resources :queued_videos, only: [:index, :destroy]
   resources :recommended_videos, only: :index
 
-  resources :videos, only: :index
+  resources :videos, only: [:index, :create] do
+    member do
+      put :queue
+    end
+  end
 
-  post "/queue" => "queued_videos#queue", as: :queue_video
+  # post "/queue" => "queued_videos#queue", as: :queue_video
   get "/play"   => "queued_videos#play", as: :play_video
   get "/next"   => "queued_videos#next", as: :next_video
   get "/search" => "videos#search", as: :search_videos

@@ -25,7 +25,6 @@ class ApplicationController < ActionController::Base
 
   def ensure_room_exists
     current_room
-
   end
 
   def after_sign_in_path_for(resource_or_scope)
@@ -38,5 +37,9 @@ class ApplicationController < ActionController::Base
 
   def after_sign_out_path_for(resource_or_scope)
     settings_path
+  end
+
+  def stream(operation)
+    EventStreamService.send_message_to(current_room, {operation: operation})
   end
 end
