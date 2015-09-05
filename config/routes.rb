@@ -22,8 +22,8 @@ Rails.application.routes.draw do
   resources :queued_videos, only: [:index, :destroy]
   resources :recommended_videos, only: :index
 
-  get "/play" => "videos#play", as: :play_video
   get "/jukebox" => "videos#jukebox", as: :jukebox
+  get "/play" => "videos#play", as: :play_video
   resources :videos, only: [:index, :create] do
     member do
       put :queue
@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   get "/pings/ping" => "pings#ping"
   get "/settings" => "settings#index", as: :settings
 
-  root "video_events#index"
+  root "videos#jukebox"
 
   mount Pubsubstub::Application.new, at: "/events", as: :events
 end
