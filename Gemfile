@@ -14,7 +14,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'spring'
-  gem 'bullet'
+  gem 'bullet', '~> 4.14.7'
   gem 'lol_dba'
   gem 'quiet_assets'
 end

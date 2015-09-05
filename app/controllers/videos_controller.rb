@@ -1,8 +1,22 @@
 class VideosController < ApplicationController
-  respond_to :html, :json
+  respond_to :json
+  respond_to :html, only: :play
   before_action :ensure_in_room
 
   before_action :fetch_video, only: [:queue, :dequeue, :prioritize, :deprioritize, :pause, :continue]
+
+  def index
+    videos = case params[:type]
+    when 'playlist'
+      current_room.videos.where(status: ['queued', 'prioritized', 'playing', 'paused']).limit(11)
+    when 'latest'
+      current_room.videos.not_on_player.order(played_at: :desc).paginate(page: params[:page])
+    else
+      current_room.videos.order(play_count: :desc).paginate(page: params[:page])
+    end
+
+    respond_with(videos)
+  end
 
   def play
     @queued_videos = current_room.videos.queued.to_a
@@ -39,15 +53,15 @@ class VideosController < ApplicationController
     @video.dequeue
     @video.save
 
-    stream :new # change this to :change
+    stream :playlist_change
     head :ok
   end
 
   def prioritize
-    @video.prioritize
+    @video.prioritize(user: current_user)
     @video.save
 
-    stream :new # change this to :change
+    stream :playlist_change
     head :ok
   end
 
@@ -55,7 +69,7 @@ class VideosController < ApplicationController
     @video.deprioritize
     @video.save
 
-    stream :new # change this to :change
+    stream :playlist_change
     head :ok
   end
 
@@ -75,43 +89,13 @@ class VideosController < ApplicationController
     head :ok
   end
 
-  def index
-    top_videos = current_room.videos#.top_videos
-    response = {
-      now_playing: current_room.videos.now_playing
-    }
-    respond_with(response)
-  end
-
-  # OLD STUFF
-
-  def search
-    @videos = search_videos
-
-    respond_with(@videos)
-  end
-
-  def ajax_search
-    render partial: "shared/videos_table", locals: { videos: search_videos }
-  end
-
   private
 
   def fetch_video
     @video = current_room.videos.find(id)
   end
 
-  def search_videos
-    if search_params.present?
-      YoutubeService.get_videos_for(search_params[:query])
-    end
-  end
-
   def video_params
     params.require(:video).permit(:youtube_id)
-  end
-
-  def search_params
-    params.permit(:query)
   end
 end
