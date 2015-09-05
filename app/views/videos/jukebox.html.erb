@@ -1,43 +1,45 @@
+
 <video id="vid"
   src=""
-  class="video-js vjs-default-skin <%= 'hidden' unless @current.present? %>"
+  class="video-js vjs-default-skin vjs-hidden"
   controls="true" preload="auto"
   width="640"
   height="360"
 >
 </video>
 
-<div id='empty-queue' class="text-center <%= 'hidden' if @current.present? %>">
+<div id='empty-queue' class="text-center hidden">
   <h1>Empty Queue</h1>
   <%= image_tag("jukebox.png") %>
 </div>
 
 <script>
-  var eventStream = new EventStream('<%= events_path(channels: ["queue-#{current_room.id}"]) %>');
   // eventStream.forPlayer(<%= @current.present? %>, youtube_player.player);
 
   videojs('vid', { "techOrder": ["youtube"] }).ready(function() {
     var player = this;
+    var streamUrl = '<%= events_path(channels: ["queue-#{current_room.id}"]) %>'
+    var videoOperations = new VideoOperations();
+    var eventStream = new EventStream(streamUrl);
+    eventStream.forPlayer(player, videoOperations)
 
-    <% if @current %>
-      player.src('http://www.youtube.com/watch?v=<%= @current.try(:youtube_id) %>');
-      player.play();
-    <% end %>
-
+    videoOperations.playNext(player)
 
     // queueing
     player.on('ended', function() {
-      // fetch next video
-      console.log('ended')
-      VideoOperations.playNext(player)
+      videoOperations.playNext(player)
     });
 
     player.on('pause', function() {
-      // ajax pause
+      if (!player.ended()){
+        videoOperations.pause()
+      }
     });
 
     player.on('play', function() {
-      // ajax play
+      if (player.currentTime() != 0) {
+        videoOperations.continue()
+      }
     });
 
     // TODO

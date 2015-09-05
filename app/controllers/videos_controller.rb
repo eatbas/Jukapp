@@ -18,30 +18,19 @@ class VideosController < ApplicationController
     respond_with(videos)
   end
 
-  def play_new
-    @queued_videos = current_room.videos.queued.to_a
-
-    if next_video = @queued_videos.shift # removes first item
-      if next_video.play && next_video.save
-        stream :play
-        @current = next_video.youtube_video
-      end
-    end
-
-    respond_with(@current)
+  def jukebox
+    @queued_videos = current_room.videos.queued
   end
 
   def play
-    @queued_videos = current_room.videos.queued.to_a
-
-    if next_video = @queued_videos.first
+    if next_video = current_room.videos.queued.to_a.shift # removes first item
       if next_video.play && next_video.save
         stream :play
-        @current = next_video.youtube_video
+        current = next_video
       end
     end
 
-    respond_with({video: @current})
+    respond_with(current)
   end
 
   def create
@@ -105,7 +94,7 @@ class VideosController < ApplicationController
   private
 
   def fetch_video
-    @video = current_room.videos.find(id)
+    @video = current_room.videos.find(params[:id])
   end
 
   def video_params

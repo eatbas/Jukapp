@@ -1,6 +1,7 @@
 class @VideoOperations
+  @currentVideo;
 
-  @currentQueue: (button, youtube_id, title) ->
+  currentQueue: (button, youtube_id, title) ->
     $.ajax (
       type: "GET"
       url: "/queued_videos"
@@ -8,20 +9,30 @@ class @VideoOperations
         $('#queue').html(data)
     )
 
-  @playNext: (player) ->
+  playNext: (player) ->
     $.ajax (
       type: "GET"
-      url: "/play_new"
+      url: "/play"
       contentType: "application/json",
-      success: (data, textStatus, jqXHR) ->
-        console.log(data)
+      success: (data, textStatus, jqXHR) =>
         if data
-          player.src('http://www.youtube.com/watch?v=' + data.youtube_id);
+          @currentVideo = data
+
+          player.src('http://www.youtube.com/watch?v=' + data.youtube_video.youtube_id);
           player.play();
+
+          player.show();
+          $('#empty-queue').addClass('hidden');
         else
           $('#empty-queue').removeClass('hidden');
-          console.log($('#empty-queue'))
           player.hide();
+    )
+
+  pause: () ->
+    $.ajax (
+      type: "PUT"
+      url: "/videos/" + @currentVideo.id + "/pause"
+      contentType: "application/json"
     )
 
   @addLoading: ($node) ->

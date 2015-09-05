@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   resources :recommended_videos, only: :index
 
   get "/play" => "videos#play", as: :play_video
-  get "/play_new" => "videos#play_new", as: :play_new_video
+  get "/jukebox" => "videos#jukebox", as: :jukebox
   resources :videos, only: [:index, :create] do
     member do
       put :queue

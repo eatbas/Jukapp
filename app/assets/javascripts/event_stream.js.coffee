@@ -1,6 +1,6 @@
 class @EventStream
 
-  constructor: (url) ->
+  constructor: (url, player) ->
     @url = url
 
   retries = 0
@@ -19,19 +19,21 @@ class @EventStream
     , 30000
 
 
-  forPlayer: (currentVideo, player) ->
+  forPlayer: (player, videoOperations) ->
     this.listenToEventSource(@url, (message) ->
       data = JSON.parse(message.data)
       switch data.operation
         when "next"
-          VideoOperations.playNext(player)
+          videoOperations.playNext(player)
         when "new"
-          if currentVideo
-            VideoOperations.currentQueue()
+          if player.ended()
+            # play video immediately
+            videoOperations.playNext()
           else
-            location.reload()
+            # new video added notification
+            videoOperations.currentQueue()
         when "play", "delete"
-          VideoOperations.currentQueue()
+          videoOperations.currentQueue()
     )
 
   forQueue: ->

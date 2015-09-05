@@ -16,11 +16,13 @@ class Video < ActiveRecord::Base
   scope :on_player, -> { where(status: ['playing', 'paused']).order(played_at: :desc) }
   scope :not_on_player, -> { where.not(status: ['playing', 'paused']) }
   scope :playing, -> { where(status: 'playing') }
+  scope :paused, -> { where(status: 'paused') }
+  scope :current, -> { where(status: ['playing', 'paused']) }
   scope :now_playing, -> { playing.first }
 
   state_machine :status, :initial => :idle do
     after_transition on: :queue, :do => :on_queue
-    before_transition queued: :playing, :do => :stop_currently_playing
+    before_transition queued: :playing, :do => :stop_video_on_player
     after_transition on: :play, :do => :on_play
     after_transition on: :prioritize, :do => :on_prioritize
 
@@ -65,8 +67,9 @@ class Video < ActiveRecord::Base
     self.youtube_video = YoutubeVideo.find_or_create_by(youtube_id: youtube_id)
   end
 
-  def stop_currently_playing
-    room.videos.playing.each(&:stop)
+  def stop_video_on_player
+    # iterate just to make sure
+    room.videos.on_player.each(&:stop)
   end
 
   def on_play
