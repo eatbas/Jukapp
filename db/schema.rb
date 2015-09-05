@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150905011150) do
+ActiveRecord::Schema.define(version: 20150905024914) do
 
   create_table "favorites", force: true do |t|
     t.integer  "user_id",          null: false
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20150905011150) do
   end
 
   add_index "videos", ["room_id"], name: "index_videos_on_room_id"
+  add_index "videos", ["status"], name: "index_videos_on_status"
   add_index "videos", ["youtube_video_id"], name: "index_videos_on_youtube_video_id"
 
   create_table "youtube_videos", force: true do |t|

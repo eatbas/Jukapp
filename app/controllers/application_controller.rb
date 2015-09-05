@@ -40,6 +40,6 @@ class ApplicationController < ActionController::Base
   end
 
   def stream(operation)
-    EventStreamService.send_message_to(current_room, {operation: operation})
+    EventStreamService.send_message_to(current_room, {operation: operation.to_s})
   end
 end
