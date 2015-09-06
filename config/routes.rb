@@ -31,9 +31,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get "/search" => "youtube_videos#search", as: :search_videos
   # post "/queue" => "queued_videos#queue", as: :queue_video
   get "/next"   => "queued_videos#next", as: :next_video
-  get "/search" => "videos#search", as: :search_videos
   get "/ajax_search" => "videos#ajax_search", as: :ajax_search_videos
   get "/pings/ping" => "pings#ping"
   get "/settings" => "settings#index", as: :settings

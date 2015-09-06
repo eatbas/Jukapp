@@ -1,6 +1,6 @@
 class OldYoutubeService
   def self.get_videos_for(query)
-    query_with_music_category = { query: query, category: "music", max_results: 15 }
+    query_with_music_category = { query: query, category: "music", max_results: 50 }
 
     retrieve_videos(query_with_music_category)
   end
