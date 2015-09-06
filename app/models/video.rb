@@ -1,14 +1,17 @@
 class Video < ActiveRecord::Base
   belongs_to :room
-  belongs_to :youtube_video
+  belongs_to :youtube_video, foreign_key: :youtube_id, primary_key: :youtube_id
   belongs_to :queued_by, class_name: "User", foreign_key: :queued_by
   belongs_to :prioritized_by, class_name: "User", foreign_key: :queued_by
+
+  before_create :create_youtube_video
 
   self.per_page = 50
 
   default_scope { includes(:youtube_video) }
 
-  validates_presence_of :youtube_video_id, :room_id
+  validates_presence_of :youtube_id, :room_id
+  validates_uniqueness_of :youtube_id, scope: :room_id
 
   scope :idle, -> { where(status: 'idle') }
   scope :queued, -> { where(status: 'queued').order(queued_at: :asc) }
@@ -61,10 +64,6 @@ class Video < ActiveRecord::Base
 
   def self.possible_states
     self.state_machines[:status].states.map(&:name).map(&:to_s)
-  end
-
-  def initialize_from_youtube(youtube_id)
-    self.youtube_video = YoutubeVideo.find_or_create_by(youtube_id: youtube_id)
   end
 
   def stop_video_on_player

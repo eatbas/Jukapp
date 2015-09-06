@@ -1,6 +1,6 @@
 class VideosController < ApplicationController
   respond_to :json
-  respond_to :html, only: [:play, :play_new]
+  respond_to :html, only: :jukebox
   before_action :ensure_in_room
 
   before_action :fetch_video, only: [:queue, :dequeue, :prioritize, :deprioritize, :pause, :continue]
@@ -19,7 +19,7 @@ class VideosController < ApplicationController
   end
 
   def jukebox
-    @queued_videos = current_room.videos.queued
+    respond_with(@queued_videos = current_room.videos.queued)
   end
 
   def play
@@ -31,16 +31,6 @@ class VideosController < ApplicationController
     end
 
     respond_with(current)
-  end
-
-  def create
-    video = current_room.videos.new
-    video.initialize_from_youtube(video_params[:youtube_id])
-    video.queue(user: current_user)
-    video.save
-
-    stream :new
-    head :created
   end
 
   def queue
@@ -94,10 +84,6 @@ class VideosController < ApplicationController
   private
 
   def fetch_video
-    @video = current_room.videos.find(params[:id])
-  end
-
-  def video_params
-    params.require(:video).permit(:youtube_id)
+    @video = current_room.videos.find_or_create_by(youtube_id: params[:youtube_id])
   end
 end

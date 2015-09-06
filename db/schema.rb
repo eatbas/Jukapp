@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150905024914) do
+ActiveRecord::Schema.define(version: 20150906133511) do
 
   create_table "favorites", force: true do |t|
-    t.integer  "user_id",          null: false
-    t.integer  "youtube_video_id", null: false
+    t.integer  "user_id",    null: false
+    t.string   "youtube_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "favorites", ["user_id", "youtube_video_id"], name: "index_favorites_on_user_id_and_youtube_video_id", unique: true
+  add_index "favorites", ["user_id", "youtube_id"], name: "index_favorites_on_user_id_and_youtube_id", unique: true
   add_index "favorites", ["user_id"], name: "index_favorites_on_user_id"
-  add_index "favorites", ["youtube_video_id"], name: "index_favorites_on_youtube_video_id"
+  add_index "favorites", ["youtube_id"], name: "index_favorites_on_youtube_id"
 
   create_table "queued_videos", force: true do |t|
     t.integer  "video_id"
@@ -101,20 +101,20 @@ ActiveRecord::Schema.define(version: 20150905024914) do
   create_table "videos", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "youtube_video_id"
+    t.string   "youtube_id"
     t.integer  "room_id"
-    t.string   "status",           default: "idle"
+    t.string   "status",         default: "idle"
     t.datetime "queued_at"
     t.integer  "queued_by"
     t.datetime "played_at"
-    t.integer  "play_count",       default: 0
+    t.integer  "play_count",     default: 0
     t.datetime "prioritized_at"
     t.integer  "prioritized_by"
   end
 
   add_index "videos", ["room_id"], name: "index_videos_on_room_id"
   add_index "videos", ["status"], name: "index_videos_on_status"
-  add_index "videos", ["youtube_video_id"], name: "index_videos_on_youtube_video_id"
+  add_index "videos", ["youtube_id"], name: "index_videos_on_youtube_id"
 
   create_table "youtube_videos", force: true do |t|
     t.string   "title"
