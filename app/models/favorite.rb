@@ -8,6 +8,11 @@ class Favorite < ActiveRecord::Base
   validates_uniqueness_of :youtube_id, scope: :user_id
 
   def as_json(options={})
-    super(include: :youtube_video)
+    merge_options = {}
+    if current_room = options[:current_room]
+      merge_options[:video] = Video.find_by(youtube_id: youtube_id, room_id: current_room)
+    end
+
+    super(include: :youtube_video).merge(merge_options)
   end
 end

@@ -23,4 +23,13 @@ class YoutubeVideo < ActiveRecord::Base
   def initialize_from_youtube
     apply_youtube_response(Yt::Video.new(id: youtube_id))
   end
+
+  def as_json(options={})
+    merge_options = {}
+    if current_room = options[:current_room]
+      merge_options[:video] = Video.find_by(youtube_id: youtube_id, room_id: current_room)
+    end
+
+    super.merge(merge_options)
+  end
 end
