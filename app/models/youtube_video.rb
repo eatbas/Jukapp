@@ -7,17 +7,25 @@ class YoutubeVideo < ActiveRecord::Base
 
   def self.search(query)
     videos_from_search = Yt::Collections::Videos.new.where(q: query, category: 'music', order: 'viewCount').first(50)
-    videos_with_details = Yt::Collections::Videos.new.where(id: videos_from_search.map(&:id).join(','), part: 'contentDetails,status,snippet')
+    videos_with_details = Yt::Collections::Videos.new.where(id: videos_from_search.map(&:id).join(','), part: 'statistics,contentDetails,status,snippet')
 
     videos_with_details.map do |video_response|
       new(youtube_id: video_response.id).tap { |v| v.apply_youtube_response(video_response) }
     end
   end
 
+  def self.refresh_all
+    all.each do |yv|
+      yv.initialize_from_youtube
+      yv.save!
+    end
+  end
+
   def apply_youtube_response(response)
+    self.view_count = response.view_count
     self.title = response.title
     self.description = response.description
-    self.length = response.duration
+    self.duration = response.duration
   end
 
   def initialize_from_youtube
