@@ -1,28 +1,20 @@
 class FavoritesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_video, only: [:create, :destroy]
-  respond_to :html, :json
+  respond_to :json
 
   def index
-    favorites = Favorite.where(user_id: current_user).includes(:video)
-
-    respond_with(favorites) do |format|
-      format.html { @favorite_videos = favorites.map(&:video) }
-    end
+    ## TODO needs join query
+    favorites = Favorite.where(user_id: current_user).includes(:youtube_video)
+    respond_with(favorites.as_json(current_room: current_room))
   end
 
   def create
-    Favorite.find_or_create_by(video: @video, user: current_user)
+    current_user.favorites.create(youtube_id: params[:youtube_id])
     head :created
   end
 
   def destroy
-    Favorite.find_by(video: @video, user: current_user).try(:destroy)
+    current_user.favorites.find_by(youtube_id: params[:youtube_id]).destroy
     head :ok
-  end
-
-  private
-  def set_video
-    @video = Video.from_youtube(params[:youtube_id], title: params[:title])
   end
 end

@@ -14,7 +14,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'spring'
-  gem 'bullet'
+  gem 'bullet', '~> 4.14.7'
   gem 'lol_dba'
   gem 'quiet_assets'
 end
@@ -26,6 +26,15 @@ end
 group :development, :test do
   gem 'byebug'
 end
+
+gem 'state_machines'
+gem 'state_machines-activerecord'
+
+# TODO: remove this
+gem 'yourub', :git => 'git://github.com/edap/yourub.git', ref: 'ba8435e33457a6c2d861dae8144e215df0579fd7'
+
+gem 'yt'
+
 
 # Use SCSS for stylesheets
 gem 'bootstrap-sass', '~> 3.2.0'
@@ -39,7 +48,6 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'thin'
 
-gem 'yourub', :git => 'git://github.com/edap/yourub.git', ref: 'ba8435e33457a6c2d861dae8144e215df0579fd7'
 gem 'pubsubstub'
 gem 'newrelic_rpm'
 gem 'autoprefixer-rails'

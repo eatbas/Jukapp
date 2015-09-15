@@ -1,7 +1,11 @@
 class RedisService
 
-  def self.add(key, ids)
-    client.set(key, ids)
+  def self.add(key, value)
+    client.set(key, value)
+  end
+
+  def self.get(key)
+    client.get(key)
   end
 
   def self.pop_id(key)

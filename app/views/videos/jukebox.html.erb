@@ -1,0 +1,70 @@
+
+<video id="vid"
+  src=""
+  class="video-js vjs-default-skin vjs-hidden"
+  controls="true" preload="auto"
+  width="640"
+  height="360"
+>
+  <p class="vjs-no-js">
+    To view this video please enable JavaScript, and consider upgrading to a web browser
+    that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+  </p>
+</video>
+
+<div id='empty-queue' class="text-center hidden">
+  <h1>Empty Queue</h1>
+  <%= image_tag("jukebox.png") %>
+</div>
+
+<script>
+  videojs('vid', { "techOrder": ["youtube"] }).ready(function() {
+    var player = this;
+    var streamUrl = '<%= events_path(channels: ["queue-#{current_room.id}"]) %>'
+    var videoOperations = new VideoOperations(player);
+    var eventStream = new EventStream(streamUrl);
+    var currentTime = 0;
+
+    eventStream.forPlayer(player, videoOperations)
+    videoOperations.playNext();
+
+    // queueing
+    player.on('ended', function() {
+      videoOperations.playNext();
+    });
+
+    player.on('pause', function() {
+      if (!player.ended()){
+        videoOperations.pause();
+      }
+    });
+
+    player.on('play', function() {
+      if (player.currentTime() != 0 && !player.ended()) {
+        videoOperations.continue();
+      }
+    });
+
+    player.on('timeupdate', function(duration) {
+      playerTime = Math.round(player.currentTime());
+
+      if (currentTime != playerTime && currentTime+1 != playerTime) {
+        currentTime = playerTime;
+        videoOperations.setCurrentTime(currentTime);
+      }
+    });
+
+    // TODO
+    // player.imageOverlay({
+    //   image_url: "http://img.youtube.com/vi/aNYjOVo5IEw/hqdefault.jpg",
+    //   opacity: 0.5,
+    //   height: '18em',
+    //   width: '32em',
+    //   right: '3em',
+    //   bottom: '8em',
+    //   position: 'absolute',
+    //   only_fullscreen: true
+    // });
+  });
+
+</script>

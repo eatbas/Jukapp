@@ -40,4 +40,11 @@ Rails.application.configure do
   Bullet.console = true
   Bullet.rails_logger = true
   Bullet.add_footer = true
+
+  Bullet.add_whitelist :type => :n_plus_one_query, :class_name => "Video", :association => :prioritized_by
+  Bullet.add_whitelist :type => :n_plus_one_query, :class_name => "Video", :association => :queued_by
+
+  Yt.configure do |config|
+    config.log_level = :devel
+  end
 end

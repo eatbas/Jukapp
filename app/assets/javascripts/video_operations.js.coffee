@@ -1,24 +1,56 @@
 class @VideoOperations
+  @currentVideo;
 
-  @currentQueue: (button, youtube_id, title) ->
+  constructor: (player) ->
+    @player = player
+
+  currentQueue: (button, youtube_id, title) ->
     $.ajax (
       type: "GET"
-      url: "/queued_videos"
+      url: "/jukebox"
       success: (data, textStatus, jqXHR) ->
         $('#queue').html(data)
     )
 
-  @playNext: (youtube_player) ->
+  playNext: () ->
     $.ajax (
       type: "GET"
       url: "/play"
       contentType: "application/json",
-      success: (data, textStatus, jqXHR) ->
-        if data.video
-          youtube_service = new YoutubeService(youtube_player)
-          youtube_service.play(data.video)
+      success: (data, textStatus, jqXHR) =>
+        if data
+          @currentVideo = data
+
+          @player.src('http://www.youtube.com/watch?v=' + data.youtube_video.youtube_id);
+          @player.play();
+
+          @player.show();
+          $('#empty-queue').addClass('hidden');
         else
-          location.reload()
+          $('#empty-queue').removeClass('hidden');
+          @player.hide();
+    )
+
+  pause: () ->
+    $.ajax (
+      type: "PUT"
+      url: "/videos/" + @currentVideo.youtube_id + "/pause"
+      contentType: "application/json"
+    )
+
+  continue: () ->
+    $.ajax (
+      type: "PUT"
+      url: "/videos/" + @currentVideo.youtube_id + "/continue"
+      contentType: "application/json"
+    )
+
+  setCurrentTime: (currentTime) ->
+    $.ajax (
+      type: "PUT"
+      url: "/videos/" + @currentVideo.youtube_id + "/current_time"
+      data: JSON.stringify({current_time: currentTime})
+      contentType: "application/json"
     )
 
   @addLoading: ($node) ->
