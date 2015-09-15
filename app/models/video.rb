@@ -25,7 +25,7 @@ class Video < ActiveRecord::Base
 
   state_machine :status, :initial => :idle do
     after_transition on: :queue, :do => :on_queue
-    before_transition queued: :playing, :do => :stop_video_on_player
+    before_transition queued: :playing, :do => :stop_currently_playing
     after_transition on: :play, :do => :on_play
     after_transition on: :prioritize, :do => :on_prioritize
 
@@ -66,12 +66,18 @@ class Video < ActiveRecord::Base
     self.state_machines[:status].states.map(&:name).map(&:to_s)
   end
 
-  def stop_video_on_player
+  def stop_currently_playing
+    self.class.stop_video_on_player(room)
+  end
+
+  def self.stop_video_on_player(room)
     # iterate just to make sure
     room.videos.on_player.each(&:stop)
   end
 
   def on_play
+    set_current_time
+
     self.played_at = Time.now.utc
     self.play_count += 1
   end
@@ -98,7 +104,22 @@ class Video < ActiveRecord::Base
     end
   end
 
+  def set_current_time(time=0)
+    RedisService.add(redis_key, time)
+  end
+
+  def current_time
+    RedisService.get(redis_key).to_i
+  end
+
+  def redis_key
+    "duration:#{room_id}"
+  end
+
   def as_json(options={})
-    super(include: :youtube_video)
+    options.merge!(methods: :current_time) if ['playing', 'paused'].include?(status)
+    options.merge!(include: :youtube_video)
+
+    super(options)
   end
 end

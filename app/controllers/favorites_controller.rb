@@ -3,6 +3,7 @@ class FavoritesController < ApplicationController
   respond_to :json
 
   def index
+    ## TODO needs join query
     favorites = Favorite.where(user_id: current_user).includes(:youtube_video)
     respond_with(favorites.as_json(current_room: current_room))
   end

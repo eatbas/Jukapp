@@ -23,24 +23,34 @@
     var streamUrl = '<%= events_path(channels: ["queue-#{current_room.id}"]) %>'
     var videoOperations = new VideoOperations(player);
     var eventStream = new EventStream(streamUrl);
+    var currentTime = 0;
 
     eventStream.forPlayer(player, videoOperations)
-    videoOperations.playNext()
+    videoOperations.playNext();
 
     // queueing
     player.on('ended', function() {
-      videoOperations.playNext()
+      videoOperations.playNext();
     });
 
     player.on('pause', function() {
       if (!player.ended()){
-        videoOperations.pause()
+        videoOperations.pause();
       }
     });
 
     player.on('play', function() {
       if (player.currentTime() != 0 && !player.ended()) {
-        videoOperations.continue()
+        videoOperations.continue();
+      }
+    });
+
+    player.on('timeupdate', function(duration) {
+      playerTime = Math.round(player.currentTime());
+
+      if (currentTime != playerTime && currentTime+1 != playerTime) {
+        currentTime = playerTime;
+        videoOperations.setCurrentTime(currentTime);
       }
     });
 

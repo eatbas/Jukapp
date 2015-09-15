@@ -3,12 +3,13 @@ class VideosController < ApplicationController
   respond_to :html, only: :jukebox
   before_action :ensure_in_room
 
-  before_action :fetch_video, only: [:queue, :dequeue, :prioritize, :deprioritize, :pause, :continue]
+  before_action :fetch_video, only: [:queue, :dequeue, :prioritize, :deprioritize, :pause, :continue, :current_time]
 
   def index
     videos = case params[:type]
     when 'playlist'
-      current_room.videos.where(status: ['queued', 'prioritized', 'playing', 'paused']).limit(11)
+      playing_video = current_room.videos.where(status: ['playing', 'paused']).to_a
+      playing_video + current_room.videos.where(status: ['queued', 'prioritized']).limit(10).to_a
     when 'latest'
       current_room.videos.not_on_player.order(played_at: :desc).paginate(page: params[:page])
     else
@@ -18,6 +19,7 @@ class VideosController < ApplicationController
     respond_with(videos)
   end
 
+  ## should go away
   def jukebox
     respond_with(@queued_videos = current_room.videos.queued)
   end
@@ -28,6 +30,8 @@ class VideosController < ApplicationController
         stream :play
         current = next_video
       end
+    else
+      Video.stop_video_on_player(current_room)
     end
 
     respond_with(current)
@@ -78,6 +82,11 @@ class VideosController < ApplicationController
     @video.save
 
     stream :player_state_change
+    head :ok
+  end
+
+  def current_time
+    @video.set_current_time(params[:current_time].to_i)
     head :ok
   end
 

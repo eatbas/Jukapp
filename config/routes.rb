@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       put :deprioritize
       put :pause
       put :continue
+      put :current_time
     end
   end
 

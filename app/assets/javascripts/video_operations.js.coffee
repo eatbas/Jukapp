@@ -34,14 +34,22 @@ class @VideoOperations
   pause: () ->
     $.ajax (
       type: "PUT"
-      url: "/videos/" + @currentVideo.id + "/pause"
+      url: "/videos/" + @currentVideo.youtube_id + "/pause"
       contentType: "application/json"
     )
 
   continue: () ->
     $.ajax (
       type: "PUT"
-      url: "/videos/" + @currentVideo.id + "/continue"
+      url: "/videos/" + @currentVideo.youtube_id + "/continue"
+      contentType: "application/json"
+    )
+
+  setCurrentTime: (currentTime) ->
+    $.ajax (
+      type: "PUT"
+      url: "/videos/" + @currentVideo.youtube_id + "/current_time"
+      data: JSON.stringify({current_time: currentTime})
       contentType: "application/json"
     )
 
